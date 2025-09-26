@@ -29,6 +29,10 @@ export function QupleDashboard({ brokenState = 'working' }: QupleDashboardProps)
 
   const completionRate = Math.round((user.completedGoals / user.totalGoals) * 100)
 
+  // Move all useState hooks to top level to comply with React hooks rules
+  const [localGoalsNoValidation, setLocalGoalsNoValidation] = useState(goals)
+  const [localGoalsFinal, setLocalGoalsFinal] = useState(goals)
+
   // Estado sem estrutura HTML - desafio 1
   if (brokenState === 'no-structure') {
     return (
@@ -653,11 +657,10 @@ export function QupleDashboard({ brokenState = 'working' }: QupleDashboardProps)
 
   // Estado sem validação - desafio 9 (permitir ações sem verificação)
   if (brokenState === 'no-validation') {
-    const [localGoals, setLocalGoals] = useState(goals)
 
     const toggleGoal = (id: number) => {
       // Sem validação - permite qualquer mudança
-      setLocalGoals(prev => prev.map(goal =>
+      setLocalGoalsNoValidation(prev => prev.map(goal =>
         goal.id === id ? { ...goal, completed: !goal.completed } : goal
       ))
     }
@@ -690,23 +693,23 @@ export function QupleDashboard({ brokenState = 'working' }: QupleDashboardProps)
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-green-600">
-                    {localGoals.filter(g => g.completed).length}
+                    {localGoalsNoValidation.filter(g => g.completed).length}
                   </div>
                   <p className="text-sm text-gray-600">Concluídos</p>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-blue-600">{localGoals.length}</div>
+                  <div className="text-3xl font-bold text-blue-600">{localGoalsNoValidation.length}</div>
                   <p className="text-sm text-gray-600">Total</p>
                 </div>
               </div>
 
               <div className="mt-6">
                 <Progress
-                  value={Math.round((localGoals.filter(g => g.completed).length / localGoals.length) * 100)}
+                  value={Math.round((localGoalsNoValidation.filter(g => g.completed).length / localGoalsNoValidation.length) * 100)}
                   className="h-3"
                 />
                 <p className="text-center mt-2 font-semibold text-purple-700">
-                  {Math.round((localGoals.filter(g => g.completed).length / localGoals.length) * 100)}% completo! 🎉
+                  {Math.round((localGoalsNoValidation.filter(g => g.completed).length / localGoalsNoValidation.length) * 100)}% completo! 🎉
                 </p>
               </div>
             </CardContent>
@@ -725,7 +728,7 @@ export function QupleDashboard({ brokenState = 'working' }: QupleDashboardProps)
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {localGoals.map((goal) => (
+                {localGoalsNoValidation.map((goal) => (
                   <div
                     key={goal.id}
                     className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
@@ -759,11 +762,10 @@ export function QupleDashboard({ brokenState = 'working' }: QupleDashboardProps)
   }
 
   // Estado funcionando completamente - versão final
-  const [localGoals, setLocalGoals] = useState(goals)
 
   const toggleGoal = (id: number) => {
     // Com validação básica
-    const goal = localGoals.find(g => g.id === id)
+    const goal = localGoalsFinal.find(g => g.id === id)
     if (!goal) return
 
     const confirm = window.confirm(
@@ -773,7 +775,7 @@ export function QupleDashboard({ brokenState = 'working' }: QupleDashboardProps)
     )
 
     if (confirm) {
-      setLocalGoals(prev => prev.map(goal =>
+      setLocalGoalsFinal(prev => prev.map(goal =>
         goal.id === id ? { ...goal, completed: !goal.completed } : goal
       ))
     }
@@ -807,23 +809,23 @@ export function QupleDashboard({ brokenState = 'working' }: QupleDashboardProps)
               </div>
               <div>
                 <div className="text-3xl font-bold text-green-600">
-                  {localGoals.filter(g => g.completed).length}
+                  {localGoalsFinal.filter(g => g.completed).length}
                 </div>
                 <p className="text-sm text-gray-600">Concluídos</p>
               </div>
               <div>
-                <div className="text-3xl font-bold text-blue-600">{localGoals.length}</div>
+                <div className="text-3xl font-bold text-blue-600">{localGoalsFinal.length}</div>
                 <p className="text-sm text-gray-600">Total</p>
               </div>
             </div>
 
             <div className="mt-6">
               <Progress
-                value={Math.round((localGoals.filter(g => g.completed).length / localGoals.length) * 100)}
+                value={Math.round((localGoalsFinal.filter(g => g.completed).length / localGoalsFinal.length) * 100)}
                 className="h-3"
               />
               <p className="text-center mt-2 font-semibold text-purple-700">
-                {Math.round((localGoals.filter(g => g.completed).length / localGoals.length) * 100)}% completo! 🎉
+                {Math.round((localGoalsFinal.filter(g => g.completed).length / localGoalsFinal.length) * 100)}% completo! 🎉
               </p>
             </div>
           </CardContent>
@@ -842,7 +844,7 @@ export function QupleDashboard({ brokenState = 'working' }: QupleDashboardProps)
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {localGoals.map((goal) => (
+              {localGoalsFinal.map((goal) => (
                 <div
                   key={goal.id}
                   className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"

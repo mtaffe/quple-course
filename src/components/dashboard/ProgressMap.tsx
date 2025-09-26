@@ -3,9 +3,9 @@
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import { Challenge } from '@/types'
 import {
   Map,
-  MapPin,
   Lock,
   CheckCircle,
   Play,
@@ -15,16 +15,6 @@ import {
   Target,
   Zap
 } from 'lucide-react'
-
-interface Challenge {
-  id: number
-  title: string
-  description: string
-  difficulty: 'easy' | 'medium' | 'hard'
-  xpReward: number
-  estimatedTime: number
-  category: string
-}
 
 interface ProgressMapProps {
   challenges: Challenge[]
@@ -41,12 +31,6 @@ const WORLD_THEMES = {
 }
 
 export function ProgressMap({ challenges, currentChallenge, completedChallenges, onStartChallenge }: ProgressMapProps) {
-  const getWorldTheme = (challengeId: number) => {
-    if (challengeId <= 4) return WORLD_THEMES[1]
-    if (challengeId <= 7) return WORLD_THEMES[2]
-    if (challengeId <= 9) return WORLD_THEMES[3]
-    return WORLD_THEMES[4]
-  }
 
   const getChallengeStatus = (challengeId: number) => {
     if (completedChallenges.includes(challengeId)) return 'completed'
@@ -55,7 +39,7 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
     return 'locked'
   }
 
-  const getChallengeIcon = (status: string, difficulty: string) => {
+  const getChallengeIcon = (status: string) => {
     switch (status) {
       case 'completed':
         return <CheckCircle className="h-6 w-6 text-green-600" />
@@ -102,7 +86,7 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
 
       <div className="space-y-12">
         {Object.entries(worlds).map(([worldId, worldChallenges]) => {
-          const world = WORLD_THEMES[parseInt(worldId)]
+          const world = WORLD_THEMES[parseInt(worldId) as keyof typeof WORLD_THEMES]
           const worldProgress = worldChallenges.filter(c => completedChallenges.includes(c.id)).length
           const worldTotal = worldChallenges.length
           const isWorldUnlocked = worldChallenges.some(c => c.id <= currentChallenge)
@@ -145,7 +129,7 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                 {/* Desktop Layout - Horizontal */}
                 <div className="hidden md:block relative z-10">
                   <div className="flex justify-between items-center">
-                    {worldChallenges.map((challenge, index) => {
+                    {worldChallenges.map((challenge) => {
                       const status = getChallengeStatus(challenge.id)
                       const isLocked = status === 'locked'
                       const isCompleted = status === 'completed'
@@ -183,7 +167,7 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                                 }
                               `}
                             >
-                              {getChallengeIcon(status, challenge.difficulty)}
+                              {getChallengeIcon(status)}
 
                               {/* XP Badge */}
                               {!isLocked && (
@@ -255,7 +239,6 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                     const isLocked = status === 'locked'
                     const isCompleted = status === 'completed'
                     const isCurrent = status === 'current'
-                    const isNextInLine = index > 0 && worldChallenges[index - 1] && getChallengeStatus(worldChallenges[index - 1].id) === 'completed'
 
                     return (
                       <div key={challenge.id} className="relative">
@@ -307,7 +290,7 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                               >
                                 {/* Smaller icons for mobile */}
                                 <div className="scale-75">
-                                  {getChallengeIcon(status, challenge.difficulty)}
+                                  {getChallengeIcon(status)}
                                 </div>
 
                                 {/* XP Badge - Smaller */}

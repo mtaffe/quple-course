@@ -245,8 +245,8 @@ export class ProgressService {
 
       const badgeIds = student.badges || []
       return badgeIds
-        .map(id => this.getBadgeInfo(id))
-        .filter(badge => badge !== null) as BadgeInfo[]
+        .map((id: string) => this.getBadgeInfo(id))
+        .filter((badge: BadgeInfo | null) => badge !== null) as BadgeInfo[]
 
     } catch (error) {
       console.error('Erro ao buscar badges:', error)

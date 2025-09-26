@@ -34,7 +34,7 @@ export const challenges: Challenge[] = [
       {
         title: "🎯 Por que fazer uma avaliação?",
         url: "#",
-        type: "info",
+        type: "documentation",
         description: "Entenda a importância de conhecer seu ponto de partida no aprendizado"
       }
     ],
@@ -299,42 +299,42 @@ export const challenges: Challenge[] = [
     // Critérios de validação automática
     validationRules: [
       {
-        rule: "must_have_doctype",
+        type: "must_have_doctype",
         message: "Seu HTML deve começar com <!DOCTYPE html>",
         weight: 10
       },
       {
-        rule: "must_have_header_tag",
+        type: "must_have_header_tag",
         message: "Use a tag <header> para o cabeçalho",
         weight: 15
       },
       {
-        rule: "must_have_h1_with_quple",
+        type: "must_have_h1_with_quple",
         message: "Adicione um <h1> com o nome 'Quple'",
         weight: 15
       },
       {
-        rule: "must_have_main_tag",
+        type: "must_have_main_tag",
         message: "Use a tag <main> para o conteúdo principal",
         weight: 15
       },
       {
-        rule: "must_have_form_tag",
+        type: "must_have_form_tag",
         message: "Crie um formulário com a tag <form>",
         weight: 15
       },
       {
-        rule: "must_have_email_input",
+        type: "must_have_email_input",
         message: "Adicione um campo de email com type='email'",
         weight: 15
       },
       {
-        rule: "must_have_password_input",
+        type: "must_have_password_input",
         message: "Adicione um campo de senha com type='password'",
         weight: 10
       },
       {
-        rule: "must_have_labels",
+        type: "must_have_labels",
         message: "Use <label> conectados aos inputs (atributo 'for')",
         weight: 5
       }
@@ -932,13 +932,13 @@ export const challenges: Challenge[] = [
       {
         title: "🎮 Flexbox Froggy",
         url: "https://flexboxfroggy.com/#pt-br",
-        type: "game",
+        type: "tool",
         description: "Jogo para aprender Flexbox de forma divertida"
       },
       {
         title: "📚 CSS-Tricks Flexbox Guide",
         url: "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
-        type: "guide",
+        type: "documentation",
         description: "Guia visual completo do Flexbox"
       }
     ],
@@ -1452,37 +1452,37 @@ export const challenges: Challenge[] = [
 
     validationRules: [
       {
-        rule: "header_has_flex",
+        type: "header_has_flex",
         message: "O header deve usar display: flex",
         weight: 20
       },
       {
-        rule: "stats_grid_flex",
+        type: "stats_grid_flex",
         message: "O .stats-grid deve usar flexbox",
         weight: 20
       },
       {
-        rule: "cards_equal_width",
+        type: "cards_equal_width",
         message: "Os cards devem ter flex: 1 para largura igual",
         weight: 15
       },
       {
-        rule: "section_header_flex",
+        type: "section_header_flex",
         message: "O .section-header deve usar flexbox",
         weight: 15
       },
       {
-        rule: "objective_items_flex",
+        type: "objective_items_flex",
         message: "Os .objective-item devem usar flexbox",
         weight: 15
       },
       {
-        rule: "navigation_flex",
+        type: "navigation_flex",
         message: "A navegação deve usar flexbox",
         weight: 10
       },
       {
-        rule: "proper_spacing",
+        type: "proper_spacing",
         message: "Use gap ou margin para espaçamento adequado",
         weight: 5
       }
@@ -2204,37 +2204,37 @@ export const challenges: Challenge[] = [
 
     validationRules: [
       {
-        rule: "has_mobile_styles",
+        type: "has_mobile_styles",
         message: "Deve ter estilos base para mobile",
         weight: 20
       },
       {
-        rule: "has_tablet_media_query",
+        type: "has_tablet_media_query",
         message: "Deve ter media query para tablet (768px)",
         weight: 20
       },
       {
-        rule: "has_desktop_media_query",
+        type: "has_desktop_media_query",
         message: "Deve ter media query para desktop (1024px)",
         weight: 20
       },
       {
-        rule: "responsive_grid",
+        type: "responsive_grid",
         message: "Grid deve adaptar colunas por breakpoint",
         weight: 15
       },
       {
-        rule: "responsive_navigation",
+        type: "responsive_navigation",
         message: "Navegação deve adaptar para mobile",
         weight: 10
       },
       {
-        rule: "touch_friendly_buttons",
+        type: "touch_friendly_buttons",
         message: "Botões devem ter min-height: 48px",
         weight: 10
       },
       {
-        rule: "responsive_typography",
+        type: "responsive_typography",
         message: "Textos devem adaptar por breakpoint",
         weight: 5
       }
@@ -2816,32 +2816,32 @@ const toggleButton = document.querySelector('#passwordToggle');`
 
     validationRules: [
       {
-        rule: "has_toggle_button",
+        type: "has_toggle_button",
         message: "Deve ter um botão de toggle no campo senha",
         weight: 25
       },
       {
-        rule: "button_has_event_listener",
+        type: "button_has_event_listener",
         message: "Botão deve ter event listener para clique",
         weight: 25
       },
       {
-        rule: "changes_input_type",
+        type: "changes_input_type",
         message: "Deve alterar o tipo do input entre password e text",
         weight: 20
       },
       {
-        rule: "updates_button_icon",
+        type: "updates_button_icon",
         message: "Deve atualizar o ícone do botão conforme estado",
         weight: 15
       },
       {
-        rule: "visual_feedback",
+        type: "visual_feedback",
         message: "Deve ter feedback visual quando senha visível",
         weight: 10
       },
       {
-        rule: "maintains_focus",
+        type: "maintains_focus",
         message: "Deve manter foco no input após toggle",
         weight: 5
       }
@@ -3742,37 +3742,37 @@ const hasMinLength = password.length >= 8;`
 
     validationRules: [
       {
-        rule: "validates_name_length",
+        type: "validates_name_length",
         message: "Deve validar nome com mínimo 2 caracteres",
         weight: 15
       },
       {
-        rule: "validates_email_format",
+        type: "validates_email_format",
         message: "Deve validar formato do email com RegEx",
         weight: 20
       },
       {
-        rule: "validates_password_strength",
+        type: "validates_password_strength",
         message: "Deve validar senha forte (maiúscula, número, símbolo)",
         weight: 20
       },
       {
-        rule: "validates_password_confirmation",
+        type: "validates_password_confirmation",
         message: "Deve validar confirmação de senha",
         weight: 15
       },
       {
-        rule: "validates_terms_acceptance",
+        type: "validates_terms_acceptance",
         message: "Deve validar aceitação dos termos",
         weight: 10
       },
       {
-        rule: "shows_visual_feedback",
+        type: "shows_visual_feedback",
         message: "Deve mostrar feedback visual (bordas coloridas)",
         weight: 10
       },
       {
-        rule: "disables_submit_when_invalid",
+        type: "disables_submit_when_invalid",
         message: "Botão deve ficar disabled quando dados inválidos",
         weight: 10
       }
@@ -4529,37 +4529,37 @@ const hasMinLength = password.length >= 8;`
 
     validationRules: [
       {
-        rule: "uses_functional_components",
+        type: "uses_functional_components",
         message: "Deve usar componentes funcionais React",
         weight: 20
       },
       {
-        rule: "uses_usestate_hook",
+        type: "uses_usestate_hook",
         message: "Deve usar useState para gerenciar estado",
         weight: 20
       },
       {
-        rule: "uses_useeffect_hook",
+        type: "uses_useeffect_hook",
         message: "Deve usar useEffect para side effects",
         weight: 15
       },
       {
-        rule: "implements_event_handlers",
+        type: "implements_event_handlers",
         message: "Deve implementar event handlers para inputs e submit",
         weight: 15
       },
       {
-        rule: "creates_reusable_components",
+        type: "creates_reusable_components",
         message: "Deve criar componentes reutilizáveis",
         weight: 10
       },
       {
-        rule: "manages_form_validation",
+        type: "manages_form_validation",
         message: "Deve implementar validação em tempo real",
         weight: 10
       },
       {
-        rule: "uses_proper_jsx_syntax",
+        type: "uses_proper_jsx_syntax",
         message: "Deve usar sintaxe JSX corretamente",
         weight: 10
       }

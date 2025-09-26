@@ -14,7 +14,8 @@ import {
   Code,
   Palette,
   Zap,
-  Layers
+  Layers,
+  Target
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -28,14 +29,16 @@ const categoryIcons = {
   html: Code,
   css: Palette,
   javascript: Zap,
-  react: Layers
+  react: Layers,
+  assessment: Target
 }
 
 const categoryColors = {
   html: 'bg-orange-500',
   css: 'bg-blue-500',
   javascript: 'bg-yellow-500',
-  react: 'bg-cyan-500'
+  react: 'bg-cyan-500',
+  assessment: 'bg-purple-500'
 }
 
 function getChallengeStatus(
@@ -106,7 +109,7 @@ export function ProgressMap({
 
       {/* Challenge Map */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {challenges.map((challenge, index) => {
+        {challenges.map((challenge) => {
           const status = getChallengeStatus(
             challenge.id,
             completedChallenges,
@@ -116,7 +119,6 @@ export function ProgressMap({
           const isLocked = status === 'locked'
           const isCompleted = status === 'completed'
           const isCurrent = status === 'current'
-          const isAvailable = status === 'available'
 
           return (
             <Card

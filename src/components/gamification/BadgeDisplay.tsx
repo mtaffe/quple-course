@@ -1,6 +1,5 @@
 'use client'
 
-import { Badge as BadgeModel } from '@/types'
 import { Badge } from '@/components/ui/Badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import {
@@ -11,7 +10,8 @@ import {
   Target,
   Crown,
   Flame,
-  CheckCircle
+  CheckCircle,
+  type LucideIcon
 } from 'lucide-react'
 
 interface BadgeDisplayProps {
@@ -21,7 +21,15 @@ interface BadgeDisplayProps {
   showCount?: boolean
 }
 
-const badgeData: Record<string, BadgeModel & { icon: any; color: string }> = {
+interface BadgeDisplayData {
+  id: string
+  name: string
+  description: string
+  icon: LucideIcon
+  color: string
+}
+
+const badgeData: Record<string, BadgeDisplayData> = {
   'first-code': {
     id: 'first-code',
     name: 'Primeiro Código',

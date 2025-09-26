@@ -2,40 +2,40 @@ import { ValidationResult } from '@/types'
 
 export class CodeValidator {
   static validateHTML(code: string): ValidationResult {
-    const errors: string[] = []
-    const warnings: string[] = []
+    const errors: Array<{rule: string, message: string, line?: number, suggestion?: string}> = []
+    const warnings: Array<{message: string, suggestion?: string}> = []
     let score = 100
 
     // Basic HTML structure validation
     if (!code.includes('<!DOCTYPE html>')) {
-      errors.push('Falta a declaração DOCTYPE')
+      errors.push({rule: 'doctype', message: 'Falta a declaração DOCTYPE'})
       score -= 20
     }
 
     if (!code.includes('<html')) {
-      errors.push('Falta a tag <html>')
+      errors.push({rule: 'html_tag', message: 'Falta a tag <html>'})
       score -= 20
     }
 
     if (!code.includes('<head>')) {
-      errors.push('Falta a tag <head>')
+      errors.push({rule: 'head_tag', message: 'Falta a tag <head>'})
       score -= 15
     }
 
     if (!code.includes('<body>')) {
-      errors.push('Falta a tag <body>')
+      errors.push({rule: 'body_tag', message: 'Falta a tag <body>'})
       score -= 15
     }
 
     // Meta charset validation
     if (!code.includes('charset=')) {
-      warnings.push('Recomenda-se adicionar meta charset="UTF-8"')
+      warnings.push({message: 'Recomenda-se adicionar meta charset="UTF-8"'})
       score -= 5
     }
 
     // Title validation
     if (!code.includes('<title>')) {
-      warnings.push('Recomenda-se adicionar um título à página')
+      warnings.push({message: 'Recomenda-se adicionar um título à página'})
       score -= 5
     }
 
@@ -44,13 +44,13 @@ export class CodeValidator {
     const labelMatches = code.match(/<label[^>]*>/g) || []
 
     if (inputMatches.length > 0 && labelMatches.length === 0) {
-      warnings.push('Adicione labels aos seus inputs para melhor acessibilidade')
+      warnings.push({message: 'Adicione labels aos seus inputs para melhor acessibilidade'})
       score -= 10
     }
 
     // Form validation
-    if (code.includes('<form') && !code.includes('action=')) {
-      warnings.push('Considere adicionar um action ao seu formulário')
+    if (code.includes('<form>') && !code.includes('action=')) {
+      warnings.push({message: 'Considere adicionar um action ao seu formulário'})
       score -= 5
     }
 
@@ -58,43 +58,44 @@ export class CodeValidator {
       isValid: errors.length === 0,
       errors,
       warnings,
-      score: Math.max(0, score)
+      score: Math.max(0, score),
+      achievements: []
     }
   }
 
   static validateCSS(code: string): ValidationResult {
-    const errors: string[] = []
-    const warnings: string[] = []
+    const errors: Array<{rule: string, message: string, line?: number, suggestion?: string}> = []
+    const warnings: Array<{message: string, suggestion?: string}> = []
     let score = 100
 
     // Check if CSS is present in HTML
     if (!code.includes('<style>') && !code.includes('style=')) {
-      errors.push('Não foi encontrado CSS no código')
+      errors.push({rule: 'css_missing', message: 'Não foi encontrado CSS no código'})
       score -= 50
     }
 
     // Basic CSS structure
     if (code.includes('<style>') && !code.includes('</style>')) {
-      errors.push('Tag <style> não foi fechada corretamente')
+      errors.push({rule: 'style_tag', message: 'Tag <style> não foi fechada corretamente'})
       score -= 20
     }
 
     // Check for basic styling elements
     const hasColors = /color\s*:|background\s*:/.test(code)
     if (!hasColors) {
-      warnings.push('Considere adicionar cores ao seu design')
+      warnings.push({message: 'Considere adicionar cores ao seu design'})
       score -= 10
     }
 
     const hasFonts = /font-family\s*:|font-size\s*:/.test(code)
     if (!hasFonts) {
-      warnings.push('Considere definir tipografia')
+      warnings.push({message: 'Considere definir tipografia'})
       score -= 10
     }
 
     const hasSpacing = /margin\s*:|padding\s*:/.test(code)
     if (!hasSpacing) {
-      warnings.push('Adicione espaçamento com margin/padding')
+      warnings.push({message: 'Adicione espaçamento com margin/padding'})
       score -= 10
     }
 
@@ -102,7 +103,8 @@ export class CodeValidator {
       isValid: errors.length === 0,
       errors,
       warnings,
-      score: Math.max(0, score)
+      score: Math.max(0, score),
+      achievements: []
     }
   }
 
@@ -135,27 +137,27 @@ export class CodeValidator {
 
     // Challenge 1 specific validations
     if (!code.includes('<h1>')) {
-      errors.push('Adicione um título principal (h1) ao seu app')
+      errors.push({rule: 'validation', message: 'Adicione um título principal (h1) ao seu app'})
       score -= 15
     }
 
     if (!code.includes('<form>')) {
-      errors.push('Crie um formulário de login')
+      errors.push({rule: 'validation', message: 'Crie um formulário de login'})
       score -= 20
     }
 
     if (!code.includes('type="email"')) {
-      errors.push('Adicione um campo de email')
+      errors.push({rule: 'validation', message: 'Adicione um campo de email'})
       score -= 15
     }
 
     if (!code.includes('type="password"')) {
-      errors.push('Adicione um campo de senha')
+      errors.push({rule: 'validation', message: 'Adicione um campo de senha'})
       score -= 15
     }
 
-    if (!code.includes('<button')) {
-      errors.push('Adicione um botão de submit')
+    if (!code.includes('<button>')) {
+      errors.push({rule: 'validation', message: 'Adicione um botão de submit'})
       score -= 10
     }
 
@@ -163,7 +165,8 @@ export class CodeValidator {
       isValid: errors.length === 0,
       errors,
       warnings,
-      score: Math.max(0, score)
+      score: Math.max(0, score),
+      achievements: []
     }
   }
 
@@ -175,23 +178,23 @@ export class CodeValidator {
 
     // Challenge 2 specific validations
     if (!code.includes('type="text"') && !code.includes('name="name"')) {
-      errors.push('Adicione um campo de nome')
+      errors.push({rule: 'validation', message: 'Adicione um campo de nome'})
       score -= 20
     }
 
     if (!code.includes('confirm-password') && !code.includes('confirmar')) {
-      errors.push('Adicione um campo para confirmar a senha')
+      errors.push({rule: 'validation', message: 'Adicione um campo para confirmar a senha'})
       score -= 20
     }
 
     if (!code.includes('type="number"') && !code.includes('idade')) {
-      errors.push('Adicione um campo de idade')
+      errors.push({rule: 'validation', message: 'Adicione um campo de idade'})
       score -= 15
     }
 
     const requiredCount = (code.match(/required/g) || []).length
     if (requiredCount < 3) {
-      warnings.push('Adicione o atributo "required" nos campos obrigatórios')
+      warnings.push({message: 'Adicione o atributo "required" nos campos obrigatórios'})
       score -= 10
     }
 
@@ -199,7 +202,8 @@ export class CodeValidator {
       isValid: errors.length === 0,
       errors,
       warnings,
-      score: Math.max(0, score)
+      score: Math.max(0, score),
+      achievements: []
     }
   }
 
@@ -212,26 +216,26 @@ export class CodeValidator {
     // Challenge 3 specific validations
     const linkMatches = code.match(/<a[^>]*href=[^>]*>/g) || []
     if (linkMatches.length < 3) {
-      errors.push('Adicione links de navegação com href')
+      errors.push({rule: 'validation', message: 'Adicione links de navegação com href'})
       score -= 25
     }
 
-    if (!code.includes('<button')) {
-      errors.push('Adicione botões de ação')
+    if (!code.includes('<button>')) {
+      errors.push({rule: 'validation', message: 'Adicione botões de ação'})
       score -= 20
     }
 
     if (!code.includes('<nav>')) {
-      warnings.push('Use a tag <nav> para navegação')
+      warnings.push({message: 'Use a tag <nav> para navegação'})
       score -= 10
     }
 
     const emptyLinks = (code.match(/<a[^>]*>/g) || []).filter(link =>
-      !link.includes('href=') || link.includes('href=""') || link.includes('href="#"')
+    !link.includes('href=') || link.includes('href=""') || link.includes('href="#"')
     ).length
 
     if (emptyLinks > 0) {
-      errors.push('Todos os links devem ter um href válido')
+      errors.push({rule: 'validation', message: 'Todos os links devem ter um href válido'})
       score -= 15
     }
 
@@ -239,7 +243,8 @@ export class CodeValidator {
       isValid: errors.length === 0,
       errors,
       warnings,
-      score: Math.max(0, score)
+      score: Math.max(0, score),
+      achievements: []
     }
   }
 
@@ -251,22 +256,22 @@ export class CodeValidator {
 
     // Challenge 4 specific validations
     if (!code.includes('<header>')) {
-      errors.push('Use a tag <header> para o cabeçalho')
+      errors.push({rule: 'validation', message: 'Use a tag <header> para o cabeçalho'})
       score -= 15
     }
 
     if (!code.includes('<main>')) {
-      errors.push('Use a tag <main> para o conteúdo principal')
+      errors.push({rule: 'validation', message: 'Use a tag <main> para o conteúdo principal'})
       score -= 15
     }
 
     if (!code.includes('<section>')) {
-      errors.push('Use tags <section> para organizar o conteúdo')
+      errors.push({rule: 'validation', message: 'Use tags <section> para organizar o conteúdo'})
       score -= 15
     }
 
     if (!code.includes('<article>')) {
-      warnings.push('Considere usar <article> para conteúdo independente')
+      warnings.push({message: 'Considere usar <article> para conteúdo independente'})
       score -= 10
     }
 
@@ -276,12 +281,12 @@ export class CodeValidator {
     const h3Count = (code.match(/<h3>/g) || []).length
 
     if (h1Count !== 1) {
-      errors.push('Deve haver exatamente um h1 por página')
+      errors.push({rule: 'validation', message: 'Deve haver exatamente um h1 por página'})
       score -= 20
     }
 
     if (h2Count === 0 && h3Count > 0) {
-      errors.push('Hierarquia incorreta: h3 sem h2')
+      errors.push({rule: 'validation', message: 'Hierarquia incorreta: h3 sem h2'})
       score -= 15
     }
 
@@ -289,7 +294,8 @@ export class CodeValidator {
       isValid: errors.length === 0,
       errors,
       warnings,
-      score: Math.max(0, score)
+      score: Math.max(0, score),
+      achievements: []
     }
   }
 
@@ -302,36 +308,37 @@ export class CodeValidator {
 
     // Challenge 5 specific validations
     if (!code.includes('background') && !code.includes('color:')) {
-      errors.push('Adicione cores ao seu design')
+      errors.push({rule: 'validation', message: 'Adicione cores ao seu design'})
       score -= 25
     }
 
     if (!code.includes('font-')) {
-      errors.push('Defina propriedades de tipografia')
+      errors.push({rule: 'validation', message: 'Defina propriedades de tipografia'})
       score -= 20
     }
 
     if (!code.includes('padding') && !code.includes('margin')) {
-      errors.push('Adicione espaçamento com padding/margin')
+      errors.push({rule: 'validation', message: 'Adicione espaçamento com padding/margin'})
       score -= 20
     }
 
     if (code.includes('flexbox') || code.includes('display: flex')) {
-      warnings.push('Ótimo uso do flexbox!')
+      warnings.push({message: 'Ótimo uso do flexbox!'})
     } else {
-      warnings.push('Considere usar flexbox para layout')
+      warnings.push({message: 'Considere usar flexbox para layout'})
       score -= 10
     }
 
     if (code.includes(':hover')) {
-      warnings.push('Excelente! Efeitos hover melhoram a UX')
+      warnings.push({message: 'Excelente! Efeitos hover melhoram a UX'})
     }
 
     return {
       isValid: errors.length === 0 && score >= 70,
       errors,
       warnings,
-      score: Math.max(0, score)
+      score: Math.max(0, score),
+      achievements: []
     }
   }
 }

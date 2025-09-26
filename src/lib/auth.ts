@@ -24,8 +24,8 @@ export async function signInWithEmail(email: string, password: string) {
     }
 
     return { user: data.user, error: null }
-  } catch (error: any) {
-    return { user: null, error: error.message }
+  } catch (error: unknown) {
+    return { user: null, error: error instanceof Error ? error.message : 'An unknown error occurred' }
   }
 }
 
@@ -64,8 +64,8 @@ export async function signUpWithEmail(email: string, password: string, name: str
     }
 
     return { user: authData.user, error: null }
-  } catch (error: any) {
-    return { user: null, error: error.message }
+  } catch (error: unknown) {
+    return { user: null, error: error instanceof Error ? error.message : 'An unknown error occurred' }
   }
 }
 
@@ -77,8 +77,8 @@ export async function signOut() {
       throw error
     }
     return { error: null }
-  } catch (error: any) {
-    return { error: error.message }
+  } catch (error: unknown) {
+    return { error: error instanceof Error ? error.message : 'An unknown error occurred' }
   }
 }
 
@@ -107,7 +107,7 @@ export async function getStudentData(userId: string) {
     }
 
     return { student: data, error: null }
-  } catch (error: any) {
-    return { student: null, error: error.message }
+  } catch (error: unknown) {
+    return { student: null, error: error instanceof Error ? error.message : 'An unknown error occurred' }
   }
 }

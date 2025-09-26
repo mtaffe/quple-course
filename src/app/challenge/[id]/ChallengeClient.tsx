@@ -1,6 +1,6 @@
 'use client'
 
-import { Challenge } from '@/types'
+import { Challenge, ValidationResult, ChallengeState } from '@/types'
 import { ChallengeLayout } from '@/components/challenge/ChallengeLayout'
 
 interface ChallengeClientProps {
@@ -8,12 +8,12 @@ interface ChallengeClientProps {
 }
 
 export default function ChallengeClient({ challenge }: ChallengeClientProps) {
-  const handleComplete = (result: any) => {
+  const handleComplete = (result: ValidationResult) => {
     console.log('Challenge completed!', result)
     // TODO: Save completion to database
   }
 
-  const handleSaveProgress = (state: any) => {
+  const handleSaveProgress = (state: ChallengeState) => {
     console.log('Saving progress...', state)
     // TODO: Save progress to database
   }

@@ -17,7 +17,6 @@ import {
   Play,
   RotateCcw,
   CheckCircle,
-  XCircle,
   Clock,
   Trophy,
   Download,
@@ -317,7 +316,7 @@ Deseja submeter mesmo assim? Você receberá menos XP por não ter completado pe
                         </span>
                       </div>
                       <div className="text-sm text-green-700">
-                        → Clique em "Finalizar Desafio" para ganhar XP
+                        → Clique em &quot;Finalizar Desafio&quot; para ganhar XP
                       </div>
                     </div>
                   )}

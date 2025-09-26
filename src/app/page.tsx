@@ -104,7 +104,7 @@ export default function HomePage() {
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-8 hover:bg-white/20 transition-all duration-200 group">
               <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-200">🔨</div>
               <h3 className="text-xl font-semibold mb-3 text-white">HTML na Prática</h3>
-              <p className="text-gray-300">Crie estruturas reais que funcionam. Nada de "Hello World".</p>
+              <p className="text-gray-300">Crie estruturas reais que funcionam. Nada de &quot;Hello World&quot;.</p>
             </div>
 
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-8 hover:bg-white/20 transition-all duration-200 group">

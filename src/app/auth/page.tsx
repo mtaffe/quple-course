@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function AuthPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -19,23 +21,23 @@ export default function AuthPage() {
           {/* Auth Options */}
           <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
             <div className="space-y-4">
-              <a
+              <Link
                 href="/auth/login"
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors text-center block"
               >
                 🔐 Fazer Login
-              </a>
+              </Link>
 
               <div className="text-center text-gray-500 text-sm">
                 ou
               </div>
 
-              <a
+              <Link
                 href="/auth/register"
                 className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-6 rounded-lg font-semibold transition-colors text-center block"
               >
                 ✨ Criar Conta Nova
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -74,12 +76,12 @@ export default function AuthPage() {
 
           {/* Back to Home */}
           <div className="text-center mt-8">
-            <a
+            <Link
               href="/"
               className="text-blue-600 hover:text-blue-700 text-sm transition-colors"
             >
               ← Voltar para início
-            </a>
+            </Link>
           </div>
         </div>
       </div>

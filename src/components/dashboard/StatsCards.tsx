@@ -7,15 +7,10 @@ import {
   Trophy,
   Zap,
   Target,
-  Calendar,
-  TrendingUp,
   Award,
-  Clock,
   Star,
   Flame,
   BookOpen,
-  Code,
-  Users
 } from 'lucide-react'
 
 interface StatsCardsProps {

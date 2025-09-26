@@ -13,7 +13,7 @@ import { LevelAssessmentModal } from '@/components/assessment/LevelAssessmentMod
 import { UserCircle, Settings, LogOut } from 'lucide-react'
 
 export default function DashboardPage() {
-  const { user, student, loading, isAuthenticated, clearUser } = useAuth()
+  const { student, loading, isAuthenticated, clearUser } = useAuth()
   const [studentBadges, setStudentBadges] = useState<BadgeInfo[]>([])
   const [levelInfo, setLevelInfo] = useState<{level: number, xpForNext: number, xpInLevel: number} | null>(null)
   const [showAssessment, setShowAssessment] = useState(false)
@@ -261,7 +261,7 @@ export default function DashboardPage() {
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-blue-100 rounded-full px-6 py-3">
             <span className="text-2xl">💡</span>
             <p className="text-gray-700 font-medium">
-              "A jornada de mil milhas começa com um único passo" - Continue programando!
+&quot;A jornada de mil milhas começa com um único passo&quot; - Continue programando!
             </p>
           </div>
         </div>

@@ -25,7 +25,6 @@ interface AchievementShowcaseProps {
 export function AchievementShowcase({ badges, allPossibleBadges = [] }: AchievementShowcaseProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const itemsPerPage = 3 // Desktop
-  const mobileItemsPerPage = 1 // Mobile
 
   // Combine earned and unearned badges for showcase
   const earnedBadgeIds = badges.map(b => b.id)
