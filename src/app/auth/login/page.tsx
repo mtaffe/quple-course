@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { signInWithEmail } from '@/lib/auth'
 import { useAuth } from '@/hooks/useAuth'
+import { useSnackbar } from '@/components/ui/Snackbar'
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ export default function LoginPage() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { refreshUser } = useAuth()
+  const { showSnackbar, SnackbarComponent } = useSnackbar()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -71,10 +73,7 @@ export default function LoginPage() {
         // Sucesso! Recarregar dados do usuário
         await refreshUser()
 
-        // Mostrar mensagem de sucesso
-        alert('🎉 Login realizado com sucesso!')
-
-        // Redirecionar para dashboard
+        // Redirecionar para dashboard sem snackbar (login direto)
         window.location.href = '/dashboard'
       }
 
@@ -89,37 +88,33 @@ export default function LoginPage() {
   }
 
   const handleForgotPassword = () => {
-    const email = prompt('Digite seu email para recuperar a senha:')
-    if (email) {
-      // TODO: Implement password reset
-      console.log('Password reset for:', email)
-      alert('Email de recuperação enviado!')
-    }
+    // TODO: Implement proper password reset modal
+    showSnackbar('Recurso em desenvolvimento. Entre em contato com o suporte.', 'info')
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
+    <div className="min-h-screen py-8">
       <div className="container mx-auto px-4">
         <div className="max-w-md mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="mb-4 inline-block bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm">
+            <div className="mb-4 inline-block btn-primary-gradient px-4 py-2 rounded-full text-sm">
               ✨ React Learning Playground
             </div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
               Fazer Login
             </h1>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Entre na sua conta para continuar aprendendo
             </p>
           </div>
 
           {/* Login Form */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="glass-card rounded-lg p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
                   Email
                 </label>
                 <input
@@ -128,8 +123,8 @@ export default function LoginPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-3 bg-input border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-colors ${
+                    errors.email ? 'border-destructive' : 'border-border'
                   }`}
                   placeholder="seu@email.com"
                 />
@@ -140,7 +135,7 @@ export default function LoginPage() {
 
               {/* Senha */}
               <div>
-                <label htmlFor="senha" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="senha" className="block text-sm font-medium text-foreground mb-2">
                   Senha
                 </label>
                 <input
@@ -149,8 +144,8 @@ export default function LoginPage() {
                   name="senha"
                   value={formData.senha}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-                    errors.senha ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-3 bg-input border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-colors ${
+                    errors.senha ? 'border-destructive' : 'border-border'
                   }`}
                   placeholder="Sua senha"
                 />
@@ -164,7 +159,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={handleForgotPassword}
-                  className="text-sm text-blue-600 hover:text-blue-700 transition-colors"
+                  className="text-sm text-primary premium-hover transition-colors"
                 >
                   Esqueci minha senha
                 </button>
@@ -176,8 +171,8 @@ export default function LoginPage() {
                 disabled={isSubmitting}
                 className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors ${
                   isSubmitting
-                    ? 'bg-gray-400 cursor-not-allowed text-white'
-                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                    ? 'bg-muted cursor-not-allowed text-muted-foreground'
+                    : 'btn-primary-gradient text-white'
                 }`}
               >
                 {isSubmitting ? '⏳ Entrando...' : '🔐 Entrar'}
@@ -188,19 +183,19 @@ export default function LoginPage() {
             <div className="my-6 text-center">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
+                  <div className="w-full border-t border-border" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">ou</span>
+                  <span className="px-2 bg-background text-muted-foreground">ou</span>
                 </div>
               </div>
             </div>
 
             {/* Register Link */}
             <div className="text-center">
-              <p className="text-gray-600 text-sm">
+              <p className="text-muted-foreground text-sm">
                 Não tem uma conta?{' '}
-                <a href="/auth/register" className="text-blue-600 hover:text-blue-700 font-medium">
+                <a href="/auth/register" className="text-primary premium-hover font-medium">
                   Criar conta nova
                 </a>
               </p>
@@ -208,18 +203,18 @@ export default function LoginPage() {
           </div>
 
           {/* Demo Access */}
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 mt-6">
+          <div className="glass-card accent-gradient rounded-lg p-6 mt-6">
             <div className="text-center">
               <div className="text-2xl mb-2">🎯</div>
-              <h3 className="font-semibold text-gray-800 mb-2">
+              <h3 className="font-semibold text-white mb-2">
                 Acesso Demo
               </h3>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-white/80 mb-4">
                 Experimente o sistema sem criar uma conta
               </p>
               <a
                 href="/dashboard"
-                className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors text-sm"
+                className="inline-block bg-background text-foreground px-6 py-2 rounded-lg font-semibold premium-hover text-sm"
               >
                 🚀 Modo Demo
               </a>
@@ -230,13 +225,16 @@ export default function LoginPage() {
           <div className="text-center mt-8">
             <a
               href="/auth"
-              className="text-blue-600 hover:text-blue-700 text-sm transition-colors"
+              className="text-primary premium-hover text-sm transition-colors"
             >
               ← Voltar
             </a>
           </div>
         </div>
       </div>
+
+      {/* Snackbar Component */}
+      <SnackbarComponent />
     </div>
   )
 }

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { signUpWithEmail } from '@/lib/auth'
 import { useAuth } from '@/hooks/useAuth'
+import { useSnackbar } from '@/components/ui/Snackbar'
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { refreshUser } = useAuth()
+  const { showSnackbar, SnackbarComponent } = useSnackbar()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -92,14 +94,16 @@ export default function RegisterPage() {
       }
 
       if (user) {
-        // Sucesso! Mostrar mensagem legal
-        alert('🎉 Conta criada com sucesso! Bem-vindo ao React Playground!')
+        // Sucesso! Mostrar snackbar de sucesso
+        showSnackbar('🎉 Conta criada com sucesso! Bem-vindo ao React Playground!', 'success')
 
         // Recarregar dados do usuário
         await refreshUser()
 
-        // Ir para o dashboard
-        window.location.href = '/dashboard'
+        // Aguardar um pouco para o usuário ver a mensagem antes de redirecionar
+        setTimeout(() => {
+          window.location.href = '/dashboard'
+        }, 2000)
       }
 
     } catch (error) {
@@ -113,28 +117,28 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
+    <div className="min-h-screen py-8">
       <div className="container mx-auto px-4">
         <div className="max-w-md mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="mb-4 inline-block bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm">
+            <div className="mb-4 inline-block btn-primary-gradient px-4 py-2 rounded-full text-sm">
               ✨ React Learning Playground
             </div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
               Criar Conta
             </h1>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Preencha os dados para começar sua jornada
             </p>
           </div>
 
           {/* Registration Form - Simples e Educativo */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="glass-card rounded-lg p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Nome Completo */}
               <div>
-                <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="nome" className="block text-sm font-medium text-foreground mb-2">
                   Como você gostaria de ser chamado? *
                 </label>
                 <input
@@ -143,8 +147,8 @@ export default function RegisterPage() {
                   name="nome"
                   value={formData.nome}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-                    errors.nome ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-3 bg-input border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-colors ${
+                    errors.nome ? 'border-destructive' : 'border-border'
                   }`}
                   placeholder="Ex: João, Maria, Alex..."
                 />
@@ -155,7 +159,7 @@ export default function RegisterPage() {
 
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
                   Seu melhor email *
                 </label>
                 <input
@@ -164,22 +168,22 @@ export default function RegisterPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-3 bg-input border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-colors ${
+                    errors.email ? 'border-destructive' : 'border-border'
                   }`}
                   placeholder="seu@email.com"
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm mt-1">{errors.email}</p>
                 )}
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Usaremos para enviar seu progresso e novidades
                 </p>
               </div>
 
               {/* Senha */}
               <div>
-                <label htmlFor="senha" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="senha" className="block text-sm font-medium text-foreground mb-2">
                   Crie uma senha segura *
                 </label>
                 <input
@@ -188,8 +192,8 @@ export default function RegisterPage() {
                   name="senha"
                   value={formData.senha}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-                    errors.senha ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-3 bg-input border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-colors ${
+                    errors.senha ? 'border-destructive' : 'border-border'
                   }`}
                   placeholder="Mínimo 6 caracteres"
                 />
@@ -200,7 +204,7 @@ export default function RegisterPage() {
 
               {/* Confirmar Senha */}
               <div>
-                <label htmlFor="confirmarSenha" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="confirmarSenha" className="block text-sm font-medium text-foreground mb-2">
                   Confirme sua senha *
                 </label>
                 <input
@@ -209,8 +213,8 @@ export default function RegisterPage() {
                   name="confirmarSenha"
                   value={formData.confirmarSenha}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-                    errors.confirmarSenha ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-3 bg-input border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-colors ${
+                    errors.confirmarSenha ? 'border-destructive' : 'border-border'
                   }`}
                   placeholder="Digite a senha novamente"
                 />
@@ -225,8 +229,8 @@ export default function RegisterPage() {
                 disabled={isSubmitting}
                 className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors ${
                   isSubmitting
-                    ? 'bg-gray-400 cursor-not-allowed text-white'
-                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                    ? 'bg-muted cursor-not-allowed text-muted-foreground'
+                    : 'btn-primary-gradient text-white'
                 }`}
               >
                 {isSubmitting ? '⏳ Criando conta...' : '✨ Criar Conta'}
@@ -235,9 +239,9 @@ export default function RegisterPage() {
 
             {/* Login Link */}
             <div className="mt-6 text-center">
-              <p className="text-gray-600 text-sm">
+              <p className="text-muted-foreground text-sm">
                 Já tem uma conta?{' '}
-                <a href="/auth/login" className="text-blue-600 hover:text-blue-700 font-medium">
+                <a href="/auth/login" className="text-primary premium-hover font-medium">
                   Fazer login
                 </a>
               </p>
@@ -248,13 +252,16 @@ export default function RegisterPage() {
           <div className="text-center mt-8">
             <a
               href="/auth"
-              className="text-blue-600 hover:text-blue-700 text-sm transition-colors"
+              className="text-primary premium-hover text-sm transition-colors"
             >
               ← Voltar
             </a>
           </div>
         </div>
       </div>
+
+      {/* Snackbar Component */}
+      <SnackbarComponent />
     </div>
   )
 }

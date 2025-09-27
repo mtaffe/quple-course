@@ -125,35 +125,35 @@ export const challenges: Challenge[] = [
 
   {
     id: 1,
-    title: "🏗️ Página em Branco",
-    description: "**Situação:** O Quple está com uma página completamente em branco! Os usuários não conseguem fazer login e estão frustrados.\n\n**Sua missão:** Criar a estrutura HTML básica para a tela de login do app. Este é seu primeiro desafio como desenvolvedor web - vamos começar do zero!",
-    difficulty: "easy",
-    xpReward: 50,
-    estimatedTime: 30,
+    title: "🎯 Fundamentos HTML",
+    description: "**Bem-vindo ao desenvolvimento web moderno!**\n\n**Contexto:** HTML é a linguagem fundamental que estrutura toda página web. Cada elemento é definido por 'tags' que instruem o navegador sobre como exibir o conteúdo.\n\n**Objetivo:** Criar sua primeira tag HTML para exibir o título \"Quple\" na página. Este é o primeiro passo na sua jornada como desenvolvedor web.",
+    difficulty: "beginner",
+    xpReward: 25,
+    estimatedTime: 15,
     prerequisites: [],
     category: "html",
 
-    // Explicação detalhada do que o estudante vai aprender
+    // Objetivos de aprendizado
     learningObjectives: [
-      "Estrutura básica de um documento HTML5",
-      "Tags semânticas como header, main, form",
-      "Como criar formulários acessíveis",
-      "Organização lógica do conteúdo"
+      "Compreender a estrutura básica de tags HTML",
+      "Implementar elementos de cabeçalho semânticos",
+      "Observar a transformação de código em interface",
+      "Desenvolver confiança em programação"
     ],
 
-    // Conceitos que serão abordados
+    // Conceitos fundamentais
     concepts: [
       {
-        title: "DOCTYPE e HTML5",
-        description: "Todo documento HTML precisa começar com <!DOCTYPE html> para funcionar corretamente nos navegadores modernos."
+        title: "Anatomia de uma Tag HTML",
+        description: "Tags HTML são marcadores que definem elementos estruturais. Utilizamos os símbolos < e > para delimitar instruções ao navegador sobre como interpretar o conteúdo."
       },
       {
-        title: "Tags Semânticas",
-        description: "Tags como <header>, <main>, <form> dão significado ao conteúdo, não apenas estrutura visual."
+        title: "Estrutura de Abertura e Fechamento",
+        description: "Elementos HTML seguem um padrão de abertura <tag> e fechamento </tag>, criando containers semânticos que encapsulam o conteúdo."
       },
       {
-        title: "Formulários Acessíveis",
-        description: "Labels conectados aos inputs tornam o site utilizável por pessoas com deficiência."
+        title: "Hierarquia de Cabeçalhos",
+        description: "A tag <h1> representa o título principal da página, estabelecendo a hierarquia visual e semântica do documento."
       }
     ],
 
@@ -190,22 +190,24 @@ export const challenges: Challenge[] = [
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quple - Login</title>
+  <title>Fundamentos HTML - Quple</title>
 </head>
 <body>
   <!--
-    🚨 PROBLEMA: A página está completamente em branco!
+    🎯 OBJETIVO:
+    Implementar um elemento de cabeçalho principal para exibir "Quple"
 
-    ✅ O QUE VOCÊ PRECISA FAZER:
-    1. Criar um cabeçalho (header) com o nome do app
-    2. Adicionar uma área principal (main)
-    3. Criar um formulário de login
-    4. Não esquecer dos labels nos campos
+    💡 INSTRUÇÃO TÉCNICA:
+    Utilize a tag <h1> para criar o título principal
 
-    💡 DICA: Comece pelo cabeçalho e vá descendo!
+    EXEMPLO DE SINTAXE:
+    <h1>Conteúdo do título</h1>
+
+    Implemente sua solução abaixo:
   -->
 
-  <!-- Adicione seu código aqui! -->
+  <!-- Área de implementação: -->
+
 
 </body>
 </html>`,
@@ -215,283 +217,337 @@ export const challenges: Challenge[] = [
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quple - Login</title>
+  <title>Fundamentos HTML - Quple</title>
 </head>
 <body>
-  <!-- Cabeçalho do site -->
-  <header>
-    <h1>Quple</h1>
-    <p>O app para casais</p>
-  </header>
+  <!-- Implementação: elemento de cabeçalho principal -->
+  <h1>Quple</h1>
 
-  <!-- Conteúdo principal -->
-  <main>
-    <h2>Entre na sua conta</h2>
-
-    <!-- Formulário de login -->
-    <form>
-      <!-- Campo de email -->
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-
-      <!-- Campo de senha -->
-      <div>
-        <label for="password">Senha:</label>
-        <input type="password" id="password" name="password" required>
-      </div>
-
-      <!-- Botão de submit -->
-      <button type="submit">Entrar</button>
-    </form>
-
-    <!-- Link para cadastro -->
-    <p>Não tem conta? <a href="/cadastro">Cadastre-se</a></p>
-  </main>
 </body>
 </html>`,
 
-    // Sistema de dicas progressivo com explicações educativas
+    // Sistema de orientação progressiva
     hints: [
       {
         level: 1,
-        title: "🏗️ Comece pela estrutura",
-        content: "Todo site precisa de uma estrutura básica. Comece criando um **cabeçalho (header)** com o nome do app. Use `<header>` e `<h1>`.",
-        example: `<header>
-  <h1>Quple</h1>
-  <p>O app para casais</p>
-</header>`
+        title: "🔍 Entendendo o Contexto",
+        content: "O documento HTML já possui a estrutura base necessária. Seu foco deve ser localizar a área de implementação indicada pelos comentários.",
+        example: `<!-- Área de implementação: -->
+<h1>Quple</h1>
+
+Este é o local onde você deve inserir seu código.`
       },
       {
         level: 2,
-        title: "📝 Área principal do conteúdo",
-        content: "Após o header, crie uma área **main** para o conteúdo principal. Dentro dela, adicione um título `<h2>` e prepare o espaço para o formulário.",
-        example: `<main>
-  <h2>Entre na sua conta</h2>
-  <!-- formulário vai aqui -->
-</main>`
+        title: "⚙️ Sintaxe da Tag H1",
+        content: "A tag <h1> segue uma estrutura específica: abertura, conteúdo e fechamento. Esta é a sintaxe padrão para elementos HTML.",
+        example: `<h1>Quple</h1>
+
+Estrutura:
+• <h1> → tag de abertura
+• Quple → conteúdo
+• </h1> → tag de fechamento`
       },
       {
         level: 3,
-        title: "📋 Criando o formulário",
-        content: "Use a tag `<form>` para criar o formulário. Dentro dele, adicione campos para **email** e **senha**. Não esqueça dos `<label>` para acessibilidade!",
-        example: `<form>
-  <div>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email">
-  </div>
-  <!-- campo senha aqui -->
-</form>`
+        title: "⚠️ Atenção aos Detalhes",
+        content: "A precisão é fundamental em programação. Certifique-se de utilizar a sintaxe exata, respeitando maiúsculas, minúsculas e caracteres especiais.",
+        example: `✅ CORRETO: <h1>Quple</h1>
+❌ INCORRETO: <H1>Quple<H1>
+❌ INCORRETO: <h1>Quple<h1>
+❌ INCORRETO: h1>Quple</h1>`
       },
       {
         level: 4,
-        title: "🔐 Finalizando com o botão",
-        content: "Adicione um campo de senha e um botão de submit. Use `type=\"password\"` para o campo de senha e `type=\"submit\"` para o botão.",
-        example: `<div>
-  <label for="password">Senha:</label>
-  <input type="password" id="password" name="password">
-</div>
-<button type="submit">Entrar</button>`
+        title: "🎯 Implementação Final",
+        content: "Implemente a tag H1 na área designada. A solução é: `<h1>Quple</h1>`. Este é um padrão que você utilizará constantemente no desenvolvimento web.",
+        example: `<h1>Quple</h1>
+
+Esta implementação criará um cabeçalho principal
+semanticamente correto para sua aplicação.`
       }
     ],
 
-    // Critérios de validação automática
+    // Critérios de validação técnica
     validationRules: [
       {
-        type: "must_have_doctype",
-        message: "Seu HTML deve começar com <!DOCTYPE html>",
-        weight: 10
+        type: "must_have_h1_tag",
+        message: "Implemente uma tag <h1> para criar o cabeçalho principal",
+        weight: 60
       },
       {
-        type: "must_have_header_tag",
-        message: "Use a tag <header> para o cabeçalho",
-        weight: 15
-      },
-      {
-        type: "must_have_h1_with_quple",
-        message: "Adicione um <h1> com o nome 'Quple'",
-        weight: 15
-      },
-      {
-        type: "must_have_main_tag",
-        message: "Use a tag <main> para o conteúdo principal",
-        weight: 15
-      },
-      {
-        type: "must_have_form_tag",
-        message: "Crie um formulário com a tag <form>",
-        weight: 15
-      },
-      {
-        type: "must_have_email_input",
-        message: "Adicione um campo de email com type='email'",
-        weight: 15
-      },
-      {
-        type: "must_have_password_input",
-        message: "Adicione um campo de senha com type='password'",
-        weight: 10
-      },
-      {
-        type: "must_have_labels",
-        message: "Use <label> conectados aos inputs (atributo 'for')",
-        weight: 5
+        type: "must_have_quple_text",
+        message: "O conteúdo da tag deve ser 'Quple' conforme especificação",
+        weight: 40
       }
     ],
 
-    // Conquistas que o usuário pode desbloquear
+    // Sistema de conquistas
     achievements: [
       {
-        id: "first_html",
-        title: "🎉 Primeiro HTML",
-        description: "Você criou sua primeira página web!",
+        id: "first_html_implementation",
+        title: "🎯 Primeiro Elemento HTML",
+        description: "Implementação bem-sucedida de sua primeira tag HTML. Fundação estabelecida para desenvolvimento web.",
         condition: "complete_challenge"
       },
       {
-        id: "semantic_master",
-        title: "🏗️ Mestre da Semântica",
-        description: "Usou todas as tags semânticas corretamente",
-        condition: "perfect_validation"
-      },
-      {
-        id: "accessibility_hero",
-        title: "♿ Herói da Acessibilidade",
-        description: "Conectou todos os labels corretamente",
-        condition: "all_labels_connected"
+        id: "semantic_precision",
+        title: "⚙️ Precisão Semântica",
+        description: "Utilização correta de elementos semânticos HTML. Demonstra compreensão da estrutura adequada.",
+        condition: "perfect_score"
       }
     ]
   },
   {
     id: 2,
-    title: "Formulário Incompleto",
-    description: "O formulário de cadastro do Quple está incompleto! Faltam alguns campos importantes que os usuários precisam preencher.",
-    difficulty: "easy",
-    xpReward: 60,
-    estimatedTime: 45,
+    title: "📄 Estrutura de Conteúdo",
+    description: "**Excelente progresso no desenvolvimento HTML!**\n\n**Contexto:** Aplicações web requerem diferentes elementos para estruturar informações. Além de cabeçalhos, utilizamos parágrafos para conteúdo descritivo.\n\n**Objetivo:** Implementar um elemento de parágrafo complementar ao cabeçalho existente, estabelecendo uma hierarquia de informações clara.",
+    difficulty: "beginner",
+    xpReward: 30,
+    estimatedTime: 20,
     prerequisites: [1],
     category: "html",
+
+    // Objetivos de aprendizado
+    learningObjectives: [
+      "Implementar elementos de parágrafo HTML",
+      "Compreender a hierarquia de elementos de texto",
+      "Aplicar múltiplas tags em um documento",
+      "Estabelecer estrutura semântica básica"
+    ],
+
+    // Conceitos que serão abordados
+    concepts: [
+      {
+        title: "A Tag <p> (Parágrafo)",
+        description: "A tag <p> é usada para criar parágrafos - textos normais que explicam coisas. É diferente do <h1> que é para títulos grandes."
+      },
+      {
+        title: "Combinando Tags",
+        description: "Você pode usar várias tags diferentes na mesma página! Um <h1> para o título e um <p> para a explicação."
+      },
+      {
+        title: "Sequência de Tags",
+        description: "As tags aparece na ordem que você escreve. Primeiro <h1>, depois <p>, e assim por diante."
+      }
+    ],
+
+    // Materiais de apoio em português
+    resources: [
+      {
+        title: "📖 Tags de Texto - MDN",
+        url: "https://developer.mozilla.org/pt-BR/docs/Web/HTML/Element/p",
+        type: "documentation",
+        description: "Tudo sobre a tag <p> de parágrafo"
+      },
+      {
+        title: "🎥 HTML Tags - Curso em Vídeo",
+        url: "https://www.cursoemvideo.com/curso/html5/",
+        type: "video",
+        description: "Vídeo explicando diferentes tags HTML"
+      }
+    ],
+
     starterCode: `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quple - Cadastro</title>
+  <title>Minha Segunda Página</title>
 </head>
 <body>
-  <header>
-    <h1>Quple</h1>
-    <p>O app para casais</p>
-  </header>
+  <!--
+    🎯 SUA NOVA MISSÃO:
+    1. Manter o título <h1> que você já sabe fazer
+    2. Adicionar um parágrafo <p> embaixo do título
 
-  <main>
-    <h2>Crie sua conta</h2>
-    <form>
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email">
-      </div>
-      <!-- Faltam campos importantes aqui! -->
-      <button type="submit">Criar Conta</button>
-    </form>
-  </main>
+    💡 LEMBRA DA TAG <p>:
+    <p>Texto do parágrafo aqui</p>
+  -->
+
+  <!-- Primeiro, escreva o título <h1> com "Quple": -->
+  <h1>Quple</h1>
+
+  <!-- Agora, escreva um parágrafo <p> com "O app para casais": -->
+
+
 </body>
 </html>`,
+
     solutionCode: `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quple - Cadastro</title>
+  <title>Minha Segunda Página</title>
 </head>
 <body>
-  <header>
-    <h1>Quple</h1>
-    <p>O app para casais</p>
-  </header>
+  <!-- Parabéns! Agora você conhece duas tags diferentes! -->
+  <h1>Quple</h1>
+  <p>O app para casais</p>
 
-  <main>
-    <h2>Crie sua conta</h2>
-    <form>
-      <div>
-        <label for="name">Nome:</label>
-        <input type="text" id="name" name="name" required>
-      </div>
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-      <div>
-        <label for="password">Senha:</label>
-        <input type="password" id="password" name="password" required>
-      </div>
-      <div>
-        <label for="confirm-password">Confirmar Senha:</label>
-        <input type="password" id="confirm-password" name="confirm-password" required>
-      </div>
-      <div>
-        <label for="age">Idade:</label>
-        <input type="number" id="age" name="age" min="18" required>
-      </div>
-      <button type="submit">Criar Conta</button>
-    </form>
-
-    <p>Já tem conta? <a href="/login">Entre aqui</a></p>
-  </main>
 </body>
 </html>`,
+
+    // Sistema de dicas progressivo
     hints: [
-      "Todo cadastro precisa de nome, não é?",
-      "Adicione um campo para confirmar a senha",
-      "O Quple é para maiores de 18, adicione campo de idade",
-      "Use o atributo 'required' nos campos obrigatórios"
+      {
+        level: 1,
+        title: "🤓 Qual a diferença entre <h1> e <p>?",
+        content: "O `<h1>` faz títulos GRANDES e chamam atenção. O `<p>` faz parágrafos menores para explicar coisas. Os dois são importantes!",
+        example: `<h1>Este é um título grande</h1>
+<p>Este é um parágrafo normal para explicar</p>
+
+Viu a diferença? Título = destaque, parágrafo = explicação.`
+      },
+      {
+        level: 2,
+        title: "📝 Como escrever a tag <p>",
+        content: "A tag `<p>` funciona igual a `<h1>`! Você escreve `<p>`, o texto no meio, e fecha com `</p>`. Super simples!",
+        example: `<p>O app para casais</p>
+
+Estrutura:
+- <p> = abre o parágrafo
+- O app para casais = texto
+- </p> = fecha o parágrafo`
+      },
+      {
+        level: 3,
+        title: "🔄 Colocando as duas tags juntas",
+        content: "Agora você vai escrever as DUAS tags na mesma página! Primeiro o `<h1>Quple</h1>`, depois o `<p>O app para casais</p>`.",
+        example: `<h1>Quple</h1>
+<p>O app para casais</p>
+
+Uma embaixo da outra, nesta ordem! 📚`
+      },
+      {
+        level: 4,
+        title: "🎯 Dica final - você está quase lá!",
+        content: "Copie exatamente: `<p>O app para casais</p>` embaixo do seu `<h1>`. Mantenha o título que você já fez e só adicione o parágrafo!",
+        example: `RESULTADO FINAL:
+<h1>Quple</h1>
+<p>O app para casais</p>
+
+Título + descrição = página completa! 🎉`
+      }
+    ],
+
+    // Critérios de validação simples
+    validationRules: [
+      {
+        type: "must_have_h1_quple",
+        message: "Mantenha seu título <h1>Quple</h1> - você já aprendeu isso!",
+        weight: 50
+      },
+      {
+        type: "must_have_p_tag",
+        message: "Adicione uma tag <p> para o parágrafo - é sua nova habilidade!",
+        weight: 30
+      },
+      {
+        type: "must_have_casais_text",
+        message: "O parágrafo deve ter o texto 'O app para casais'",
+        weight: 20
+      }
+    ],
+
+    // Conquistas
+    achievements: [
+      {
+        id: "two_tags_master",
+        title: "🎯 Mestre de Duas Tags!",
+        description: "Incrível! Você já domina <h1> E <p>! Sua página está ganhando vida! 🌱",
+        condition: "complete_challenge"
+      },
+      {
+        id: "text_structure_pro",
+        title: "📚 Expert em Estrutura de Texto",
+        description: "Título + descrição = a base de qualquer boa página web! Você entendeu o conceito! 💡",
+        condition: "perfect_score"
+      }
     ]
   },
   {
     id: 3,
-    title: "Links Quebrados",
-    description: "A navegação do Quple está quebrada! Os links não estão levando para lugar nenhum e alguns botões importantes sumiram.",
-    difficulty: "easy",
-    xpReward: 70,
-    estimatedTime: 45,
+    title: "🔤 Títulos de Diferentes Tamanhos",
+    description: "**Você já domina `<h1>` e `<p>`! Que evolução!** 🌟\n\n**Situação:** O app Quple precisa de uma página 'Sobre Nós' com títulos de diferentes tamanhos - um título grande para a página e um título menor para uma seção.\n\n**Sua nova missão:** Aprender que existem diferentes tipos de títulos: `<h1>` (gigante), `<h2>` (grande), etc. Vamos usar dois tipos diferentes! 📏",
+    difficulty: "beginner",
+    xpReward: 35,
+    estimatedTime: 25,
     prerequisites: [2],
     category: "html",
+
+    // Explicação detalhada do que o estudante vai aprender
+    learningObjectives: [
+      "Descobrir que existem 6 tipos de títulos (h1, h2, h3, h4, h5, h6)",
+      "Aprender a diferença entre <h1> e <h2>",
+      "Entender hierarquia visual (maior para menor)",
+      "Praticar estrutura básica de página com seções"
+    ],
+
+    // Conceitos que serão abordados
+    concepts: [
+      {
+        title: "A Família dos Títulos",
+        description: "HTML tem 6 tipos de títulos: <h1> é o maior, <h2> é um pouco menor, <h3> menor ainda... até <h6>. Como tamanhos de fonte no Word!"
+      },
+      {
+        title: "Hierarquia Visual",
+        description: "<h1> é para o título principal da página. <h2> é para títulos de seções importantes. É como organizar um livro: título do livro, depois título dos capítulos."
+      },
+      {
+        title: "Quando Usar Qual",
+        description: "Use <h1> uma vez por página (título principal). Use <h2> para seções importantes. Pense como se fosse um sumário de livro!"
+      }
+    ],
+
+    // Materiais de apoio
+    resources: [
+      {
+        title: "📖 Hierarquia de Títulos - MDN",
+        url: "https://developer.mozilla.org/pt-BR/docs/Web/HTML/Element/Heading_Elements",
+        type: "documentation",
+        description: "Tudo sobre h1, h2, h3, h4, h5, h6"
+      },
+      {
+        title: "🎥 Títulos HTML - Curso em Vídeo",
+        url: "https://www.cursoemvideo.com/curso/html5/",
+        type: "video",
+        description: "Explicação visual da hierarquia de títulos"
+      }
+    ],
     starterCode: `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quple - Dashboard</title>
+  <title>Sobre o Quple</title>
 </head>
 <body>
-  <header>
-    <h1>Quple</h1>
-    <nav>
-      <!-- Links de navegação quebrados -->
-      <a>Dashboard</a>
-      <a>Perfil</a>
-      <a>Objetivos</a>
-      <a>Configurações</a>
-    </nav>
-  </header>
+  <!--
+    🎯 SUA NOVA MISSÃO:
+    1. Criar um título PRINCIPAL da página com <h1>
+    2. Criar um título de SEÇÃO menor com <h2>
+    3. Adicionar parágrafos explicativos
 
-  <main>
-    <h2>Bem-vindo ao Quple!</h2>
-    <p>Gerencie seus objetivos como casal</p>
+    💡 LEMBRE-SE:
+    <h1> = Título gigante (só um por página)
+    <h2> = Título grande (para seções)
+    <p> = Parágrafo normal
+  -->
 
-    <section>
-      <h3>Ações Rápidas</h3>
-      <!-- Botões de ação perdidos -->
-    </section>
+  <!-- 1. Escreva o título principal da página: "Sobre o Quple" -->
 
-    <section>
-      <h3>Objetivos Recentes</h3>
-      <ul>
-        <li>Jantar romântico - <span>Em progresso</span></li>
-        <li>Viagem de fim de semana - <span>Concluído</span></li>
-      </ul>
-    </section>
-  </main>
+
+  <!-- 2. Escreva um parágrafo: "Conheça nossa história" -->
+
+
+  <!-- 3. Agora um título de seção menor: "Nossa Missão" -->
+
+
+  <!-- 4. E um parágrafo final: "Ajudar casais a crescerem juntos" -->
+
+
 </body>
 </html>`,
     solutionCode: `<!DOCTYPE html>
@@ -499,115 +555,181 @@ export const challenges: Challenge[] = [
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quple - Dashboard</title>
+  <title>Sobre o Quple</title>
 </head>
 <body>
-  <header>
-    <h1>Quple</h1>
-    <nav>
-      <a href="/dashboard">Dashboard</a>
-      <a href="/perfil">Perfil</a>
-      <a href="/objetivos">Objetivos</a>
-      <a href="/configuracoes">Configurações</a>
-      <a href="/logout">Sair</a>
-    </nav>
-  </header>
+  <!-- Parabéns! Você está dominando a hierarquia de títulos! -->
+  <h1>Sobre o Quple</h1>
+  <p>Conheça nossa história</p>
 
-  <main>
-    <h2>Bem-vindo ao Quple!</h2>
-    <p>Gerencie seus objetivos como casal</p>
+  <h2>Nossa Missão</h2>
+  <p>Ajudar casais a crescerem juntos</p>
 
-    <section>
-      <h3>Ações Rápidas</h3>
-      <a href="/objetivos/novo">
-        <button type="button">Criar Novo Objetivo</button>
-      </a>
-      <a href="/perfil/parceiro">
-        <button type="button">Convidar Parceiro</button>
-      </a>
-      <a href="/objetivos">
-        <button type="button">Ver Todos Objetivos</button>
-      </a>
-    </section>
-
-    <section>
-      <h3>Objetivos Recentes</h3>
-      <ul>
-        <li>
-          <a href="/objetivos/1">Jantar romântico</a> -
-          <span>Em progresso</span>
-        </li>
-        <li>
-          <a href="/objetivos/2">Viagem de fim de semana</a> -
-          <span>Concluído</span>
-        </li>
-      </ul>
-    </section>
-  </main>
 </body>
 </html>`,
+    // Sistema de dicas progressivo
     hints: [
-      "Todo link precisa do atributo 'href'",
-      "Adicione botões de ação na seção de ações rápidas",
-      "Torne os objetivos clicáveis com links",
-      "Não esqueça do link de 'Sair' na navegação"
+      {
+        level: 1,
+        title: "🔤 A diferença entre <h1> e <h2>",
+        content: "O `<h1>` é o título PRINCIPAL da página (o maior). O `<h2>` é para seções importantes (menor que h1). É como um livro: título do livro (h1) e título dos capítulos (h2).",
+        example: `<h1>Este é o título principal</h1>
+<h2>Este é um título de seção</h2>
+
+Veja como <h2> é menor que <h1>!`
+      },
+      {
+        level: 2,
+        title: "📝 Como montar a estrutura",
+        content: "Siga esta ordem: primeiro o título principal (`<h1>Sobre o Quple</h1>`), depois um parágrafo explicativo, depois um título de seção (`<h2>Nossa Missão</h2>`).",
+        example: `<h1>Sobre o Quple</h1>
+<p>Conheça nossa história</p>
+<h2>Nossa Missão</h2>
+<p>Ajudar casais a crescerem juntos</p>`
+      },
+      {
+        level: 3,
+        title: "💡 Passo a passo simples",
+        content: "1. Escreva `<h1>Sobre o Quple</h1>`\n2. Escreva `<p>Conheça nossa história</p>`\n3. Escreva `<h2>Nossa Missão</h2>`\n4. Escreva `<p>Ajudar casais a crescerem juntos</p>`",
+        example: `Siga exatamente essa ordem.
+Copie e cole se necessário! 😊`
+      },
+      {
+        level: 4,
+        title: "🎯 Revisão final",
+        content: "Você precisa de 4 tags: h1, p, h2, p. Todas seguem o mesmo padrão de abertura e fechamento que você já conhece. Você consegue!",
+        example: `<h1>...</h1>  ← Título principal
+<p>...</p>    ← Parágrafo
+<h2>...</h2>  ← Título seção
+<p>...</p>    ← Parágrafo`
+      }
+    ],
+
+    // Critérios de validação
+    validationRules: [
+      {
+        type: "must_have_h1_sobre",
+        message: "Use <h1> para o título principal 'Sobre o Quple'",
+        weight: 30
+      },
+      {
+        type: "must_have_h2_missao",
+        message: "Use <h2> para o título da seção 'Nossa Missão'",
+        weight: 30
+      },
+      {
+        type: "must_have_historia_paragraph",
+        message: "Adicione parágrafo 'Conheça nossa história'",
+        weight: 20
+      },
+      {
+        type: "must_have_casais_paragraph",
+        message: "Adicione parágrafo 'Ajudar casais a crescerem juntos'",
+        weight: 20
+      }
+    ],
+
+    // Conquistas
+    achievements: [
+      {
+        id: "title_hierarchy_master",
+        title: "👑 Mestre da Hierarquia!",
+        description: "Você entendeu a diferença entre <h1> e <h2>! Agora sabe criar estruturas organizadas! 🎯",
+        condition: "complete_challenge"
+      },
+      {
+        id: "page_structure_pro",
+        title: "🏗️ Arquiteto de Páginas",
+        description: "Título principal + seção + parágrafos = estrutura perfeita de página web! 📚",
+        condition: "perfect_score"
+      }
     ]
   },
   {
     id: 4,
-    title: "Conteúdo Bagunçado",
-    description: "O HTML do Quple está todo bagunçado! A hierarquia de títulos está errada e o conteúdo está sem organização semântica.",
-    difficulty: "medium",
-    xpReward: 80,
-    estimatedTime: 60,
+    title: "📋 Sua Primeira Lista",
+    description: "**Parabéns! Você já domina títulos e parágrafos!** 🎉\n\n**Situação:** O app Quple precisa mostrar uma lista das principais funcionalidades. Imagine como uma lista de compras, mas no código!\n\n**Sua nova missão:** Aprender a criar listas usando `<ul>` (lista) e `<li>` (item da lista). É como fazer uma lista de tarefas, mas em HTML! 📝",
+    difficulty: "beginner",
+    xpReward: 40,
+    estimatedTime: 30,
     prerequisites: [3],
     category: "html",
+
+    // Explicação detalhada do que o estudante vai aprender
+    learningObjectives: [
+      "Aprender a tag <ul> para criar listas",
+      "Aprender a tag <li> para criar itens da lista",
+      "Entender como aninhar tags (li dentro de ul)",
+      "Criar uma lista de funcionalidades do app"
+    ],
+
+    // Conceitos que serão abordados
+    concepts: [
+      {
+        title: "A Tag <ul> (Lista)",
+        description: "UL significa 'Unordered List' (lista não ordenada). É como uma lista de compras - você coloca vários itens, mas a ordem não importa tanto."
+      },
+      {
+        title: "A Tag <li> (Item da Lista)",
+        description: "LI significa 'List Item' (item da lista). Cada <li> é um pontinho na lista. É como cada linha da sua lista de compras."
+      },
+      {
+        title: "Tags Aninhadas",
+        description: "As tags <li> ficam DENTRO da tag <ul>. É como uma caixa (ul) com itens dentro (li, li, li). Uma tag dentro da outra!"
+      }
+    ],
+
+    // Materiais de apoio
+    resources: [
+      {
+        title: "📖 Listas HTML - MDN",
+        url: "https://developer.mozilla.org/pt-BR/docs/Web/HTML/Element/ul",
+        type: "documentation",
+        description: "Guia completo sobre listas em HTML"
+      },
+      {
+        title: "🎥 Listas em HTML - Curso em Vídeo",
+        url: "https://www.cursoemvideo.com/curso/html5/",
+        type: "video",
+        description: "Vídeo explicando como criar listas"
+      }
+    ],
     starterCode: `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quple - Objetivos</title>
+  <title>Funcionalidades do Quple</title>
 </head>
 <body>
-  <div>
-    <h3>Quple</h3>
-    <div>
-      <span>Dashboard</span>
-      <span>Perfil</span>
-      <span>Objetivos</span>
-    </div>
-  </div>
+  <!--
+    🎯 SUA NOVA MISSÃO:
+    1. Criar um título <h1> para a página
+    2. Criar uma lista <ul> das funcionalidades
+    3. Cada funcionalidade é um item <li> dentro da lista
 
-  <div>
-    <h1>Seus Objetivos</h1>
+    💡 ESTRUTURA DE UMA LISTA:
+    <ul>
+      <li>Item 1</li>
+      <li>Item 2</li>
+      <li>Item 3</li>
+    </ul>
 
-    <div>
-      <h4>Objetivos Ativos</h4>
-      <div>
-        <h2>Jantar Romântico</h2>
-        <div>Planeje um jantar especial para vocês dois</div>
-        <div>Status: Em Progresso</div>
-        <div>Prazo: 15/10/2024</div>
-      </div>
+    Viu? A lista <ul> é como uma caixa, e os <li> são os itens dentro!
+  -->
 
-      <div>
-        <h2>Aprender Dança</h2>
-        <div>Façam aulas de dança juntos</div>
-        <div>Status: Não Iniciado</div>
-        <div>Prazo: 30/10/2024</div>
-      </div>
-    </div>
+  <!-- 1. Escreva um título: "Funcionalidades do Quple" -->
 
-    <div>
-      <h4>Objetivos Concluídos</h4>
-      <div>
-        <h2>Primeira Viagem</h2>
-        <div>Nossa primeira viagem como casal</div>
-        <div>Concluído em: 20/09/2024</div>
-      </div>
-    </div>
-  </div>
+
+  <!-- 2. Escreva um parágrafo: "O que você pode fazer no nosso app:" -->
+
+
+  <!-- 3. Agora crie uma lista com essas 3 funcionalidades: -->
+  <!-- - Criar objetivos em casal -->
+  <!-- - Acompanhar progresso -->
+  <!-- - Celebrar conquistas -->
+
+
 </body>
 </html>`,
     solutionCode: `<!DOCTYPE html>
@@ -615,110 +737,185 @@ export const challenges: Challenge[] = [
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quple - Objetivos</title>
+  <title>Funcionalidades do Quple</title>
 </head>
 <body>
-  <header>
-    <h1>Quple</h1>
-    <nav>
-      <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/perfil">Perfil</a></li>
-        <li><a href="/objetivos">Objetivos</a></li>
-      </ul>
-    </nav>
-  </header>
+  <!-- Parabéns! Você criou sua primeira lista! -->
+  <h1>Funcionalidades do Quple</h1>
+  <p>O que você pode fazer no nosso app:</p>
 
-  <main>
-    <h2>Seus Objetivos</h2>
+  <ul>
+    <li>Criar objetivos em casal</li>
+    <li>Acompanhar progresso</li>
+    <li>Celebrar conquistas</li>
+  </ul>
 
-    <section>
-      <h3>Objetivos Ativos</h3>
-
-      <article>
-        <h4>Jantar Romântico</h4>
-        <p>Planeje um jantar especial para vocês dois</p>
-        <p><strong>Status:</strong> Em Progresso</p>
-        <p><strong>Prazo:</strong> <time datetime="2024-10-15">15/10/2024</time></p>
-      </article>
-
-      <article>
-        <h4>Aprender Dança</h4>
-        <p>Façam aulas de dança juntos</p>
-        <p><strong>Status:</strong> Não Iniciado</p>
-        <p><strong>Prazo:</strong> <time datetime="2024-10-30">30/10/2024</time></p>
-      </article>
-    </section>
-
-    <section>
-      <h3>Objetivos Concluídos</h3>
-
-      <article>
-        <h4>Primeira Viagem</h4>
-        <p>Nossa primeira viagem como casal</p>
-        <p><strong>Concluído em:</strong> <time datetime="2024-09-20">20/09/2024</time></p>
-      </article>
-    </section>
-  </main>
 </body>
 </html>`,
+    // Sistema de dicas progressivo
     hints: [
-      "Use header, main, section, article nas tags certas",
-      "A hierarquia deve ser h1 > h2 > h3 > h4...",
-      "Use nav com ul/li para navegação",
-      "Tags time são ótimas para datas"
+      {
+        level: 1,
+        title: "🤔 O que é uma lista?",
+        content: "Uma lista é como uma lista de compras! Você tem a 'sacola' (`<ul>`) e dentro dela coloca os 'itens' (`<li>`). Cada item é uma linha com um pontinho na frente.",
+        example: `<ul>
+  <li>Leite</li>
+  <li>Pão</li>
+  <li>Ovos</li>
+</ul>
+
+Viu? ul = sacola, li = cada item da lista!`
+      },
+      {
+        level: 2,
+        title: "📝 Como escrever uma lista",
+        content: "Primeiro você abre a 'caixa' com `<ul>`, depois coloca os itens com `<li>`, e depois fecha a caixa com `</ul>`. Os `<li>` ficam DENTRO!",
+        example: `<ul>
+  <li>Criar objetivos em casal</li>
+  <li>Acompanhar progresso</li>
+  <li>Celebrar conquistas</li>
+</ul>`
+      },
+      {
+        level: 3,
+        title: "🎯 Passo a passo",
+        content: "1. Faça o título e parágrafo que você já sabe\n2. Escreva `<ul>` para abrir a lista\n3. Escreva os 3 `<li>` com os textos\n4. Feche com `</ul>`",
+        example: `<h1>Funcionalidades do Quple</h1>
+<p>O que você pode fazer no nosso app:</p>
+<ul>
+  <li>Criar objetivos em casal</li>
+  <li>Acompanhar progresso</li>
+  <li>Celebrar conquistas</li>
+</ul>`
+      },
+      {
+        level: 4,
+        title: "💡 Última dica!",
+        content: "Lembre-se: as tags `<li>` ficam DENTRO da `<ul>`. É como colocar itens dentro de uma caixa. Você já sabe como fazer - é só seguir o padrão!",
+        example: `Não esqueça de fechar todas as tags:
+<ul> ← abre a lista
+  <li>...</li> ← item 1
+  <li>...</li> ← item 2
+  <li>...</li> ← item 3
+</ul> ← fecha a lista`
+      }
+    ],
+
+    // Critérios de validação
+    validationRules: [
+      {
+        type: "must_have_h1_funcionalidades",
+        message: "Use <h1> para o título 'Funcionalidades do Quple'",
+        weight: 25
+      },
+      {
+        type: "must_have_ul_tag",
+        message: "Use <ul> para criar a lista",
+        weight: 25
+      },
+      {
+        type: "must_have_three_li_tags",
+        message: "Crie 3 itens de lista com <li>",
+        weight: 30
+      },
+      {
+        type: "must_have_app_paragraph",
+        message: "Adicione parágrafo 'O que você pode fazer no nosso app:'",
+        weight: 20
+      }
+    ],
+
+    // Conquistas
+    achievements: [
+      {
+        id: "first_list_creator",
+        title: "📋 Criador de Listas!",
+        description: "Incrível! Você criou sua primeira lista HTML! Agora sabe organizar informações como um profissional! 🎯",
+        condition: "complete_challenge"
+      },
+      {
+        id: "nested_tags_master",
+        title: "🏗️ Mestre das Tags Aninhadas",
+        description: "Você entendeu como colocar tags dentro de outras tags! Isso é fundamental na programação! 💪",
+        condition: "perfect_score"
+      }
     ]
   },
   {
     id: 5,
-    title: "App Sem Cor",
-    description: "O Quple está todo sem cor e sem personalidade! Os usuários estão reclamando que está muito feio. Adicione cores, tipografia e estilo básico.",
-    difficulty: "medium",
-    xpReward: 90,
-    estimatedTime: 90,
+    title: "🎨 App Sem Cor",
+    description: "**Incrível! Você já domina HTML básico!** 🌟\n\n**Situação:** O app Quple está funcionando, mas está tudo preto e branco. Que tal dar vida a ele com uma cor?\n\n**Sua nova missão:** Aprender CSS (a linguagem que dá estilo às páginas) mudando a cor do título principal para AZUL. É sua primeira vez mexendo com cores no código! 🎨",
+    difficulty: "beginner",
+    xpReward: 50,
+    estimatedTime: 35,
     prerequisites: [4],
     category: "css",
+
+    // Explicação detalhada do que o estudante vai aprender
+    learningObjectives: [
+      "Descobrir o que é CSS (linguagem de estilo)",
+      "Aprender a tag <style> para escrever CSS",
+      "Mudar a cor de um elemento com 'color'",
+      "Entender a conexão entre HTML e CSS"
+    ],
+
+    // Conceitos que serão abordados
+    concepts: [
+      {
+        title: "O que é CSS?",
+        description: "CSS é como um 'pintor' para suas páginas web. HTML faz a estrutura (como as paredes de uma casa) e CSS pinta e decora tudo!"
+      },
+      {
+        title: "A Tag <style>",
+        description: "Dentro da tag <style> você escreve comandos de CSS. É como dizer: 'Pinte o título de azul', 'Faça esse texto maior', etc."
+      },
+      {
+        title: "A Propriedade 'color'",
+        description: "'color' é o comando para mudar a cor do texto. Você pode usar nomes como 'blue', 'red', ou códigos como '#3366cc'."
+      }
+    ],
+
+    // Materiais de apoio
+    resources: [
+      {
+        title: "📖 CSS Básico - MDN",
+        url: "https://developer.mozilla.org/pt-BR/docs/Web/CSS",
+        type: "documentation",
+        description: "Introdução ao CSS em português"
+      },
+      {
+        title: "🎥 CSS para Iniciantes - Curso em Vídeo",
+        url: "https://www.cursoemvideo.com/curso/html5-css3/",
+        type: "video",
+        description: "Vídeos sobre CSS básico"
+      }
+    ],
     starterCode: `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quple - Styled</title>
+  <title>Minha Primeira Página com Cor</title>
   <style>
-    /* Adicione os estilos aqui */
+    /*
+      🎯 SUA MISSÃO SUPER SIMPLES:
+      Mudar a cor do título <h1> para azul!
+
+      💡 COMO FAZER:
+      h1 {
+        color: blue;
+      }
+
+      Copie e cole exatamente essas 3 linhas aqui embaixo ⬇️
+    */
+
+
   </style>
 </head>
 <body>
-  <header>
-    <h1>Quple</h1>
-    <p>O app para casais</p>
-  </header>
+  <h1>Quple</h1>
+  <p>O app para casais</p>
 
-  <main>
-    <section class="welcome">
-      <h2>Bem-vindos ao Quple!</h2>
-      <p>Construam objetivos juntos e fortaleçam sua relação</p>
-      <button class="cta-button">Começar Agora</button>
-    </section>
-
-    <section class="features">
-      <h3>Por que usar o Quple?</h3>
-      <div class="feature-list">
-        <div class="feature">
-          <h4>Objetivos Compartilhados</h4>
-          <p>Criem e acompanhem objetivos juntos</p>
-        </div>
-        <div class="feature">
-          <h4>Comunicação</h4>
-          <p>Melhorem a comunicação no relacionamento</p>
-        </div>
-        <div class="feature">
-          <h4>Progresso</h4>
-          <p>Visualizem o crescimento como casal</p>
-        </div>
-      </div>
-    </section>
-  </main>
 </body>
 </html>`,
     solutionCode: `<!DOCTYPE html>
@@ -726,220 +923,151 @@ export const challenges: Challenge[] = [
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quple - Styled</title>
+  <title>Minha Primeira Página com Cor</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Arial', sans-serif;
-      line-height: 1.6;
-      color: #333;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-    }
-
-    header {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      padding: 2rem 0;
-      text-align: center;
-      color: white;
-    }
-
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-
-    header p {
-      font-size: 1.2rem;
-      opacity: 0.9;
-    }
-
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    .welcome {
-      background: white;
-      padding: 3rem;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      margin-bottom: 3rem;
-    }
-
-    .welcome h2 {
-      color: #764ba2;
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .welcome p {
-      font-size: 1.3rem;
-      color: #666;
-      margin-bottom: 2rem;
-    }
-
-    .cta-button {
-      background: linear-gradient(45deg, #667eea, #764ba2);
-      color: white;
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 50px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .cta-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
-    }
-
-    .features {
-      background: white;
-      padding: 3rem;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .features h3 {
-      color: #764ba2;
-      font-size: 2rem;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .feature-list {
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .feature {
-      flex: 1;
-      min-width: 250px;
-      padding: 2rem;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      border-radius: 15px;
-      text-align: center;
-    }
-
-    .feature h4 {
-      color: #667eea;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .feature p {
-      color: #555;
-      font-size: 1.1rem;
+    h1 {
+      color: blue;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Quple</h1>
-    <p>O app para casais</p>
-  </header>
+  <h1>Quple</h1>
+  <p>O app para casais</p>
 
-  <main>
-    <section class="welcome">
-      <h2>Bem-vindos ao Quple!</h2>
-      <p>Construam objetivos juntos e fortaleçam sua relação</p>
-      <button class="cta-button">Começar Agora</button>
-    </section>
-
-    <section class="features">
-      <h3>Por que usar o Quple?</h3>
-      <div class="feature-list">
-        <div class="feature">
-          <h4>Objetivos Compartilhados</h4>
-          <p>Criem e acompanhem objetivos juntos</p>
-        </div>
-        <div class="feature">
-          <h4>Comunicação</h4>
-          <p>Melhorem a comunicação no relacionamento</p>
-        </div>
-        <div class="feature">
-          <h4>Progresso</h4>
-          <p>Visualizem o crescimento como casal</p>
-        </div>
-      </div>
-    </section>
-  </main>
 </body>
 </html>`,
+    // Sistema de dicas progressivo educativo
     hints: [
-      "Use um gradiente de fundo para dar personalidade",
-      "Adicione padding e margins para espaçamento",
-      "Crie um botão com hover effects",
-      "Use flexbox para organizar os cards de features"
+      {
+        level: 1,
+        title: "🤔 O que é CSS?",
+        content: "CSS é como uma 'caixa de tintas' para suas páginas! HTML faz a estrutura, CSS coloca as cores. É sua primeira vez usando CSS!",
+        example: `CSS = Cascading Style Sheets
+É a linguagem que dá estilo às páginas web!
+
+HTML = esqueleto
+CSS = roupas e cores`
+      },
+      {
+        level: 2,
+        title: "📝 Como escrever CSS",
+        content: "CSS usa esta estrutura: `h1 { color: blue; }`. Isso significa: 'Pinte todos os títulos h1 de azul'. É como dar uma instrução específica!",
+        example: `h1 {
+  color: blue;
+}
+
+- h1 = qual elemento pintar
+- color = que propriedade mudar
+- blue = para qual cor`
+      },
+      {
+        level: 3,
+        title: "💡 Onde escrever o CSS",
+        content: "Você escreve CSS dentro da tag `<style>` no `<head>`. É lá que fica toda a 'pintura' da sua página!",
+        example: `<style>
+  h1 {
+    color: blue;
+  }
+</style>
+
+Copie essas 3 linhas exatamente!`
+      },
+      {
+        level: 4,
+        title: "🎯 Sua primeira cor!",
+        content: "Digite exatamente `h1 { color: blue; }` dentro da tag style. Cada caractere importa: as chaves { }, os dois pontos :, o ponto e vírgula ;",
+        example: `EXATAMENTE assim:
+
+h1 {
+  color: blue;
+}
+
+Você consegue! É sua primeira cor! 🎨`
+      }
+    ],
+
+    // Critérios de validação super simples
+    validationRules: [
+      {
+        type: "has_style_tag",
+        message: "Você precisa ter CSS dentro da tag <style>",
+        weight: 30
+      },
+      {
+        type: "h1_has_color_property",
+        message: "O título h1 precisa ter a propriedade 'color'",
+        weight: 40
+      },
+      {
+        type: "color_is_blue",
+        message: "A cor deve ser 'blue' (azul em inglês)",
+        weight: 30
+      }
+    ],
+
+    // Conquistas especiais para primeiro CSS
+    achievements: [
+      {
+        id: "first_css_ever",
+        title: "🎨 Primeira Cor da Vida!",
+        description: "Parabéns! Você acabou de escrever seu primeiro CSS! Agora você sabe dar cor às páginas! 🌈",
+        condition: "complete_challenge"
+      },
+      {
+        id: "css_styler",
+        title: "✨ Estilista Web",
+        description: "Você transformou texto preto e branco em algo colorido! Bem-vindo ao mundo do CSS! 🎭",
+        condition: "perfect_score"
+      }
     ]
   },
   {
     id: 6,
     title: "💥 Layout Quebrado",
-    description: "**Situação:** O layout do Quple está completamente quebrado! Os elementos estão empilhados verticalmente e nada fica na posição certa.\n\n**Sua missão:** Usar CSS Flexbox para organizar o layout e deixar tudo alinhado perfeitamente. Este desafio vai te ensinar uma das habilidades mais importantes do CSS moderno!",
-    difficulty: "medium",
-    xpReward: 100,
-    estimatedTime: 90,
+    description: "**Ótimo! Você já sabe dar cor aos elementos!** 🎨\n\n**Situação:** O app Quple está com os textos todos grudados nas bordas da tela. Parece apertado e desconfortável!\n\n**Sua nova missão:** Aprender `padding` (espaço interno) para dar 'respiração' aos elementos. É como colocar uma almofada dentro de uma caixa! 📦",
+    difficulty: "beginner",
+    xpReward: 60,
+    estimatedTime: 40,
     prerequisites: [5],
     category: "css",
 
+    // Explicação detalhada do que o estudante vai aprender
     learningObjectives: [
-      "Flexbox e suas propriedades essenciais",
-      "Como alinhar elementos horizontal e verticalmente",
-      "Distribuição de espaço entre elementos",
-      "Layouts responsivos com flex"
+      "Descobrir o que é padding (espaço interno)",
+      "Aprender como padding melhora a aparência",
+      "Usar padding para dar espaço aos textos",
+      "Entender a diferença visual que o espaçamento faz"
     ],
 
+    // Conceitos que serão abordados
     concepts: [
       {
-        title: "Display Flex",
-        description: "display: flex transforma um elemento em um container flexível, organizando seus filhos automaticamente."
+        title: "O que é Padding?",
+        description: "Padding é o espaço INTERNO de um elemento - como uma almofada dentro de uma caixa. Deixa o conteúdo mais confortável e bonito!"
       },
       {
-        title: "Justify-Content",
-        description: "Controla o alinhamento horizontal (eixo principal) dos elementos flex."
+        title: "Como Usar Padding",
+        description: "Você escreve 'padding: 20px;' para dar 20 pixels de espaço interno. É como dar uma 'almofada' para seu texto."
       },
       {
-        title: "Align-Items",
-        description: "Controla o alinhamento vertical (eixo transversal) dos elementos flex."
-      },
-      {
-        title: "Flex-Direction",
-        description: "Define se os elementos devem ficar em linha (row) ou coluna (column)."
+        title: "Por que Usar Espaçamento",
+        description: "Textos grudados nas bordas ficam feios e difíceis de ler. Com padding, fica mais elegante e profissional!"
       }
     ],
 
+    // Materiais de apoio
     resources: [
       {
-        title: "📖 CSS Flexbox - MDN",
-        url: "https://developer.mozilla.org/pt-BR/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox",
+        title: "📖 CSS Padding - MDN",
+        url: "https://developer.mozilla.org/pt-BR/docs/Web/CSS/padding",
         type: "documentation",
-        description: "Guia completo sobre Flexbox"
+        description: "Tudo sobre padding em CSS"
       },
       {
-        title: "🎮 Flexbox Froggy",
-        url: "https://flexboxfroggy.com/#pt-br",
-        type: "tool",
-        description: "Jogo para aprender Flexbox de forma divertida"
-      },
-      {
-        title: "📚 CSS-Tricks Flexbox Guide",
-        url: "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
-        type: "documentation",
-        description: "Guia visual completo do Flexbox"
+        title: "🎥 Espaçamento CSS - Curso em Vídeo",
+        url: "https://www.cursoemvideo.com/curso/html5-css3/",
+        type: "video",
+        description: "Vídeos explicando padding e margin"
       }
     ],
 

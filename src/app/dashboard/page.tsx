@@ -7,6 +7,15 @@ import { Button } from '@/components/ui/Button'
 import { StatsCards } from '@/components/dashboard/StatsCards'
 import { ProgressMap } from '@/components/dashboard/ProgressMap'
 import { AchievementShowcase } from '@/components/dashboard/AchievementShowcase'
+import { WhatToDoNow } from '@/components/dashboard/WhatToDoNow'
+import { DailyGoals } from '@/components/dashboard/DailyGoals'
+import { OnboardingFlow } from '@/components/dashboard/OnboardingFlow'
+import { useCelebration } from '@/components/dashboard/CelebrationToast'
+import { useAnalytics } from '@/hooks/useAnalytics'
+import { useTheme } from '@/hooks/useTheme'
+import { AnalyticsDashboard } from '@/components/analytics/AnalyticsDashboard'
+import { SocialDashboard } from '@/components/social/SocialDashboard'
+import { PersonalizationSettings } from '@/components/settings/PersonalizationSettings'
 import { ProgressService, BadgeInfo, AVAILABLE_BADGES } from '@/lib/progress/progressService'
 import { challenges } from '@/lib/challenges'
 import { LevelAssessmentModal } from '@/components/assessment/LevelAssessmentModal'
@@ -14,10 +23,19 @@ import { UserCircle, Settings, LogOut } from 'lucide-react'
 
 export default function DashboardPage() {
   const { student, loading, isAuthenticated, clearUser } = useAuth()
+  const { celebrate, CelebrationComponent } = useCelebration()
+  const { trackGoalCompletion, trackEvent } = useAnalytics({
+    studentId: student?.id || '',
+    autoStart: !!student
+  })
+  useTheme(student?.id)
   const [studentBadges, setStudentBadges] = useState<BadgeInfo[]>([])
   const [levelInfo, setLevelInfo] = useState<{level: number, xpForNext: number, xpInLevel: number} | null>(null)
   const [showAssessment, setShowAssessment] = useState(false)
   const [hasCompletedAssessment, setHasCompletedAssessment] = useState(false)
+  const [showOnboarding, setShowOnboarding] = useState(false)
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
 
   // Função de logout simples e educativa
   const handleLogout = async () => {
@@ -68,6 +86,25 @@ export default function DashboardPage() {
     setShowAssessment(true)
   }
 
+  // Função para completar onboarding
+  const handleOnboardingComplete = () => {
+    setHasCompletedOnboarding(true)
+    setShowOnboarding(false)
+    localStorage.setItem(`onboarding_completed_${student?.id}`, 'true')
+
+    // Após onboarding, mostrar avaliação se necessário
+    if (student?.current_challenge === 0) {
+      setShowAssessment(true)
+    }
+  }
+
+  // Função para pular onboarding
+  const handleOnboardingSkip = () => {
+    setHasCompletedOnboarding(true)
+    setShowOnboarding(false)
+    localStorage.setItem(`onboarding_completed_${student?.id}`, 'true')
+  }
+
   // Carregar dados de progresso do estudante
   useEffect(() => {
     const loadStudentProgress = async () => {
@@ -75,11 +112,43 @@ export default function DashboardPage() {
         try {
           // Carregar badges do estudante
           const badges = await ProgressService.getStudentBadges(student.id)
+          const previousBadges = studentBadges
           setStudentBadges(badges)
+
+          // Verificar se ganhou novos badges
+          if (previousBadges.length > 0 && badges.length > previousBadges.length) {
+            const newBadges = badges.filter(badge =>
+              !previousBadges.some(prev => prev.id === badge.id)
+            )
+
+            newBadges.forEach(badge => {
+              celebrate({
+                id: `badge_${badge.id}`,
+                type: 'badge',
+                title: badge.name,
+                description: badge.description,
+                value: 50,
+                celebration: badge.category === 'special' ? 'epic' : 'special'
+              })
+            })
+          }
 
           // Calcular informações de nível
           const level = ProgressService.calculateLevel(student.total_xp || 0)
+          const previousLevel = levelInfo?.level || 1
           setLevelInfo(level)
+
+          // Verificar se subiu de nível
+          if (levelInfo && level.level > previousLevel) {
+            celebrate({
+              id: `level_${level.level}`,
+              type: 'level',
+              title: `Nível ${level.level}`,
+              description: `Incrível! Você alcançou o nível ${level.level}!`,
+              value: level.level * 100,
+              celebration: level.level >= 5 ? 'epic' : 'special'
+            })
+          }
 
           console.log('📊 Progresso carregado:', { badges, level })
         } catch (error) {
@@ -91,11 +160,26 @@ export default function DashboardPage() {
     if (student) {
       loadStudentProgress()
     }
+  }, [student, celebrate])
+
+  // Verificar se é um novo usuário e precisa de onboarding
+  useEffect(() => {
+    if (student) {
+      const onboardingCompleted = localStorage.getItem(`onboarding_completed_${student.id}`)
+
+      if (!onboardingCompleted) {
+        // Novo usuário - mostrar onboarding primeiro
+        setShowOnboarding(true)
+        setHasCompletedOnboarding(false)
+      } else {
+        setHasCompletedOnboarding(true)
+      }
+    }
   }, [student])
 
   // Verificar se precisa mostrar avaliação
   useEffect(() => {
-    if (student && !hasCompletedAssessment) {
+    if (student && hasCompletedOnboarding && !hasCompletedAssessment) {
       // Verificar se já fez a avaliação (aqui você verificaria no Supabase)
       // Por enquanto, vamos considerar que se o current_challenge é 0, precisa fazer avaliação
       if (student.current_challenge === 0) {
@@ -104,7 +188,7 @@ export default function DashboardPage() {
         setHasCompletedAssessment(true)
       }
     }
-  }, [student, hasCompletedAssessment])
+  }, [student, hasCompletedOnboarding, hasCompletedAssessment])
 
   // Verificar se está logado - educativo para jovens entenderem
   useEffect(() => {
@@ -117,10 +201,10 @@ export default function DashboardPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="text-4xl mb-4">⏳</div>
-          <p className="text-gray-600">Carregando seus dados...</p>
+          <p className="text-muted-foreground">Carregando seus dados...</p>
         </div>
       </div>
     )
@@ -132,26 +216,41 @@ export default function DashboardPage() {
   }
 
   const handleStartChallenge = (challengeId: number) => {
+    // Verificar se acabou de completar um desafio
+    if (challengeId > student.current_challenge) {
+      const completedChallenge = challenges.find(c => c.id === student.current_challenge)
+      if (completedChallenge) {
+        celebrate({
+          id: `challenge_${student.current_challenge}`,
+          type: 'challenge',
+          title: completedChallenge.title,
+          description: `Fantástico! Você dominou mais uma habilidade importante!`,
+          value: 100,
+          celebration: student.current_challenge >= 5 ? 'special' : 'normal'
+        })
+      }
+    }
+
     window.location.href = `/challenge/${challengeId}`
   }
 
   const completedChallenges = Array.from({ length: student.current_challenge - 1 }, (_, i) => i + 1)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-background">
       {/* Modern Header - Mobile Optimized */}
-      <div className="bg-white/80 backdrop-blur-md border-b border-white/20 sticky top-0 z-40">
+      <div className="glass-card border-b border-border sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-full p-1.5 sm:p-2 flex-shrink-0">
+              <div className="btn-primary-gradient rounded-full p-1.5 sm:p-2 flex-shrink-0">
                 <UserCircle className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
               <div className="min-w-0">
-                <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent truncate">
+                <h1 className="text-lg sm:text-2xl font-bold text-foreground truncate">
                   Olá, {student.name}! 👋
                 </h1>
-                <p className="text-gray-600 text-xs sm:text-sm">
+                <p className="text-muted-foreground text-xs sm:text-sm">
                   {levelInfo ? `Nível ${levelInfo.level} • ${student.total_xp} XP` : 'Carregando...'}
                 </p>
               </div>
@@ -175,14 +274,20 @@ export default function DashboardPage() {
               >
                 🎯
               </Button>
-              <Button variant="outline" size="sm" className="hidden sm:flex">
+              <Button
+                onClick={() => setShowSettings(true)}
+                variant="outline"
+                size="sm"
+                className="hidden sm:flex premium-hover"
+                title="Personalização"
+              >
                 <Settings className="h-4 w-4" />
               </Button>
               <Button
                 onClick={handleLogout}
                 variant="outline"
                 size="sm"
-                className="text-red-600 hover:bg-red-50 hover:text-red-700"
+                className="text-destructive hover:bg-destructive/10 hover:text-destructive"
               >
                 <LogOut className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
@@ -194,43 +299,30 @@ export default function DashboardPage() {
       {/* Main Content - Mobile Optimized */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8 space-y-6 sm:space-y-8">
 
-        {/* Welcome Hero Section - Mobile Optimized */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 text-white">
-          <div className="absolute inset-0 bg-black/10"></div>
-          <div className="relative z-10">
-            <div className="max-w-3xl">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-                Continue Sua Jornada de Aprendizado! 🚀
-              </h2>
-              <p className="text-base sm:text-xl text-blue-100 mb-4 sm:mb-6 leading-relaxed">
-                Você está progredindo muito bem! Cada desafio te deixa mais próximo de ser um desenvolvedor profissional.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <Button
-                  size="lg"
-                  className="bg-white text-blue-600 hover:bg-blue-50 font-semibold w-full sm:w-auto"
-                  onClick={() => handleStartChallenge(student.current_challenge)}
-                >
-                  🎯 Continuar Desafio {student.current_challenge}
-                </Button>
-                <a href="/leaderboard" className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-white/30 text-white hover:bg-white/10 w-full"
-                  >
-                    🏆 Ver Ranking
-                  </Button>
-                </a>
-              </div>
-            </div>
-          </div>
+        {/* Widget "O que fazer agora" - Direcionamento Personalizado */}
+        <WhatToDoNow
+          student={student}
+          onStartChallenge={handleStartChallenge}
+        />
 
-          {/* Decorative elements - Hidden on mobile for performance */}
-          <div className="hidden sm:block absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
-          <div className="hidden sm:block absolute top-1/2 -right-8 w-16 h-16 bg-white/5 rounded-full blur-lg"></div>
-          <div className="hidden sm:block absolute -bottom-4 -left-4 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
-        </div>
+        {/* Metas Diárias - Sistema Adaptável */}
+        <DailyGoals
+          studentId={student.id}
+          onGoalComplete={(goal) => {
+            // Analytics tracking
+            trackGoalCompletion(goal.type, goal.targetValue)
+
+            // Celebração
+            celebrate({
+              id: `goal_${goal.id}`,
+              type: 'goal',
+              title: goal.title,
+              description: `Parabéns! Você completou sua meta de ${goal.targetValue} ${goal.unit}`,
+              value: 25,
+              celebration: goal.targetValue >= 60 ? 'special' : 'normal'
+            })
+          }}
+        />
 
         {/* Stats Cards */}
         {levelInfo && (
@@ -248,6 +340,16 @@ export default function DashboardPage() {
           allPossibleBadges={Object.values(AVAILABLE_BADGES)}
         />
 
+        {/* Analytics Dashboard */}
+        <AnalyticsDashboard
+          studentId={student.id}
+        />
+
+        {/* Social Dashboard */}
+        <SocialDashboard
+          studentId={student.id}
+        />
+
         {/* Progress Map */}
         <ProgressMap
           challenges={challenges}
@@ -258,14 +360,23 @@ export default function DashboardPage() {
 
         {/* Motivational Footer */}
         <div className="text-center py-8">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-blue-100 rounded-full px-6 py-3">
+          <div className="inline-flex items-center gap-2 glass-card rounded-full px-6 py-3">
             <span className="text-2xl">💡</span>
-            <p className="text-gray-700 font-medium">
+            <p className="text-foreground font-medium">
 &quot;A jornada de mil milhas começa com um único passo&quot; - Continue programando!
             </p>
           </div>
         </div>
       </div>
+
+      {/* Modal de Onboarding */}
+      {showOnboarding && (
+        <OnboardingFlow
+          studentName={student.name}
+          onComplete={handleOnboardingComplete}
+          onSkip={handleOnboardingSkip}
+        />
+      )}
 
       {/* Modal de Avaliação */}
       <LevelAssessmentModal
@@ -274,6 +385,24 @@ export default function DashboardPage() {
         onClose={hasCompletedAssessment ? () => setShowAssessment(false) : undefined}
         canClose={hasCompletedAssessment}
       />
+
+      {/* Modal de Personalização */}
+      {showSettings && (
+        <div className="fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setShowSettings(false)} />
+          <div className="flex items-center justify-center min-h-screen p-4">
+            <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+              <PersonalizationSettings
+                studentId={student.id}
+                onClose={() => setShowSettings(false)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sistema de Celebração */}
+      <CelebrationComponent />
     </div>
   )
 }

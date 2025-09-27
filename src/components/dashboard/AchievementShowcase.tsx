@@ -52,63 +52,63 @@ export function AchievementShowcase({ badges, allPossibleBadges = [] }: Achievem
 
     switch (badge.category) {
       case 'achievement':
-        return `${baseStyle} bg-gradient-to-br from-yellow-100 to-yellow-200 border-yellow-300`
+        return `${baseStyle} bg-[hsl(var(--warning))]/10 border-[hsl(var(--warning))]/30`
       case 'skill':
-        return `${baseStyle} bg-gradient-to-br from-blue-100 to-blue-200 border-blue-300`
+        return `${baseStyle} bg-primary/10 border-primary/30`
       case 'streak':
-        return `${baseStyle} bg-gradient-to-br from-orange-100 to-red-200 border-orange-300`
+        return `${baseStyle} bg-accent/10 border-accent/30`
       case 'special':
-        return `${baseStyle} bg-gradient-to-br from-purple-100 to-pink-200 border-purple-300`
+        return `${baseStyle} bg-[hsl(var(--purple))]/10 border-[hsl(var(--purple))]/30`
       default:
-        return `${baseStyle} bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300`
+        return `${baseStyle} glass-card`
     }
   }
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'achievement':
-        return <Trophy className="h-4 w-4 text-yellow-600" />
+        return <Trophy className="h-4 w-4 text-[hsl(var(--warning))]" />
       case 'skill':
-        return <Target className="h-4 w-4 text-blue-600" />
+        return <Target className="h-4 w-4 text-primary" />
       case 'streak':
-        return <Zap className="h-4 w-4 text-orange-600" />
+        return <Zap className="h-4 w-4 text-accent" />
       case 'special':
-        return <Crown className="h-4 w-4 text-purple-600" />
+        return <Crown className="h-4 w-4 text-[hsl(var(--purple))]" />
       default:
-        return <Award className="h-4 w-4 text-gray-600" />
+        return <Award className="h-4 w-4 text-muted-foreground" />
     }
   }
 
   if (allBadges.length === 0) {
     return (
-      <Card className="hover:shadow-lg transition-shadow">
+      <Card className="glass-card premium-hover">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Trophy className="h-6 w-6 text-yellow-500" />
+            <Trophy className="h-6 w-6 text-[hsl(var(--warning))]" />
             🏆 Vitrine de Conquistas
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-12">
             <div className="text-6xl mb-4 animate-bounce">🎯</div>
-            <h3 className="text-xl font-bold text-gray-700 mb-2">
+            <h3 className="text-xl font-bold text-foreground mb-2">
               Suas Primeiras Conquistas Te Aguardam!
             </h3>
-            <p className="text-gray-500 mb-4">
+            <p className="text-muted-foreground mb-4">
               Complete desafios e colete badges incríveis para mostrar suas habilidades
             </p>
             <div className="flex justify-center gap-4">
-              <div className="bg-yellow-100 rounded-full px-4 py-2">
-                <Trophy className="h-4 w-4 inline mr-2 text-yellow-600" />
-                <span className="text-sm font-semibold text-yellow-700">Primeira Página</span>
+              <div className="bg-[hsl(var(--warning))]/20 rounded-full px-4 py-2">
+                <Trophy className="h-4 w-4 inline mr-2 text-[hsl(var(--warning))]" />
+                <span className="text-sm font-semibold text-[hsl(var(--warning))]">Primeira Página</span>
               </div>
-              <div className="bg-blue-100 rounded-full px-4 py-2">
-                <Target className="h-4 w-4 inline mr-2 text-blue-600" />
-                <span className="text-sm font-semibold text-blue-700">Mestre Semântico</span>
+              <div className="bg-primary/20 rounded-full px-4 py-2">
+                <Target className="h-4 w-4 inline mr-2 text-primary" />
+                <span className="text-sm font-semibold text-primary">Mestre Semântico</span>
               </div>
-              <div className="bg-green-100 rounded-full px-4 py-2">
-                <Zap className="h-4 w-4 inline mr-2 text-green-600" />
-                <span className="text-sm font-semibold text-green-700">Aprendiz Rápido</span>
+              <div className="bg-accent/20 rounded-full px-4 py-2">
+                <Zap className="h-4 w-4 inline mr-2 text-accent" />
+                <span className="text-sm font-semibold text-accent">Aprendiz Rápido</span>
               </div>
             </div>
           </div>
@@ -118,11 +118,11 @@ export function AchievementShowcase({ badges, allPossibleBadges = [] }: Achievem
   }
 
   return (
-    <Card className="hover:shadow-xl transition-all duration-300">
+    <Card className="glass-card premium-hover">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
-            <div className="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full p-2">
+            <div className="bg-[hsl(var(--warning))] rounded-full p-2">
               <Trophy className="h-5 w-5 text-white" />
             </div>
             🏆 Vitrine de Conquistas
@@ -161,7 +161,7 @@ export function AchievementShowcase({ badges, allPossibleBadges = [] }: Achievem
 
                   {isEarned && (
                     <div className="absolute top-2 right-2">
-                      <div className="bg-green-500 rounded-full p-1">
+                      <div className="accent-gradient rounded-full p-1">
                         <Star className="h-3 w-3 text-white fill-current" />
                       </div>
                     </div>
@@ -176,17 +176,17 @@ export function AchievementShowcase({ badges, allPossibleBadges = [] }: Achievem
                     </div>
                   </div>
 
-                  <h4 className={`font-bold text-sm mb-2 ${isEarned ? 'text-gray-800' : 'text-gray-500'}`}>
+                  <h4 className={`font-bold text-sm mb-2 ${isEarned ? 'text-foreground' : 'text-muted-foreground'}`}>
                     {badge.name}
                   </h4>
 
-                  <p className={`text-xs leading-relaxed ${isEarned ? 'text-gray-600' : 'text-gray-400'}`}>
+                  <p className={`text-xs leading-relaxed ${isEarned ? 'text-muted-foreground' : 'text-muted-foreground/70'}`}>
                     {badge.description}
                   </p>
 
                   {isEarned && (
                     <div className="mt-4">
-                      <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs">
+                      <Badge className="accent-gradient text-white text-xs">
                         ✓ Conquistado!
                       </Badge>
                     </div>
@@ -230,7 +230,7 @@ export function AchievementShowcase({ badges, allPossibleBadges = [] }: Achievem
 
                       {isEarned && (
                         <div className="absolute top-2 right-2">
-                          <div className="bg-green-500 rounded-full p-1">
+                          <div className="accent-gradient rounded-full p-1">
                             <Star className="h-3 w-3 text-white fill-current" />
                           </div>
                         </div>
@@ -245,16 +245,16 @@ export function AchievementShowcase({ badges, allPossibleBadges = [] }: Achievem
                         </div>
                       </div>
 
-                      <h4 className={`font-bold text-lg mb-3 ${isEarned ? 'text-gray-800' : 'text-gray-500'}`}>
+                      <h4 className={`font-bold text-lg mb-3 ${isEarned ? 'text-foreground' : 'text-muted-foreground'}`}>
                         {badge.name}
                       </h4>
 
-                      <p className={`text-sm leading-relaxed mb-4 ${isEarned ? 'text-gray-600' : 'text-gray-400'}`}>
+                      <p className={`text-sm leading-relaxed mb-4 ${isEarned ? 'text-muted-foreground' : 'text-muted-foreground/70'}`}>
                         {badge.description}
                       </p>
 
                       {isEarned && (
-                        <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white text-sm">
+                        <Badge className="accent-gradient text-white text-sm">
                           ✓ Conquistado!
                         </Badge>
                       )}
@@ -280,7 +280,7 @@ export function AchievementShowcase({ badges, allPossibleBadges = [] }: Achievem
                 <button
                   key={i}
                   className={`w-2 h-2 rounded-full transition-colors ${
-                    i === currentIndex ? 'bg-blue-500' : 'bg-gray-300'
+                    i === currentIndex ? 'bg-primary' : 'bg-muted'
                   }`}
                   onClick={() => setCurrentIndex(i)}
                 />
@@ -290,9 +290,9 @@ export function AchievementShowcase({ badges, allPossibleBadges = [] }: Achievem
         )}
 
         {badges.length > 0 && (
-          <div className="mt-6 text-center bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
-            <h4 className="font-bold text-gray-800 mb-2">🎉 Parabéns pela dedicação!</h4>
-            <p className="text-sm text-gray-600">
+          <div className="mt-6 text-center bg-[hsl(var(--warning))]/10 rounded-lg p-4">
+            <h4 className="font-bold text-foreground mb-2">🎉 Parabéns pela dedicação!</h4>
+            <p className="text-sm text-muted-foreground">
               Continue completando desafios para desbloquear mais conquistas incríveis!
             </p>
           </div>

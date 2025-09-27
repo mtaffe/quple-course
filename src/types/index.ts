@@ -13,7 +13,7 @@ export interface Challenge {
   id: number
   title: string
   description: string
-  difficulty: 'easy' | 'medium' | 'hard' | 'assessment'
+  difficulty: 'beginner' | 'easy' | 'medium' | 'hard' | 'assessment'
   xpReward: number
   estimatedTime: number
   prerequisites: number[]

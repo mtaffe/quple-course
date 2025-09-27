@@ -5,6 +5,8 @@ import { Challenge, ChallengeState, ValidationResult } from '@/types'
 import { CodeEditor } from './CodeEditor'
 import { Preview } from './Preview'
 import { HintSystem } from './HintSystem'
+import { ModalPocket } from './ModalPocket'
+import { ContentNavigation } from '@/components/navigation/ContentNavigation'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
@@ -23,7 +25,8 @@ import {
   ExternalLink,
   BookOpen,
   Video,
-  Code
+  Code,
+  HelpCircle
 } from 'lucide-react'
 
 interface ChallengeLayoutProps {
@@ -50,6 +53,7 @@ export function ChallengeLayout({
   const [validation, setValidation] = useState<ValidationResult | null>(null)
   const [timeSpent, setTimeSpent] = useState(0)
   const [isCompleting, setIsCompleting] = useState(false)
+  const [showModalPocket, setShowModalPocket] = useState(false)
   const [completionReward, setCompletionReward] = useState<{
     earnedXP: number
     newBadges: string[]
@@ -246,6 +250,15 @@ Deseja submeter mesmo assim? Você receberá menos XP por não ter completado pe
               <Badge variant="secondary">
                 Tentativas: {state.attempts}
               </Badge>
+              <Button
+                onClick={() => setShowModalPocket(true)}
+                variant="outline"
+                size="sm"
+                className="glass-card premium-hover"
+              >
+                <HelpCircle className="h-4 w-4 mr-2" />
+                Ajuda Contextual
+              </Button>
             </div>
           </div>
         </div>
@@ -474,6 +487,12 @@ Deseja submeter mesmo assim? Você receberá menos XP por não ter completado pe
               </CardContent>
             </Card>
           )}
+
+          {/* Content Navigation */}
+          <ContentNavigation
+            currentContext="challenge"
+            challengeId={challenge.id}
+          />
         </div>
 
         {/* Middle Column - Code Editor */}
@@ -585,6 +604,13 @@ Deseja submeter mesmo assim? Você receberá menos XP por não ter completado pe
           </Card>
         </div>
       </div>
+
+      {/* Modal Pocket */}
+      <ModalPocket
+        isOpen={showModalPocket}
+        onClose={() => setShowModalPocket(false)}
+        challengeId={challenge.id}
+      />
     </div>
   )
 }

@@ -24,10 +24,10 @@ interface ProgressMapProps {
 }
 
 const WORLD_THEMES = {
-  1: { name: 'HTML Fundamentos', color: 'from-green-400 to-blue-500', icon: '🌱', bg: 'bg-green-50' },
-  2: { name: 'CSS Styling', color: 'from-purple-400 to-pink-500', icon: '🎨', bg: 'bg-purple-50' },
-  3: { name: 'JavaScript Magic', color: 'from-yellow-400 to-orange-500', icon: '⚡', bg: 'bg-yellow-50' },
-  4: { name: 'React Universe', color: 'from-blue-400 to-indigo-500', icon: '🚀', bg: 'bg-blue-50' }
+  1: { name: 'HTML Fundamentos', color: 'accent-gradient', icon: '🌱', bg: 'glass-card' },
+  2: { name: 'CSS Styling', color: 'btn-primary-gradient', icon: '🎨', bg: 'glass-card' },
+  3: { name: 'JavaScript Magic', color: 'bg-[hsl(var(--warning))]', icon: '⚡', bg: 'glass-card' },
+  4: { name: 'React Universe', color: 'btn-primary-gradient', icon: '🚀', bg: 'glass-card' }
 }
 
 export function ProgressMap({ challenges, currentChallenge, completedChallenges, onStartChallenge }: ProgressMapProps) {
@@ -42,11 +42,11 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
   const getChallengeIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="h-6 w-6 text-green-600" />
+        return <CheckCircle className="h-6 w-6 text-accent" />
       case 'current':
-        return <Play className="h-6 w-6 text-blue-600 animate-pulse" />
+        return <Play className="h-6 w-6 text-primary animate-pulse" />
       case 'available':
-        return <Target className="h-6 w-6 text-orange-600" />
+        return <Target className="h-6 w-6 text-[hsl(var(--warning))]" />
       default:
         return <Lock className="h-4 w-4 text-gray-400" />
     }
@@ -74,12 +74,12 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
     <div className="space-y-8">
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-3 mb-2">
-          <Map className="h-8 w-8 text-blue-600" />
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <Map className="h-8 w-8 text-primary" />
+          <h2 className="text-3xl font-bold text-gradient-primary">
             Mapa de Aventuras
           </h2>
         </div>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           Sua jornada para se tornar um desenvolvedor React! 🚀
         </p>
       </div>
@@ -92,25 +92,25 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
           const isWorldUnlocked = worldChallenges.some(c => c.id <= currentChallenge)
 
           return (
-            <div key={worldId} className={`relative ${world.bg} rounded-3xl p-8 border-2 border-opacity-20 ${isWorldUnlocked ? 'border-blue-300' : 'border-gray-300'}`}>
+            <div key={worldId} className={`relative ${world.bg} rounded-3xl p-8 border-2 border-opacity-20 ${isWorldUnlocked ? 'border-primary/30' : 'border-border'}`}>
               {/* World Header */}
               <div className="text-center mb-8">
                 <div className="flex items-center justify-center mb-4">
-                  <div className={`text-6xl bg-gradient-to-br ${world.color} rounded-full w-20 h-20 flex items-center justify-center shadow-lg`}>
+                  <div className={`text-6xl ${world.color} rounded-full w-20 h-20 flex items-center justify-center shadow-lg`}>
                     <span className="text-3xl">{world.icon}</span>
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">{world.name}</h3>
+                <h3 className="text-2xl font-bold text-foreground mb-2">{world.name}</h3>
                 <div className="flex items-center justify-center gap-2">
-                  <div className="bg-white rounded-full px-4 py-2 shadow-md">
-                    <span className="text-sm font-semibold text-gray-700">
+                  <div className="glass-card rounded-full px-4 py-2 shadow-md">
+                    <span className="text-sm font-semibold text-foreground">
                       {worldProgress}/{worldTotal} concluídos
                     </span>
                   </div>
                   {worldProgress === worldTotal && (
-                    <div className="bg-yellow-100 rounded-full px-3 py-2 shadow-md">
-                      <Trophy className="h-4 w-4 text-yellow-600 inline mr-1" />
-                      <span className="text-xs font-bold text-yellow-700">COMPLETO!</span>
+                    <div className="bg-[hsl(var(--warning))]/20 rounded-full px-3 py-2 shadow-md">
+                      <Trophy className="h-4 w-4 text-[hsl(var(--warning))] inline mr-1" />
+                      <span className="text-xs font-bold text-[hsl(var(--warning))]">COMPLETO!</span>
                     </div>
                   )}
                 </div>
@@ -119,9 +119,9 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
               {/* Progress Path - Responsive */}
               <div className="relative">
                 {/* Desktop Path Line - Hidden on mobile */}
-                <div className="hidden md:block absolute top-1/2 left-8 right-8 h-1 bg-gradient-to-r from-gray-300 to-gray-300 rounded-full z-0">
+                <div className="hidden md:block absolute top-1/2 left-8 right-8 h-1 bg-border rounded-full z-0">
                   <div
-                    className={`h-full bg-gradient-to-r ${world.color} rounded-full transition-all duration-1000`}
+                    className={`h-full ${world.color} rounded-full transition-all duration-1000`}
                     style={{ width: `${(worldProgress / worldTotal) * 100}%` }}
                   />
                 </div>
@@ -150,7 +150,7 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                           >
                             {/* Glow effect for current challenge */}
                             {isCurrent && (
-                              <div className="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-30"></div>
+                              <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-30"></div>
                             )}
 
                             {/* Main circle */}
@@ -158,12 +158,12 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                               className={`
                                 w-16 h-16 rounded-full flex items-center justify-center shadow-lg border-4 relative
                                 ${isCompleted
-                                  ? 'bg-gradient-to-br from-green-400 to-green-600 border-green-300'
+                                  ? 'accent-gradient border-accent/30'
                                   : isCurrent
-                                  ? 'bg-gradient-to-br from-blue-400 to-blue-600 border-blue-300'
+                                  ? 'btn-primary-gradient border-primary/30'
                                   : isLocked
-                                  ? 'bg-gray-300 border-gray-400'
-                                  : 'bg-gradient-to-br from-orange-400 to-orange-600 border-orange-300'
+                                  ? 'bg-muted border-border'
+                                  : 'bg-[hsl(var(--warning))] border-[hsl(var(--warning))]/30'
                                 }
                               `}
                             >
@@ -171,7 +171,7 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
 
                               {/* XP Badge */}
                               {!isLocked && (
-                                <div className="absolute -top-2 -right-2 bg-yellow-400 text-yellow-800 text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-md">
+                                <div className="absolute -top-2 -right-2 bg-[hsl(var(--warning))] text-black text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-md">
                                   {challenge.xpReward}
                                 </div>
                               )}
@@ -182,10 +182,10 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                           <Card
                             className={`
                               w-48 p-4 transition-all duration-300 hover:shadow-xl
-                              ${isCompleted ? 'bg-green-50 border-green-200' :
-                                isCurrent ? 'bg-blue-50 border-blue-200 shadow-lg' :
-                                isLocked ? 'bg-gray-50 border-gray-200 opacity-60' :
-                                'bg-white hover:bg-orange-50'}
+                              ${isCompleted ? 'bg-accent/10 border-accent/30' :
+                                isCurrent ? 'bg-primary/10 border-primary/30 shadow-lg' :
+                                isLocked ? 'bg-muted/10 border-border opacity-60' :
+                                'bg-card hover:bg-[hsl(var(--warning))]/10'}
                             `}
                           >
                             <div className="text-center">
@@ -193,11 +193,11 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                                 {getDifficultyStars(challenge.difficulty)}
                               </div>
 
-                              <h4 className={`font-bold text-sm mb-1 ${isLocked ? 'text-gray-500' : 'text-gray-800'}`}>
+                              <h4 className={`font-bold text-sm mb-1 ${isLocked ? 'text-muted-foreground' : 'text-foreground'}`}>
                                 {challenge.title}
                               </h4>
 
-                              <p className={`text-xs mb-3 ${isLocked ? 'text-gray-400' : 'text-gray-600'}`}>
+                              <p className={`text-xs mb-3 ${isLocked ? 'text-muted-foreground/70' : 'text-muted-foreground'}`}>
                                 {challenge.description.split('.')[0]}...
                               </p>
 
@@ -212,10 +212,10 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                                     className={`
                                       h-6 text-xs px-3
                                       ${isCompleted
-                                        ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                                        ? 'bg-accent/20 text-accent hover:bg-accent/30'
                                         : isCurrent
-                                        ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                                        : 'bg-orange-500 hover:bg-orange-600 text-white'
+                                        ? 'btn-primary-gradient text-white'
+                                        : 'bg-[hsl(var(--warning))] hover:bg-[hsl(var(--warning))]/80 text-black'
                                       }
                                     `}
                                     onClick={() => onStartChallenge(challenge.id)}
@@ -244,8 +244,8 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                       <div key={challenge.id} className="relative">
                         {/* Vertical connecting line */}
                         {index > 0 && (
-                          <div className="absolute -top-4 left-8 w-0.5 h-4 bg-gray-300">
-                            {isCompleted && <div className={`w-0.5 h-full bg-gradient-to-b ${world.color}`}></div>}
+                          <div className="absolute -top-4 left-8 w-0.5 h-4 bg-border">
+                            {isCompleted && <div className={`w-0.5 h-full ${world.color}`}></div>}
                           </div>
                         )}
 
@@ -253,10 +253,10 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                         <Card
                           className={`
                             p-4 transition-all duration-300 hover:shadow-lg
-                            ${isCompleted ? 'bg-green-50 border-green-200' :
-                              isCurrent ? 'bg-blue-50 border-blue-200 ring-2 ring-blue-200' :
-                              isLocked ? 'bg-gray-50 border-gray-200 opacity-60' :
-                              'bg-white hover:bg-orange-50'}
+                            ${isCompleted ? 'bg-accent/10 border-accent/30' :
+                              isCurrent ? 'bg-primary/10 border-primary/30 ring-2 ring-primary/30' :
+                              isLocked ? 'bg-muted/10 border-border opacity-60' :
+                              'bg-card hover:bg-[hsl(var(--warning))]/10'}
                           `}
                         >
                           <div className="flex items-center space-x-4">
@@ -271,7 +271,7 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                             >
                               {/* Glow effect for current challenge */}
                               {isCurrent && (
-                                <div className="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-30"></div>
+                                <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-30"></div>
                               )}
 
                               {/* Main circle - Smaller */}
@@ -279,12 +279,12 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                                 className={`
                                   w-12 h-12 rounded-full flex items-center justify-center shadow-md border-3 relative
                                   ${isCompleted
-                                    ? 'bg-gradient-to-br from-green-400 to-green-600 border-green-300'
+                                    ? 'accent-gradient border-accent/30'
                                     : isCurrent
-                                    ? 'bg-gradient-to-br from-blue-400 to-blue-600 border-blue-300'
+                                    ? 'btn-primary-gradient border-primary/30'
                                     : isLocked
-                                    ? 'bg-gray-300 border-gray-400'
-                                    : 'bg-gradient-to-br from-orange-400 to-orange-600 border-orange-300'
+                                    ? 'bg-muted border-border'
+                                    : 'bg-[hsl(var(--warning))] border-[hsl(var(--warning))]/30'
                                   }
                                 `}
                               >
@@ -295,7 +295,7 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
 
                                 {/* XP Badge - Smaller */}
                                 {!isLocked && (
-                                  <div className="absolute -top-1 -right-1 bg-yellow-400 text-yellow-800 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-sm">
+                                  <div className="absolute -top-1 -right-1 bg-[hsl(var(--warning))] text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-sm">
                                     {challenge.xpReward}
                                   </div>
                                 )}
@@ -305,7 +305,7 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                             {/* Challenge Info */}
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between mb-2">
-                                <h4 className={`font-bold text-sm ${isLocked ? 'text-gray-500' : 'text-gray-800'}`}>
+                                <h4 className={`font-bold text-sm ${isLocked ? 'text-muted-foreground' : 'text-foreground'}`}>
                                   {challenge.title}
                                 </h4>
                                 <div className="flex items-center gap-1">
@@ -313,7 +313,7 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                                 </div>
                               </div>
 
-                              <p className={`text-xs mb-3 leading-relaxed ${isLocked ? 'text-gray-400' : 'text-gray-600'}`}>
+                              <p className={`text-xs mb-3 leading-relaxed ${isLocked ? 'text-muted-foreground/70' : 'text-muted-foreground'}`}>
                                 {challenge.description.split('.')[0]}...
                               </p>
 
@@ -333,10 +333,10 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
                                     className={`
                                       text-xs px-3 py-1
                                       ${isCompleted
-                                        ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                                        ? 'bg-accent/20 text-accent hover:bg-accent/30'
                                         : isCurrent
-                                        ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                                        : 'bg-orange-500 hover:bg-orange-600 text-white'
+                                        ? 'btn-primary-gradient text-white'
+                                        : 'bg-[hsl(var(--warning))] hover:bg-[hsl(var(--warning))]/80 text-black'
                                       }
                                     `}
                                     onClick={() => onStartChallenge(challenge.id)}
@@ -359,10 +359,10 @@ export function ProgressMap({ challenges, currentChallenge, completedChallenges,
       </div>
 
       {/* Motivational Footer */}
-      <div className="text-center bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl p-8">
+      <div className="text-center btn-primary-gradient text-white rounded-2xl p-8">
         <Zap className="h-12 w-12 mx-auto mb-4 animate-pulse" />
         <h3 className="text-2xl font-bold mb-2">Continue Sua Jornada!</h3>
-        <p className="text-blue-100 mb-4">
+        <p className="text-white/80 mb-4">
           Cada desafio te deixa mais próximo de ser um desenvolvedor profissional 🚀
         </p>
         <div className="flex justify-center gap-4">

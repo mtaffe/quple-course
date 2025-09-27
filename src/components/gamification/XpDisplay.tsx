@@ -18,7 +18,7 @@ export function XpDisplay({
   showLevel = true,
   animated = true
 }: XpDisplayProps) {
-  const { level, xpToNext } = calculateLevel(currentXp)
+  const { level, xpForNext } = calculateLevel(currentXp)
   const xpInCurrentLevel = currentXp % 1000
   const progressPercentage = (xpInCurrentLevel / 1000) * 100
 
@@ -42,7 +42,7 @@ export function XpDisplay({
       <div className="space-y-2">
         <div className="flex justify-between text-sm text-muted-foreground">
           <span>Progresso para nível {level + 1}</span>
-          <span>{xpToNext} XP restantes</span>
+          <span>{xpForNext} XP restantes</span>
         </div>
         <Progress
           value={progressPercentage}
