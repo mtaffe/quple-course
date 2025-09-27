@@ -49,9 +49,9 @@ export function SmartHintSystem({
     if (nextAction && !activeHints.find(h => h.id === nextAction.id)) {
       setActiveHints(prev => [...prev, nextAction])
     }
-  }, [timeSpent, hintsUsed, code])
+  }, [timeSpent, hintsUsed, code, activeHints])
 
-  const useHint = (hint: SmartHint) => {
+  const activateHint = (hint: SmartHint) => {
     if (!activeHints.find(h => h.id === hint.id)) {
       setActiveHints(prev => [...prev, { ...hint, triggered: true }])
       onHintUsed?.(hint)
@@ -216,7 +216,7 @@ export function SmartHintSystem({
                   key={hint.id}
                   variant="outline"
                   size="sm"
-                  onClick={() => useHint(hint)}
+                  onClick={() => activateHint(hint)}
                   className={cn(
                     "justify-start h-auto p-3 text-left",
                     "hover:bg-muted/50"

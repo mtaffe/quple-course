@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { analyticsService } from '@/lib/analytics/analyticsService'
 
 interface UseAnalyticsProps {
@@ -41,20 +41,20 @@ export function useAnalytics({ studentId, challengeId, autoStart = true }: UseAn
   }, [studentId])
 
   // Funções de tracking
-  const trackEvent = (eventType: string, metadata?: Record<string, any>) => {
+  const trackEvent = useCallback((eventType: string, metadata?: Record<string, unknown>) => {
     analyticsService.trackEvent({
-      studentId,
-      eventType: eventType as any,
-      challengeId,
+      student_id: studentId,
+      event_type: eventType as 'session_start' | 'session_end' | 'challenge_start' | 'challenge_complete' | 'hint_used' | 'error_encountered' | 'goal_completed',
+      challenge_id: challengeId,
       metadata
     })
-  }
+  }, [studentId, challengeId])
 
   const trackChallengeStart = (challengeId: number) => {
     analyticsService.trackEvent({
-      studentId,
-      eventType: 'challenge_start',
-      challengeId,
+      student_id: studentId,
+      event_type: 'challenge_start',
+      challenge_id: challengeId,
       metadata: {
         startTime: new Date().toISOString()
       }
@@ -63,9 +63,9 @@ export function useAnalytics({ studentId, challengeId, autoStart = true }: UseAn
 
   const trackChallengeComplete = (challengeId: number, timeSpent: number, hintsUsed: number) => {
     analyticsService.trackEvent({
-      studentId,
-      eventType: 'challenge_complete',
-      challengeId,
+      student_id: studentId,
+      event_type: 'challenge_complete',
+      challenge_id: challengeId,
       duration: timeSpent,
       metadata: {
         hintsUsed,
@@ -76,9 +76,9 @@ export function useAnalytics({ studentId, challengeId, autoStart = true }: UseAn
 
   const trackCodeChange = (challengeId: number, codeLength: number) => {
     analyticsService.trackEvent({
-      studentId,
-      eventType: 'code_change',
-      challengeId,
+      student_id: studentId,
+      event_type: 'code_change',
+      challenge_id: challengeId,
       metadata: {
         codeLength,
         timestamp: Date.now()
@@ -96,8 +96,8 @@ export function useAnalytics({ studentId, challengeId, autoStart = true }: UseAn
 
   const trackGoalCompletion = (goalType: string, goalValue: number) => {
     analyticsService.trackEvent({
-      studentId,
-      eventType: 'goal_completed',
+      student_id: studentId,
+      event_type: 'goal_completed',
       metadata: {
         goalType,
         goalValue,
@@ -156,7 +156,7 @@ export function useAnalytics({ studentId, challengeId, autoStart = true }: UseAn
       })
       clearTimeout(inactivityTimer)
     }
-  }, [studentId])
+  }, [studentId, trackEvent])
 
   return {
     // Funções de tracking

@@ -7,7 +7,7 @@ interface AnalyticsEvent {
   challenge_id?: number
   section_id?: string
   duration?: number
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
   created_at?: string
 }
 
@@ -22,7 +22,7 @@ interface TimeTracking {
   active_time: number
   inactive_time: number
   events_count: number
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 interface HeatmapData {

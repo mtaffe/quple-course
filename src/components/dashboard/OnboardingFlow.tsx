@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { X, ChevronRight, ChevronLeft, Target, Trophy, BookOpen, Code, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -9,7 +9,7 @@ interface OnboardingStep {
   id: string
   title: string
   description: string
-  icon: JSX.Element
+  icon: React.ReactElement
   content: string
   action?: {
     label: string

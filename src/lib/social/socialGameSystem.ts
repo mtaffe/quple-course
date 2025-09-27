@@ -91,7 +91,8 @@ class SocialGameSystem {
 
       // Processar amigos
       const friends: Friend[] = []
-      friendships?.forEach((friendship: any) => {
+      friendships?.forEach((rawFriendship: unknown) => {
+        const friendship = rawFriendship as { requester_id: string; addressee: { id: string; name: string; total_xp: number; streak_days: number; created_at: string; current_challenge: number; badges: string[] }; requester: { id: string; name: string; total_xp: number; streak_days: number; created_at: string; current_challenge: number; badges: string[] } }
         const friend = friendship.requester_id === userId
           ? friendship.addressee
           : friendship.requester
@@ -132,7 +133,7 @@ class SocialGameSystem {
         return null
       }
 
-      const friendData = friendCodeData.students as any
+      const friendData = (friendCodeData.students as unknown as { id: string; name: string; total_xp: number; streak_days: number; updated_at: string; current_challenge: number; badges: string[] })
       const friendId = friendCodeData.student_id
 
       // Verificar se já são amigos
@@ -362,21 +363,35 @@ class SocialGameSystem {
 
       // Processar e ordenar por XP
       return members
-        ?.map((member: any, index: number) => ({
-          id: member.students.id,
-          name: member.students.name,
-          totalXP: member.students.total_xp,
-          level: this.calculateLevel(member.students.total_xp),
-          currentChallenge: member.students.current_challenge,
-          streakDays: member.students.streak_days,
-          role: member.role,
-          joinedAt: member.joined_at,
-          rank: 0, // Será calculado após ordenação
-          weeklyXP: Math.floor(member.students.total_xp * 0.2), // Simular XP semanal
-          progress: member.students.current_challenge - 1
-        }))
-        .sort((a, b) => b.totalXP - a.totalXP)
-        .map((member, index) => ({ ...member, rank: index + 1 })) || []
+        ?.map((rawMember: unknown) => {
+          const member = rawMember as {
+            student_id: string;
+            role: string;
+            joined_at: string;
+            students: {
+              id: string;
+              name: string;
+              total_xp: number;
+              current_challenge: number;
+              streak_days: number
+            }
+          }
+          return {
+            id: member.students.id,
+            name: member.students.name,
+            totalXP: member.students.total_xp,
+            level: this.calculateLevel(member.students.total_xp),
+            currentChallenge: member.students.current_challenge,
+            streakDays: member.students.streak_days,
+            role: member.role,
+            joinedAt: member.joined_at,
+            rank: 0, // Será calculado após ordenação
+            weeklyXP: Math.floor(member.students.total_xp * 0.2), // Simular XP semanal
+            progress: member.students.current_challenge - 1
+          }
+        })
+        ?.sort((a, b) => b.totalXP - a.totalXP)
+        ?.map((member, index) => ({ ...member, rank: index + 1 })) || []
     } catch (error) {
       console.error('Erro ao carregar leaderboard:', error)
       return []
@@ -433,16 +448,24 @@ class SocialGameSystem {
         return false
       }
 
-      // Incrementar contador de participantes
-      const { error: updateError } = await supabase
+      // Incrementar contador de participantes - Note: this should be handled by database triggers in production
+      const { data: currentChallenge } = await supabase
         .from('social_challenges')
-        .update({
-          participants_count: supabase.raw('participants_count + 1')
-        })
+        .select('participants_count')
         .eq('id', challengeId)
+        .single()
 
-      if (updateError) {
-        console.error('Erro ao atualizar contador:', updateError)
+      if (currentChallenge) {
+        const { error: updateError } = await supabase
+          .from('social_challenges')
+          .update({
+            participants_count: (currentChallenge.participants_count || 0) + 1
+          })
+          .eq('id', challengeId)
+
+        if (updateError) {
+          console.error('Erro ao atualizar contador:', updateError)
+        }
       }
 
       return true

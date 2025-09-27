@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { analyticsService } from '@/lib/analytics/analyticsService'
 import { Clock, TrendingUp, Target, AlertTriangle, Lightbulb, BarChart3 } from 'lucide-react'
 
@@ -10,15 +10,20 @@ interface AnalyticsDashboardProps {
 }
 
 export function AnalyticsDashboard({ studentId, className = '' }: AnalyticsDashboardProps) {
-  const [stats, setStats] = useState<any>(null)
-  const [heatmapData, setHeatmapData] = useState<any[]>([])
+  const [stats, setStats] = useState<{
+    totalTime: number
+    avgSessionTime: number
+    sessionsCount: number
+    mostActiveHour: number
+    productiveHours: number[]
+    challengesCompleted: number
+    hintsUsed: number
+    errorsCount: number
+  } | null>(null)
+  const [heatmapData, setHeatmapData] = useState<unknown[]>([])
   const [timeRange, setTimeRange] = useState(7) // últimos 7 dias
 
-  useEffect(() => {
-    loadAnalytics()
-  }, [studentId, timeRange])
-
-  const loadAnalytics = async () => {
+  const loadAnalytics = useCallback(async () => {
     try {
       const timeStats = await analyticsService.getTimeStatistics(studentId, timeRange)
       const heatmap = await analyticsService.getHeatmapData(studentId)
@@ -28,7 +33,11 @@ export function AnalyticsDashboard({ studentId, className = '' }: AnalyticsDashb
     } catch (error) {
       console.error('Erro ao carregar analytics:', error)
     }
-  }
+  }, [studentId, timeRange])
+
+  useEffect(() => {
+    loadAnalytics()
+  }, [loadAnalytics])
 
   const formatTime = (ms: number) => {
     const minutes = Math.floor(ms / 60000)
@@ -184,7 +193,7 @@ export function AnalyticsDashboard({ studentId, className = '' }: AnalyticsDashb
           <div className="space-y-2">
             <span className="text-sm text-muted-foreground">Top 3 horários:</span>
             <div className="flex space-x-2">
-              {stats.productiveHours.map((hour: number, index: number) => (
+              {stats.productiveHours.map((hour: number) => (
                 <div
                   key={hour}
                   className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium"
@@ -206,7 +215,9 @@ export function AnalyticsDashboard({ studentId, className = '' }: AnalyticsDashb
           </h4>
 
           <div className="space-y-3">
-            {heatmapData.slice(-5).map((data, index) => (
+            {heatmapData.slice(-5).map((rawData, index) => {
+              const data = rawData as { difficulty_score: number; challenge_id: number; error_count: number; completion_rate: number; average_time: number }
+              return (
               <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div
@@ -231,7 +242,8 @@ export function AnalyticsDashboard({ studentId, className = '' }: AnalyticsDashb
                   </p>
                 </div>
               </div>
-            ))}
+              )
+            })}
           </div>
 
           {/* Legenda */}

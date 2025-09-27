@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu, X, ChevronDown, Play, Award, Users, Clock, CheckCircle, AlertCircle } from 'lucide-react'
+import { Menu, X, Play, Award, Users, Clock, CheckCircle, AlertCircle } from 'lucide-react'
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -399,8 +399,8 @@ export default function HomePage() {
                 </div>
               </div>
               <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                "Saí do programa com projeto fullstack completo. Frontend em React e backend
-                em PHP. O conjunto impressionou na entrevista para vaga júnior."
+                &quot;Saí do programa com projeto fullstack completo. Frontend em React e backend
+                em PHP. O conjunto impressionou na entrevista para vaga júnior.&quot;
               </p>
               <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                 <span className="flex items-center space-x-1">
@@ -425,8 +425,8 @@ export default function HomePage() {
                 </div>
               </div>
               <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                "Transição de carreira aos 22. O programa me ensinou fullstack (React + Python).
-                Hoje trabalho remoto com o projeto completo que construí."
+                &quot;Transição de carreira aos 22. O programa me ensinou fullstack (React + Python).
+                Hoje trabalho remoto com o projeto completo que construí.&quot;
               </p>
               <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                 <span className="flex items-center space-x-1">
@@ -451,8 +451,8 @@ export default function HomePage() {
                 </div>
               </div>
               <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                "Ainda no ensino médio mas o programa me preparou bem.
-                Tenho um portfólio profissional e já faço alguns freelances."
+                &quot;Ainda no ensino médio mas o programa me preparou bem.
+                Tenho um portfólio profissional e já faço alguns freelances.&quot;
               </p>
               <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                 <span className="flex items-center space-x-1">
@@ -659,7 +659,7 @@ export default function HomePage() {
           <div className="space-y-6">
             <div className="glass-card rounded-xl p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">
-                "Nunca programei na vida. Consigo acompanhar?"
+                &quot;Nunca programei na vida. Consigo acompanhar?&quot;
               </h3>
               <p className="text-muted-foreground">
                 Sim! 70% dos nossos alunos começaram do absoluto zero. O método é pensado para iniciantes.
@@ -670,7 +670,7 @@ export default function HomePage() {
 
             <div className="glass-card rounded-xl p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">
-                "Tenho pouco tempo livre. Consigo acompanhar?"
+                &quot;Tenho pouco tempo livre. Consigo acompanhar?&quot;
               </h3>
               <p className="text-muted-foreground">
                 O conteúdo está disponível 24/7 para você estudar no seu ritmo. Se conseguir algumas
@@ -681,7 +681,7 @@ export default function HomePage() {
 
             <div className="glass-card rounded-xl p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">
-                "Vou conseguir emprego depois do curso?"
+                &quot;Vou conseguir emprego depois do curso?&quot;
               </h3>
               <p className="text-muted-foreground">
                 O programa te prepara com as habilidades e portfólio necessários, mas não posso
@@ -692,7 +692,7 @@ export default function HomePage() {
 
             <div className="glass-card rounded-xl p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">
-                "É realmente grátis? Qual a pegadinha?"
+                &quot;É realmente grátis? Qual a pegadinha?&quot;
               </h3>
               <p className="text-muted-foreground">
                 O programa tem um plano gratuito com todo o conteúdo e um plano premium que inclui
@@ -703,7 +703,7 @@ export default function HomePage() {
 
             <div className="glass-card rounded-xl p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">
-                "Preciso de computador específico?"
+                &quot;Preciso de computador específico?&quot;
               </h3>
               <p className="text-muted-foreground">
                 Qualquer computador dos últimos 5 anos serve. Windows, Mac ou Linux. Não precisa de
@@ -714,7 +714,7 @@ export default function HomePage() {
 
             <div className="glass-card rounded-xl p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">
-                "E se eu travar em algum desafio?"
+                &quot;E se eu travar em algum desafio?&quot;
               </h3>
               <p className="text-muted-foreground">
                 Todo desafio tem sistema de dicas progressivas. Se ainda assim ficar perdido,
@@ -725,7 +725,7 @@ export default function HomePage() {
 
             <div className="glass-card rounded-xl p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">
-                "Posso escolher entre Python e PHP para o backend?"
+                &quot;Posso escolher entre Python e PHP para o backend?&quot;
               </h3>
               <p className="text-muted-foreground">
                 Sim! Você escolhe o backend que mais te interessa. Python é ótimo para data science

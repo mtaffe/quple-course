@@ -2,11 +2,12 @@ export interface Student {
   id: string
   name: string
   email: string
-  currentChallenge: number
-  totalXp: number
-  streakDays: number
+  current_challenge: number
+  total_xp: number
+  streak_days: number
   badges: string[]
-  createdAt: string
+  created_at: string
+  last_activity_date: string
 }
 
 export interface Challenge {

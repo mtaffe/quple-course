@@ -14,8 +14,11 @@ export function useTheme(studentId?: string) {
 
     // Aplicar preferências se tiver studentId
     if (studentId) {
-      const preferences = themeSystem.getPreferences(studentId)
-      themeSystem.applyPreferences(preferences)
+      const applyPrefs = async () => {
+        const preferences = await themeSystem.getPreferences(studentId)
+        themeSystem.applyPreferences(preferences)
+      }
+      applyPrefs()
     }
   }, [studentId])
 
@@ -23,7 +26,7 @@ export function useTheme(studentId?: string) {
     applyTheme: themeSystem.applyTheme.bind(themeSystem),
     getThemes: themeSystem.getThemes.bind(themeSystem),
     getCurrentTheme: themeSystem.getCurrentTheme.bind(themeSystem),
-    savePreferences: (preferences: any) => studentId && themeSystem.savePreferences(studentId, preferences),
+    savePreferences: (preferences: { theme?: string; fontSize?: 'small' | 'medium' | 'large'; animations?: boolean; soundEnabled?: boolean; learningStyle?: 'visual' | 'auditory' | 'kinesthetic' | 'reading' }) => studentId && themeSystem.savePreferences(studentId, preferences),
     getPreferences: () => studentId ? themeSystem.getPreferences(studentId) : null
   }
 }

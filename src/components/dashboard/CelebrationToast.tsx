@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { X, Star, Trophy, Zap, Target, Clock, BookOpen } from 'lucide-react'
+import React, { useState, useEffect, useCallback } from 'react'
+import { X, Star, Trophy, Zap, Target, BookOpen } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface Achievement {
@@ -10,7 +10,7 @@ interface Achievement {
   title: string
   description: string
   value?: number
-  icon?: JSX.Element
+  icon?: React.ReactElement
   color?: string
   celebration?: 'normal' | 'special' | 'epic'
 }
@@ -25,6 +25,14 @@ export function CelebrationToast({ achievement, onClose, duration = 5000 }: Cele
   const [isVisible, setIsVisible] = useState(false)
   const [isLeaving, setIsLeaving] = useState(false)
 
+  const handleClose = useCallback(() => {
+    setIsLeaving(true)
+    setTimeout(() => {
+      setIsVisible(false)
+      onClose()
+    }, 300)
+  }, [onClose])
+
   useEffect(() => {
     if (achievement) {
       setIsVisible(true)
@@ -36,15 +44,7 @@ export function CelebrationToast({ achievement, onClose, duration = 5000 }: Cele
 
       return () => clearTimeout(timer)
     }
-  }, [achievement, duration])
-
-  const handleClose = () => {
-    setIsLeaving(true)
-    setTimeout(() => {
-      setIsVisible(false)
-      onClose()
-    }, 300)
-  }
+  }, [achievement, duration, handleClose])
 
   if (!achievement || !isVisible) return null
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Clock, Target, BookOpen, Code, ChevronRight, Lightbulb, Calendar, Trophy, HelpCircle } from 'lucide-react'
 import { challenges } from '@/lib/challenges'
@@ -25,7 +25,7 @@ interface RecommendedAction {
   description: string
   action: string
   time: string
-  icon: JSX.Element
+  icon: React.ReactElement
   priority: 'high' | 'medium' | 'low'
   actionType: 'primary' | 'secondary'
 }

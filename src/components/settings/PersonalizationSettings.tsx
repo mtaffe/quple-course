@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/Button'
 import { themeSystem, Theme, UserPreferences } from '@/lib/themes/themeSystem'
-import { Palette, Settings, Volume2, VolumeX, Eye, Monitor, Smartphone, Download, Upload, RotateCcw } from 'lucide-react'
+import { Palette, Settings, Volume2, VolumeX, Monitor, Download, Upload, RotateCcw } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface PersonalizationSettingsProps {
@@ -17,23 +17,23 @@ export function PersonalizationSettings({ studentId, onClose, className = '' }: 
   const [themes, setThemes] = useState<Theme[]>([])
   const [currentTheme, setCurrentTheme] = useState('')
   const [preferences, setPreferences] = useState<UserPreferences | null>(null)
-  const [previewTheme, setPreviewTheme] = useState<string | null>(null)
+  // const [previewTheme] = useState<string | null>(null)
   const [isExporting, setIsExporting] = useState(false)
 
-  useEffect(() => {
-    loadSettings()
-  }, [studentId])
-
-  const loadSettings = () => {
+  const loadSettings = useCallback(async () => {
     themeSystem.loadCustomThemes()
     const availableThemes = themeSystem.getThemes()
     const current = themeSystem.getCurrentTheme()
-    const prefs = themeSystem.getPreferences(studentId)
+    const prefs = await themeSystem.getPreferences(studentId)
 
     setThemes(availableThemes)
     setCurrentTheme(current)
     setPreferences(prefs)
-  }
+  }, [studentId])
+
+  useEffect(() => {
+    loadSettings()
+  }, [loadSettings])
 
   const handleThemeSelect = (themeId: string) => {
     setCurrentTheme(themeId)
@@ -41,7 +41,7 @@ export function PersonalizationSettings({ studentId, onClose, className = '' }: 
   }
 
   const handleThemePreview = (themeId: string | null) => {
-    setPreviewTheme(themeId)
+    // setPreviewTheme(themeId)
     if (themeId) {
       themeSystem.applyTheme(themeId)
     } else {
@@ -63,7 +63,7 @@ export function PersonalizationSettings({ studentId, onClose, className = '' }: 
   const exportSettings = async () => {
     setIsExporting(true)
     try {
-      const settings = themeSystem.exportSettings(studentId)
+      const settings = await themeSystem.exportSettings(studentId)
       const blob = new Blob([settings], { type: 'application/json' })
       const url = URL.createObjectURL(blob)
 
@@ -76,7 +76,7 @@ export function PersonalizationSettings({ studentId, onClose, className = '' }: 
       URL.revokeObjectURL(url)
 
       alert('✅ Configurações exportadas com sucesso!')
-    } catch (error) {
+    } catch {
       alert('❌ Erro ao exportar configurações.')
     } finally {
       setIsExporting(false)
@@ -93,10 +93,10 @@ export function PersonalizationSettings({ studentId, onClose, className = '' }: 
       if (!file) return
 
       const reader = new FileReader()
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         try {
           const content = e.target?.result as string
-          const success = themeSystem.importSettings(studentId, content)
+          const success = await themeSystem.importSettings(studentId, content)
 
           if (success) {
             alert('✅ Configurações importadas com sucesso!')
@@ -104,7 +104,7 @@ export function PersonalizationSettings({ studentId, onClose, className = '' }: 
           } else {
             alert('❌ Erro ao importar configurações.')
           }
-        } catch (error) {
+        } catch {
           alert('❌ Arquivo inválido.')
         }
       }
@@ -161,7 +161,7 @@ export function PersonalizationSettings({ studentId, onClose, className = '' }: 
         ].map(tab => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => setActiveTab(tab.id as 'themes' | 'preferences' | 'advanced')}
             className={cn(
               "flex-1 flex items-center justify-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all",
               activeTab === tab.id
@@ -281,7 +281,7 @@ export function PersonalizationSettings({ studentId, onClose, className = '' }: 
                 </div>
                 <select
                   value={preferences.fontSize}
-                  onChange={(e) => updatePreference('fontSize', e.target.value as any)}
+                  onChange={(e) => updatePreference('fontSize', e.target.value as 'small' | 'medium' | 'large')}
                   className="bg-background border border-border rounded-lg px-3 py-2 text-sm"
                 >
                   <option value="small">Pequeno</option>
@@ -383,7 +383,7 @@ export function PersonalizationSettings({ studentId, onClose, className = '' }: 
                 ].map(style => (
                   <button
                     key={style.id}
-                    onClick={() => updatePreference('learningStyle', style.id as any)}
+                    onClick={() => updatePreference('learningStyle', style.id as 'visual' | 'auditory' | 'kinesthetic' | 'reading')}
                     className={cn(
                       "text-left p-3 rounded-lg border-2 transition-all",
                       preferences.learningStyle === style.id

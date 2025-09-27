@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/Button'
 import { socialGameSystem, Friend, StudyGroup, SocialChallenge, SocialStats } from '@/lib/social/socialGameSystem'
-import { Users, Trophy, UserPlus, Crown, Zap, Calendar, Target, Copy, Check } from 'lucide-react'
+import { Users, Trophy, UserPlus, Crown, Copy, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface SocialDashboardProps {
@@ -22,11 +22,7 @@ export function SocialDashboard({ studentId, className = '' }: SocialDashboardPr
   const [isAddingFriend, setIsAddingFriend] = useState(false)
   const [copied, setCopied] = useState(false)
 
-  useEffect(() => {
-    loadSocialData()
-  }, [studentId])
-
-  const loadSocialData = async () => {
+  const loadSocialData = useCallback(async () => {
     try {
       const [friendsData, groupsData, challengesData, statsData, code] = await Promise.all([
         socialGameSystem.getFriends(studentId),
@@ -41,10 +37,14 @@ export function SocialDashboard({ studentId, className = '' }: SocialDashboardPr
       setSocialChallenges(challengesData)
       setSocialStats(statsData)
       setFriendCode(code)
-    } catch (error) {
-      console.error('Erro ao carregar dados sociais:', error)
+    } catch {
+      console.error('Erro ao carregar dados sociais')
     }
-  }
+  }, [studentId])
+
+  useEffect(() => {
+    loadSocialData()
+  }, [loadSocialData])
 
   const handleAddFriend = async () => {
     if (!newFriendCode.trim()) return
@@ -59,7 +59,7 @@ export function SocialDashboard({ studentId, className = '' }: SocialDashboardPr
       } else {
         alert('❌ Código de amigo não encontrado.')
       }
-    } catch (error) {
+    } catch {
       alert('❌ Erro ao adicionar amigo.')
     } finally {
       setIsAddingFriend(false)
@@ -177,7 +177,7 @@ export function SocialDashboard({ studentId, className = '' }: SocialDashboardPr
         ].map(tab => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => setActiveTab(tab.id as 'friends' | 'groups' | 'challenges')}
             className={cn(
               "flex-1 flex items-center justify-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all",
               activeTab === tab.id
@@ -256,7 +256,7 @@ export function SocialDashboard({ studentId, className = '' }: SocialDashboardPr
                     <div>
                       <p className="font-medium text-foreground">{friend.name}</p>
                       <p className="text-xs text-muted-foreground">
-                        {getStatusLabel(friend.status)} • {formatLastSeen(friend.lastSeen)}
+                        {getStatusLabel(friend.status)} • {formatLastSeen(friend.last_seen)}
                       </p>
                     </div>
                   </div>
@@ -295,7 +295,7 @@ export function SocialDashboard({ studentId, className = '' }: SocialDashboardPr
                   <h4 className="font-medium text-foreground">{group.name}</h4>
                   <p className="text-sm text-muted-foreground">{group.description}</p>
                 </div>
-                {group.isPublic && (
+                {group.is_public && (
                   <Button
                     onClick={() => joinGroup(group.id)}
                     size="sm"
@@ -321,13 +321,13 @@ export function SocialDashboard({ studentId, className = '' }: SocialDashboardPr
                 </div>
               </div>
 
-              {group.challenge && (
+              {group.current_challenge && (
                 <div className="mt-3 p-3 bg-muted/50 rounded-lg">
                   <p className="text-xs font-medium text-foreground">
-                    🎯 Desafio Ativo: {group.challenge.name}
+                    🎯 Desafio Ativo: {group.current_challenge.name}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {group.challenge.participants} participantes • Prazo: {new Date(group.challenge.deadline).toLocaleDateString()}
+                    {group.current_challenge.participants} participantes • Prazo: {new Date(group.current_challenge.deadline).toLocaleDateString()}
                   </p>
                 </div>
               )}

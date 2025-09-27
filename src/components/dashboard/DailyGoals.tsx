@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/Button'
-import { Target, CheckCircle, Clock, Plus, Edit2, Trash2, Calendar, Star } from 'lucide-react'
+import { Target, CheckCircle, Clock, Plus, Trash2, Calendar, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { supabase } from '@/lib/supabase/client'
 
@@ -17,6 +17,7 @@ interface DailyGoal {
   completed: boolean
   created_at: string
   due_date: string
+  completed_at?: string | null
 }
 
 interface DailyGoalsProps {
@@ -55,20 +56,21 @@ const goalTemplates = [
 export function DailyGoals({ studentId, onGoalComplete }: DailyGoalsProps) {
   const [goals, setGoals] = useState<DailyGoal[]>([])
   const [isCreating, setIsCreating] = useState(false)
-  const [newGoal, setNewGoal] = useState({
+  const [newGoal, setNewGoal] = useState<{
+    title: string
+    description: string
+    type: 'time' | 'challenge' | 'concept' | 'custom'
+    target_value: number
+    unit: string
+  }>({
     title: '',
     description: '',
-    type: 'time' as const,
+    type: 'time',
     target_value: 30,
     unit: 'min'
   })
 
-  // Carregar metas do Supabase
-  useEffect(() => {
-    loadGoals()
-  }, [studentId])
-
-  const loadGoals = async () => {
+  const loadGoals = useCallback(async () => {
     const today = new Date().toISOString().split('T')[0] // YYYY-MM-DD
 
     const { data, error } = await supabase
@@ -84,7 +86,12 @@ export function DailyGoals({ studentId, onGoalComplete }: DailyGoalsProps) {
     }
 
     setGoals(data || [])
-  }
+  }, [studentId])
+
+  // Carregar metas do Supabase
+  useEffect(() => {
+    loadGoals()
+  }, [loadGoals])
 
   // Salvar metas no Supabase
   const saveGoal = async (goal: Partial<DailyGoal>) => {
@@ -395,7 +402,7 @@ export function DailyGoals({ studentId, onGoalComplete }: DailyGoalsProps) {
             <div className="flex space-x-3">
               <select
                 value={newGoal.type}
-                onChange={(e) => setNewGoal({ ...newGoal, type: e.target.value as any })}
+                onChange={(e) => setNewGoal({ ...newGoal, type: e.target.value as 'time' | 'challenge' | 'concept' | 'custom' })}
                 className="flex-1 p-2 bg-background border border-border rounded-lg text-sm"
               >
                 <option value="time">Tempo</option>

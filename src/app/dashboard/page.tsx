@@ -24,7 +24,7 @@ import { UserCircle, Settings, LogOut } from 'lucide-react'
 export default function DashboardPage() {
   const { student, loading, isAuthenticated, clearUser } = useAuth()
   const { celebrate, CelebrationComponent } = useCelebration()
-  const { trackGoalCompletion, trackEvent } = useAnalytics({
+  const { trackGoalCompletion } = useAnalytics({
     studentId: student?.id || '',
     autoStart: !!student
   })
@@ -160,7 +160,7 @@ export default function DashboardPage() {
     if (student) {
       loadStudentProgress()
     }
-  }, [student, celebrate])
+  }, [student, celebrate, levelInfo, studentBadges])
 
   // Verificar se é um novo usuário e precisa de onboarding
   useEffect(() => {
@@ -310,16 +310,16 @@ export default function DashboardPage() {
           studentId={student.id}
           onGoalComplete={(goal) => {
             // Analytics tracking
-            trackGoalCompletion(goal.type, goal.targetValue)
+            trackGoalCompletion(goal.type, goal.target_value)
 
             // Celebração
             celebrate({
               id: `goal_${goal.id}`,
               type: 'goal',
               title: goal.title,
-              description: `Parabéns! Você completou sua meta de ${goal.targetValue} ${goal.unit}`,
+              description: `Parabéns! Você completou sua meta de ${goal.target_value} ${goal.unit}`,
               value: 25,
-              celebration: goal.targetValue >= 60 ? 'special' : 'normal'
+              celebration: goal.target_value >= 60 ? 'special' : 'normal'
             })
           }}
         />

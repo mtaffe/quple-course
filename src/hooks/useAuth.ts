@@ -17,6 +17,7 @@ interface Student {
   streak_days: number
   badges: string[]
   created_at: string
+  last_activity_date: string
 }
 
 // Hook personalizado - retorna tudo que precisamos saber sobre auth

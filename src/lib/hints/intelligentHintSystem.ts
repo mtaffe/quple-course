@@ -260,9 +260,9 @@ class IntelligentHintSystem {
   }
 
   // Gerar hint personalizada baseada no histórico do usuário
-  generatePersonalizedHint(userHistory: any): SmartHint {
+  generatePersonalizedHint(userHistory: { commonErrors?: string[]; strugglingAreas?: string[] }): SmartHint {
     const commonErrors = userHistory.commonErrors || []
-    const strugglingAreas = userHistory.strugglingAreas || []
+    // const strugglingAreas = userHistory.strugglingAreas || []
 
     if (commonErrors.includes('missing_doctype')) {
       return {
