@@ -78,11 +78,12 @@ export default function HomePage() {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex items-center space-x-6">
             <a href="#prequalification" className="text-muted-foreground hover:text-foreground transition-colors">É Para Mim?</a>
             <a href="#social-proof" className="text-muted-foreground hover:text-foreground transition-colors">Alunos</a>
             <a href="#faq" className="text-muted-foreground hover:text-foreground transition-colors">FAQ</a>
             <a href="/simple" className="text-muted-foreground hover:text-foreground transition-colors">Demo</a>
+            <a href="/auth" className="btn-primary-gradient px-4 py-2 rounded-lg font-semibold premium-hover">Entrar</a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -101,6 +102,7 @@ export default function HomePage() {
             <a href="#social-proof" className="block py-2 text-muted-foreground hover:text-foreground transition-colors">Alunos</a>
             <a href="#faq" className="block py-2 text-muted-foreground hover:text-foreground transition-colors">FAQ</a>
             <a href="/simple" className="block py-2 text-muted-foreground hover:text-foreground transition-colors">Demo</a>
+            <a href="/auth" className="block btn-primary-gradient px-4 py-2 rounded-lg font-semibold text-center mt-3">Entrar</a>
           </div>
         )}
       </nav>
@@ -143,19 +145,28 @@ export default function HomePage() {
 
           {/* Lead Magnets */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <a
+              href="/auth"
+              className="btn-primary-gradient px-8 py-4 rounded-xl font-semibold premium-hover text-lg"
+            >
+              <span className="flex items-center justify-center space-x-2">
+                <Play className="h-5 w-5" />
+                <span>Começar Agora</span>
+              </span>
+            </a>
             <button
               onClick={() => setShowAssessment(true)}
-              className="btn-primary-gradient px-6 py-3 rounded-xl font-semibold premium-hover"
+              className="glass-card text-foreground px-6 py-3 rounded-xl font-semibold premium-hover"
             >
               <span className="flex items-center justify-center space-x-2">
                 <CheckCircle className="h-5 w-5" />
-                <span>Descobrir se é Para Mim</span>
+                <span>É Para Mim?</span>
               </span>
             </button>
             <a href="/simple" className="glass-card text-foreground px-6 py-3 rounded-xl font-semibold premium-hover">
               <span className="flex items-center justify-center space-x-2">
                 <Play className="h-5 w-5" />
-                <span>Ver Como Funciona</span>
+                <span>Ver Demo</span>
               </span>
             </a>
           </div>
