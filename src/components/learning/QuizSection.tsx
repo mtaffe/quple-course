@@ -5,6 +5,8 @@ import { CheckCircle, XCircle, Trophy, Zap } from 'lucide-react'
 import { QuizQuestion } from './QuizQuestion'
 import { useAuth } from '@/hooks/useAuth'
 import { saveQuizAttempt } from '@/lib/learning/progress'
+import { checkQuizBadges } from '@/lib/learning/badges'
+import { triggerBadgeUnlock } from './BadgeUnlockNotification'
 import type { Quiz, QuizAnswer } from '@/lib/learning/quizzes/types'
 
 interface QuizSectionProps {
@@ -92,6 +94,21 @@ export function QuizSection({ quiz, topicSlug, lessonId, onComplete }: QuizSecti
         console.error('Error saving quiz attempt:', error)
         // Continue anyway - don't block UI on save error
       }
+
+      // Check and unlock badges
+      const unlockedBadges = await checkQuizBadges(
+        user.id,
+        quiz.id,
+        percentage,
+        !submitted // isFirstAttempt
+      )
+
+      // Trigger notification for each unlocked badge
+      unlockedBadges.forEach(unlock => {
+        if (unlock.isNew) {
+          triggerBadgeUnlock(unlock.badge)
+        }
+      })
 
       setScore(calculatedScore)
       setXpEarned(calculatedXP)

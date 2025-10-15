@@ -1,6 +1,7 @@
 'use client'
 
 import { Sidebar } from './Sidebar'
+import { BadgeUnlockManager } from '@/components/learning/BadgeUnlockNotification'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -17,6 +18,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           {children}
         </main>
       </div>
+
+      {/* Badge Unlock Notifications */}
+      <BadgeUnlockManager />
     </div>
   )
 }

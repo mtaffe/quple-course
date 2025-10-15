@@ -7,7 +7,9 @@ import { ContentNavigation } from '@/components/navigation/ContentNavigation'
 import { ContentRenderer } from '@/components/learning/ContentRenderer'
 import { QuizSection } from '@/components/learning/QuizSection'
 import { useAuth } from '@/hooks/useAuth'
-import { trackReadingProgress, updateTimeSpent } from '@/lib/learning/progress'
+import { trackReadingProgress, updateTimeSpent, markLessonCompleted } from '@/lib/learning/progress'
+import { checkLessonBadges } from '@/lib/learning/badges'
+import { triggerBadgeUnlock } from '@/components/learning/BadgeUnlockNotification'
 import type { Quiz } from '@/lib/learning/quizzes/types'
 
 interface LessonSection {
@@ -297,9 +299,27 @@ export function TopicPageClient({ topic, slug }: TopicPageClientProps) {
                   quiz={lesson.quiz}
                   topicSlug={slug}
                   lessonId={lesson.id}
-                  onComplete={(score, xpEarned) => {
+                  onComplete={async (score, xpEarned) => {
                     setQuizCompleted(true)
-                    console.log(`Quiz completed! Score: ${score}, XP: ${xpEarned}`)
+
+                    // Mark lesson as completed if user passed
+                    if (user && score >= (lesson.quiz?.passingScore || 70)) {
+                      await markLessonCompleted(user.id, slug, lesson.id)
+
+                      // Check for lesson badges
+                      const unlockedBadges = await checkLessonBadges(
+                        user.id,
+                        slug,
+                        lesson.id
+                      )
+
+                      // Trigger notifications for unlocked badges
+                      unlockedBadges.forEach(unlock => {
+                        if (unlock.isNew) {
+                          triggerBadgeUnlock(unlock.badge)
+                        }
+                      })
+                    }
                   }}
                 />
               </div>
