@@ -1,16 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth'
 import { useAnalytics } from '@/hooks/useAnalytics'
 import { useTheme } from '@/hooks/useTheme'
 import { DashboardLayout } from '@/components/navigation/DashboardLayout'
-import { ContinueLearning } from '@/components/dashboard/ContinueLearning'
-import { SocialActivity } from '@/components/dashboard/SocialActivity'
+import { NextLiveClass } from '@/components/dashboard/NextLiveClass'
+import { CurrentWeekProgress } from '@/components/dashboard/CurrentWeekProgress'
+import { ContinueFromWhereYouLeft } from '@/components/dashboard/ContinueFromWhereYouLeft'
 import { RecentAchievements } from '@/components/dashboard/RecentAchievements'
-import { LevelAssessmentModal } from '@/components/assessment/LevelAssessmentModal'
-import { ProgressService } from '@/lib/progress/progressService'
+import { Trophy, Sparkles, TrendingUp } from 'lucide-react'
+import { PremiumCard, PremiumCardContent } from '@/components/ui/premium-card'
+import { calculateLevel } from '@/lib/utils'
 
 export default function DashboardPage() {
   const { student, loading, isAuthenticated } = useAuth()
@@ -19,162 +19,151 @@ export default function DashboardPage() {
     autoStart: !!student
   })
   useTheme(student?.id)
-  const [showAssessment, setShowAssessment] = useState(false)
-  const [hasCompletedAssessment, setHasCompletedAssessment] = useState(false)
-  const [currentLevel, setCurrentLevel] = useState(1)
 
-  // Verificar se precisa mostrar avaliação de nível
-  useEffect(() => {
-    if (student && student.current_challenge === 0 && !hasCompletedAssessment) {
-      const assessmentCompleted = localStorage.getItem(`assessment_completed_${student.id}`)
-      if (!assessmentCompleted) {
-        setShowAssessment(true)
-      } else {
-        setHasCompletedAssessment(true)
-      }
-    }
-
-    if (student?.total_xp) {
-      const levelInfo = ProgressService.calculateLevel(student.total_xp)
-      setCurrentLevel(levelInfo.level)
-    }
-  }, [student, hasCompletedAssessment])
-
-  // Função para completar avaliação
-  const handleAssessmentComplete = (level: 'beginner' | 'intermediate' | 'advanced', score: number) => {
-    try {
-      console.log('🎯 Avaliação concluída:', { level, score })
-
-      setHasCompletedAssessment(true)
-      setShowAssessment(false)
-      localStorage.setItem(`assessment_completed_${student?.id}`, 'true')
-
-      const startingChallenge = level === 'beginner' ? 1 : level === 'intermediate' ? 3 : 5
-
-      alert(`🎉 Avaliação concluída! Nível: ${level.toUpperCase()}\nPontuação: ${score}%\nVocê começará do Desafio ${startingChallenge}`)
-
-    } catch (error) {
-      console.error('Erro ao salvar avaliação:', error)
-      alert('Erro ao salvar resultado da avaliação')
-    }
-  }
-
-  // Loading state
   if (loading) {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center h-96">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-violet-500/20 border-t-violet-500 rounded-full animate-spin"></div>
+            <div className="absolute inset-0 w-16 h-16 border-4 border-purple-500/20 border-t-purple-500 rounded-full animate-spin animation-delay-150"></div>
+          </div>
         </div>
       </DashboardLayout>
     )
   }
 
-  // Não autenticado
   if (!isAuthenticated || !student) {
     return (
       <DashboardLayout>
-        <div className="text-center py-12">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Acesso Negado</h1>
-          <p className="text-muted-foreground mb-6">Você precisa estar logado para acessar o dashboard.</p>
-          <a
-            href="/auth/login"
-            className="btn-primary-gradient px-6 py-3 rounded-lg font-semibold"
-          >
-            Fazer Login
-          </a>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <PremiumCard className="max-w-md w-full text-center">
+            <PremiumCardContent className="p-8">
+              <div className="w-16 h-16 bg-gradient-premium from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-glow">
+                <Trophy className="h-8 w-8 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-foreground mb-3">Acesso Restrito</h1>
+              <p className="text-muted-foreground mb-6">Você precisa estar logado para acessar o hub do aluno.</p>
+              <a
+                href="/auth/login"
+                className="inline-flex items-center justify-center h-11 px-6 rounded-lg bg-gradient-premium from-violet-500 to-purple-600 text-white font-medium shadow-premium hover:shadow-premium-lg transition-all duration-200 hover:scale-105 active:scale-95"
+              >
+                Fazer Login
+              </a>
+            </PremiumCardContent>
+          </PremiumCard>
         </div>
       </DashboardLayout>
     )
   }
 
+  const levelInfo = calculateLevel(student.total_xp || 0)
+
   return (
     <DashboardLayout>
-      {/* Assessment Modal */}
-      {showAssessment && (
-        <LevelAssessmentModal
-          isOpen={showAssessment}
-          onClose={() => setShowAssessment(false)}
-          onComplete={handleAssessmentComplete}
-        />
-      )}
-
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">
-          Olá, {student.name}! 👋
-        </h1>
-        <p className="text-muted-foreground">
-          Bem-vindo de volta! Continue sua jornada de aprendizado.
+      {/* Header with Welcome Message */}
+      <div className="mb-8 animate-fade-in-up">
+        <div className="flex items-center gap-3 mb-3">
+          <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">
+            Bem-vindo de volta, {student.name?.split(' ')[0]}!
+          </h1>
+          <Sparkles className="h-7 w-7 text-yellow-400 animate-pulse" />
+        </div>
+        <p className="text-muted-foreground text-lg">
+          Continue sua jornada rumo ao desenvolvimento fullstack profissional
         </p>
       </div>
 
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 animate-fade-in">
+        <PremiumCard className="bg-gradient-to-br from-violet-500/10 to-transparent">
+          <PremiumCardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Nível Atual</p>
+                <p className="text-2xl font-bold text-foreground">{levelInfo.level}</p>
+              </div>
+              <Trophy className="h-8 w-8 text-violet-400" />
+            </div>
+          </PremiumCardContent>
+        </PremiumCard>
+
+        <PremiumCard className="bg-gradient-to-br from-purple-500/10 to-transparent">
+          <PremiumCardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Total XP</p>
+                <p className="text-2xl font-bold text-foreground">{student.total_xp || 0}</p>
+              </div>
+              <Sparkles className="h-8 w-8 text-purple-400" />
+            </div>
+          </PremiumCardContent>
+        </PremiumCard>
+
+        <PremiumCard className="bg-gradient-to-br from-blue-500/10 to-transparent">
+          <PremiumCardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Sequência</p>
+                <p className="text-2xl font-bold text-foreground">0 dias</p>
+              </div>
+              <TrendingUp className="h-8 w-8 text-blue-400" />
+            </div>
+          </PremiumCardContent>
+        </PremiumCard>
+      </div>
+
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Continue Learning - Main Section */}
-        <div className="lg:col-span-2">
-          <ContinueLearning
-            studentId={student.id}
-            currentChallenge={student.current_challenge || 0}
-            totalXP={student.total_xp || 0}
-          />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* Left Column - Main Content */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Next Live Class */}
+          <div className="animate-fade-in-up animation-delay-100">
+            <NextLiveClass />
+          </div>
+
+          {/* Current Week Progress */}
+          <div className="animate-fade-in-up animation-delay-200">
+            <CurrentWeekProgress studentId={student.id} currentWeek={1} />
+          </div>
         </div>
 
-        {/* Sidebar Content */}
+        {/* Right Column - Sidebar */}
         <div className="space-y-6">
-          {/* Social Activity */}
-          <SocialActivity studentId={student.id} />
+          {/* Continue From Where You Left */}
+          <div className="animate-fade-in-up animation-delay-150">
+            <ContinueFromWhereYouLeft />
+          </div>
 
           {/* Recent Achievements */}
-          <RecentAchievements
-            studentId={student.id}
-            totalXP={student.total_xp || 0}
-            currentLevel={currentLevel}
-          />
+          <div className="animate-fade-in-up animation-delay-250">
+            <RecentAchievements
+              studentId={student.id}
+              totalXP={student.total_xp || 0}
+              currentLevel={levelInfo.level}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <a
-          href="/challenges"
-          className="glass-card p-4 rounded-lg hover:bg-muted/50 transition-colors group"
-        >
-          <div className="text-center">
-            <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">📚</div>
-            <div className="text-sm font-medium text-foreground">Todos os Desafios</div>
-          </div>
-        </a>
-
-        <Link
-          href="/learn"
-          className="glass-card p-4 rounded-lg hover:bg-muted/50 transition-colors group"
-        >
-          <div className="text-center">
-            <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">📖</div>
-            <div className="text-sm font-medium text-foreground">Conteúdos</div>
-          </div>
-        </Link>
-
-        <a
-          href="/leaderboard"
-          className="glass-card p-4 rounded-lg hover:bg-muted/50 transition-colors group"
-        >
-          <div className="text-center">
-            <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">🏆</div>
-            <div className="text-sm font-medium text-foreground">Ranking</div>
-          </div>
-        </a>
-
-        <button
-          onClick={() => setShowAssessment(true)}
-          className="glass-card p-4 rounded-lg hover:bg-muted/50 transition-colors group"
-        >
-          <div className="text-center">
-            <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">🎯</div>
-            <div className="text-sm font-medium text-foreground">Nova Avaliação</div>
-          </div>
-        </button>
+      {/* Quick Access Info Card */}
+      <div className="animate-fade-in-up animation-delay-300">
+        <PremiumCard className="bg-gradient-to-r from-violet-500/5 via-purple-500/5 to-blue-500/5">
+          <PremiumCardContent className="p-6">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-premium from-violet-500 to-purple-600 flex items-center justify-center shadow-glow-sm">
+                <Sparkles className="h-6 w-6 text-white" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-foreground mb-2">Dica do Dia</h3>
+                <p className="text-sm text-muted-foreground">
+                  Complete o checklist pré-aula antes da próxima sessão ao vivo para aproveitar ao máximo a mentoria. 
+                  Isso garante que você chegue preparado e possa tirar dúvidas mais avançadas!
+                </p>
+              </div>
+            </div>
+          </PremiumCardContent>
+        </PremiumCard>
       </div>
     </DashboardLayout>
   )

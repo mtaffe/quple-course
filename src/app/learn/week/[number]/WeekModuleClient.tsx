@@ -5,8 +5,10 @@ import { weeklyModules } from '@/lib/learning/weekly-modules';
 import { WeeklyModuleNav } from '@/components/weekly-modules/WeeklyModuleNav';
 import { WeeklyModuleHeader } from '@/components/weekly-modules/WeeklyModuleHeader';
 import { PreClassChecklist } from '@/components/weekly-modules/PreClassChecklist';
+import { RelatedResources } from '@/components/weekly-modules/RelatedResources';
 import { BookOpen, Code, Rocket, CheckCircle2, Trophy, Clock } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { getAllTopicsMetadata } from '@/lib/learning';
 
 interface WeekModuleClientProps {
   module: WeeklyModule;
@@ -22,6 +24,26 @@ export function WeekModuleClient({ module }: WeekModuleClientProps) {
         : [...prev, itemId]
     );
   };
+
+  const relatedResourcesMap: Record<number, string[]> = {
+    1: ['html-fundamentals'],
+    2: ['css-basics', 'html-fundamentals'],
+    3: ['css-advanced', 'css-basics'],
+  };
+
+  const relatedResources = useMemo(() => {
+    const resourceIds = relatedResourcesMap[module.weekNumber] || [];
+    const allTopics = getAllTopicsMetadata();
+    return resourceIds
+      .map(id => allTopics.find(t => t.id === id))
+      .filter(Boolean)
+      .map(topic => ({
+        id: topic!.id,
+        title: topic!.title,
+        description: topic!.description,
+        category: topic!.category.toUpperCase()
+      }));
+  }, [module.weekNumber]);
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
@@ -237,6 +259,9 @@ export function WeekModuleClient({ module }: WeekModuleClientProps) {
               </div>
             </section>
           )}
+
+          {/* Related Resources from Library */}
+          <RelatedResources weekNumber={module.weekNumber} resources={relatedResources} />
         </div>
 
         {/* Sidebar */}
