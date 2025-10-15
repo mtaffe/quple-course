@@ -3,104 +3,28 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { DashboardLayout } from '@/components/navigation/DashboardLayout'
-import { BookOpen, Code, Palette, Zap, Layers, ChevronRight, Clock, Target, Star } from 'lucide-react'
+import { BookOpen, Code, Palette, Zap, Layers, ChevronRight, Clock } from 'lucide-react'
+import {
+  getAllTopicsMetadata,
+  CATEGORY_COLORS,
+  CATEGORY_BG,
+  DIFFICULTY_LABELS,
+  type CategoryType
+} from '@/lib/learning'
 
-interface Topic {
-  id: string
-  title: string
-  description: string
-  icon: React.ReactNode
-  category: 'html' | 'css' | 'javascript' | 'react'
-  estimatedTime: number
-  difficulty: 'beginner' | 'intermediate' | 'advanced'
-  lessons: number
-}
-
-const topics: Topic[] = [
-  {
-    id: 'html-fundamentals',
-    title: 'HTML Fundamentos',
-    description: 'Estrutura semântica, elementos básicos e boas práticas',
-    icon: <Code className="h-6 w-6" />,
-    category: 'html',
-    estimatedTime: 45,
-    difficulty: 'beginner',
-    lessons: 8
-  },
-  {
-    id: 'html-advanced',
-    title: 'HTML Avançado',
-    description: 'Acessibilidade, SEO, formulários complexos e APIs web',
-    icon: <Layers className="h-6 w-6" />,
-    category: 'html',
-    estimatedTime: 60,
-    difficulty: 'intermediate',
-    lessons: 10
-  },
-  {
-    id: 'css-basics',
-    title: 'CSS Essencial',
-    description: 'Seletores, box model, positioning e responsividade',
-    icon: <Palette className="h-6 w-6" />,
-    category: 'css',
-    estimatedTime: 75,
-    difficulty: 'beginner',
-    lessons: 12
-  },
-  {
-    id: 'css-advanced',
-    title: 'CSS Moderno',
-    description: 'Flexbox, Grid, animações e design systems',
-    icon: <Star className="h-6 w-6" />,
-    category: 'css',
-    estimatedTime: 90,
-    difficulty: 'intermediate',
-    lessons: 15
-  },
-  {
-    id: 'js-fundamentals',
-    title: 'JavaScript Base',
-    description: 'Variáveis, funções, eventos e manipulação do DOM',
-    icon: <Zap className="h-6 w-6" />,
-    category: 'javascript',
-    estimatedTime: 120,
-    difficulty: 'beginner',
-    lessons: 18
-  },
-  {
-    id: 'js-advanced',
-    title: 'JavaScript Avançado',
-    description: 'Async/await, APIs, ES6+ e padrões modernos',
-    icon: <Target className="h-6 w-6" />,
-    category: 'javascript',
-    estimatedTime: 150,
-    difficulty: 'advanced',
-    lessons: 20
-  }
-]
-
-const categoryColors = {
-  html: 'text-accent',
-  css: 'text-primary',
-  javascript: 'text-[hsl(var(--warning))]',
-  react: 'text-[hsl(var(--purple))]'
-}
-
-const categoryBg = {
-  html: 'bg-accent/10',
-  css: 'bg-primary/10',
-  javascript: 'bg-[hsl(var(--warning))]/10',
-  react: 'bg-[hsl(var(--purple))]/10'
-}
-
-const difficultyLabels = {
-  beginner: 'Iniciante',
-  intermediate: 'Intermediário',
-  advanced: 'Avançado'
+// Map category to icon component
+const categoryIcons: Record<CategoryType, React.ReactNode> = {
+  html: <Code className="h-6 w-6" />,
+  css: <Palette className="h-6 w-6" />,
+  javascript: <Zap className="h-6 w-6" />,
+  react: <Layers className="h-6 w-6" />
 }
 
 export default function LearnPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
+
+  // Get all topics metadata from /lib/learning
+  const topics = getAllTopicsMetadata()
 
   const filteredTopics = selectedCategory === 'all'
     ? topics
@@ -169,9 +93,9 @@ export default function LearnPage() {
           >
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
-              <div className={`p-3 rounded-lg ${categoryBg[topic.category]}`}>
-                <div className={categoryColors[topic.category]}>
-                  {topic.icon}
+              <div className={`p-3 rounded-lg ${CATEGORY_BG[topic.category]}`}>
+                <div className={CATEGORY_COLORS[topic.category]}>
+                  {categoryIcons[topic.category]}
                 </div>
               </div>
               <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -205,7 +129,7 @@ export default function LearnPage() {
                   topic.difficulty === 'intermediate' ? 'bg-primary/20 text-primary' :
                   'bg-[hsl(var(--warning))]/20 text-[hsl(var(--warning))]'
                 }`}>
-                  {difficultyLabels[topic.difficulty]}
+                  {DIFFICULTY_LABELS[topic.difficulty]}
                 </div>
               </div>
             </div>

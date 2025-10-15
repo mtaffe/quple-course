@@ -4,6 +4,9 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight, BookOpen, Code, Clock, Target } from 'lucide-react'
 import { ContentNavigation } from '@/components/navigation/ContentNavigation'
+import { ContentRenderer } from '@/components/learning/ContentRenderer'
+import { QuizSection } from '@/components/learning/QuizSection'
+import type { Quiz } from '@/lib/learning/quizzes/types'
 
 interface LessonSection {
   id: string
@@ -19,6 +22,7 @@ interface Lesson {
   description: string
   estimatedTime: number
   sections: LessonSection[]
+  quiz?: Quiz
 }
 
 interface Topic {
@@ -37,6 +41,8 @@ interface TopicPageClientProps {
 export function TopicPageClient({ topic, slug }: TopicPageClientProps) {
   const [currentLesson, setCurrentLesson] = useState(0)
   const [currentSection, setCurrentSection] = useState(0)
+  const [showQuiz, setShowQuiz] = useState(false)
+  const [quizCompleted, setQuizCompleted] = useState(false)
 
   const lesson = topic.lessons[currentLesson]
   const section = lesson.sections[currentSection]
@@ -178,20 +184,21 @@ export function TopicPageClient({ topic, slug }: TopicPageClientProps) {
               </div>
 
               {/* Section Content */}
-              <div className="prose prose-invert max-w-none">
-                <div className="text-foreground leading-relaxed whitespace-pre-line">
-                  {section.content}
-                </div>
+              <div className="max-w-none">
+                <ContentRenderer content={section.content} />
 
                 {/* Code Example */}
                 {section.codeExample && (
-                  <div className="mt-6">
-                    <div className="bg-card border border-border rounded-lg overflow-hidden">
-                      <div className="bg-muted px-4 py-2 border-b border-border">
-                        <span className="text-sm font-medium text-foreground">Exemplo:</span>
+                  <div className="mt-8">
+                    <h3 className="text-xl font-semibold text-foreground mb-3">
+                      💡 Exemplo Prático
+                    </h3>
+                    <div className="glass-card rounded-lg overflow-hidden border border-border/50">
+                      <div className="bg-muted/50 px-4 py-2 border-b border-border/50">
+                        <span className="text-xs font-mono font-medium text-primary">Código Completo</span>
                       </div>
                       <pre className="p-4 overflow-x-auto">
-                        <code className="text-sm text-foreground">{section.codeExample}</code>
+                        <code className="text-sm font-mono text-foreground leading-relaxed">{section.codeExample}</code>
                       </pre>
                     </div>
                   </div>
@@ -234,8 +241,22 @@ export function TopicPageClient({ topic, slug }: TopicPageClientProps) {
               </div>
             </div>
 
+            {/* Quiz Section - Show after last section */}
+            {isLastSection && lesson.quiz && !quizCompleted && (
+              <div className="mt-6">
+                <QuizSection
+                  quiz={lesson.quiz}
+                  onComplete={(score, xpEarned) => {
+                    setQuizCompleted(true)
+                    console.log(`Quiz completed! Score: ${score}, XP: ${xpEarned}`)
+                    // TODO: Save to database (will implement in DIA 2)
+                  }}
+                />
+              </div>
+            )}
+
             {/* Lesson Complete */}
-            {isLastSection && (
+            {isLastSection && (!lesson.quiz || quizCompleted) && (
               <div className="glass-card rounded-xl p-8 mt-6 text-center">
                 <div className="text-4xl mb-4">🎉</div>
                 <h3 className="text-xl font-bold text-foreground mb-2">
