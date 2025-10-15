@@ -3,18 +3,24 @@
 import { useState } from 'react'
 import { CheckCircle, XCircle, Trophy, Zap } from 'lucide-react'
 import { QuizQuestion } from './QuizQuestion'
+import { useAuth } from '@/hooks/useAuth'
+import { saveQuizAttempt } from '@/lib/learning/progress'
 import type { Quiz, QuizAnswer } from '@/lib/learning/quizzes/types'
 
 interface QuizSectionProps {
   quiz: Quiz
+  topicSlug: string
+  lessonId: string
   onComplete?: (score: number, xpEarned: number) => void
 }
 
-export function QuizSection({ quiz, onComplete }: QuizSectionProps) {
+export function QuizSection({ quiz, topicSlug, lessonId, onComplete }: QuizSectionProps) {
+  const { user } = useAuth()
   const [answers, setAnswers] = useState<Record<string, string | number>>({})
   const [submitted, setSubmitted] = useState(false)
   const [score, setScore] = useState(0)
   const [xpEarned, setXpEarned] = useState(0)
+  const [saving, setSaving] = useState(false)
 
   const handleAnswerChange = (questionId: string, answer: string | number) => {
     setAnswers(prev => ({
@@ -23,39 +29,82 @@ export function QuizSection({ quiz, onComplete }: QuizSectionProps) {
     }))
   }
 
-  const handleSubmit = () => {
-    // Calcular score
-    let correctCount = 0
-    quiz.questions.forEach(question => {
-      const userAnswer = answers[question.id]
-      const isCorrect = String(userAnswer) === String(question.correctAnswer)
-      if (isCorrect) correctCount++
-    })
-
-    const calculatedScore = correctCount
-    const maxScore = quiz.questions.length
-
-    // Calcular XP
-    // Base: 20 XP por quiz
-    // +2 XP por questão correta
-    // +10 XP se acertar tudo
-    // +20 XP se acertar tudo na primeira tentativa
-    let calculatedXP = 20 // base
-    calculatedXP += correctCount * 2
-    if (correctCount === maxScore) {
-      calculatedXP += 10 // perfect score
-      if (!submitted) {
-        calculatedXP += 20 // first try perfect
-      }
+  const handleSubmit = async () => {
+    if (!user) {
+      console.error('User not authenticated')
+      return
     }
 
-    setScore(calculatedScore)
-    setXpEarned(calculatedXP)
-    setSubmitted(true)
+    setSaving(true)
 
-    // Callback para salvar progresso
-    if (onComplete) {
-      onComplete(calculatedScore, calculatedXP)
+    try {
+      // Calcular score e criar array de QuizAnswer
+      const quizAnswers: QuizAnswer[] = []
+      let correctCount = 0
+
+      quiz.questions.forEach(question => {
+        const userAnswer = answers[question.id]
+        const isCorrect = String(userAnswer) === String(question.correctAnswer)
+        if (isCorrect) correctCount++
+
+        quizAnswers.push({
+          questionId: question.id,
+          answer: userAnswer,
+          correct: isCorrect,
+          pointsEarned: isCorrect ? question.points : 0
+        })
+      })
+
+      const calculatedScore = correctCount
+      const maxScore = quiz.questions.length
+      const percentage = Math.round((correctCount / maxScore) * 100)
+      const passed = percentage >= (quiz.passingScore || 70)
+
+      // Calcular XP
+      // Base: 20 XP por quiz
+      // +2 XP por questão correta
+      // +10 XP se acertar tudo
+      // +20 XP se acertar tudo na primeira tentativa
+      let calculatedXP = 20 // base
+      calculatedXP += correctCount * 2
+      if (correctCount === maxScore) {
+        calculatedXP += 10 // perfect score
+        if (!submitted) {
+          calculatedXP += 20 // first try perfect
+        }
+      }
+
+      // Salvar no banco de dados
+      const { error } = await saveQuizAttempt(
+        user.id,
+        quiz.id,
+        topicSlug,
+        lessonId,
+        calculatedScore,
+        maxScore,
+        percentage,
+        passed,
+        calculatedXP,
+        quizAnswers
+      )
+
+      if (error) {
+        console.error('Error saving quiz attempt:', error)
+        // Continue anyway - don't block UI on save error
+      }
+
+      setScore(calculatedScore)
+      setXpEarned(calculatedXP)
+      setSubmitted(true)
+
+      // Callback para salvar progresso
+      if (onComplete) {
+        onComplete(calculatedScore, calculatedXP)
+      }
+    } catch (error) {
+      console.error('Error in handleSubmit:', error)
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -125,12 +174,12 @@ export function QuizSection({ quiz, onComplete }: QuizSectionProps) {
         <div className="glass-card rounded-xl p-6 text-center">
           <button
             onClick={handleSubmit}
-            disabled={!allAnswered}
+            disabled={!allAnswered || saving}
             className={`btn-primary-gradient px-8 py-3 rounded-lg font-semibold premium-hover transition-all ${
-              !allAnswered ? 'opacity-50 cursor-not-allowed' : ''
+              (!allAnswered || saving) ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
-            {allAnswered ? 'Verificar Respostas' : `Responda todas as ${quiz.questions.length} questões`}
+            {saving ? 'Salvando...' : allAnswered ? 'Verificar Respostas' : `Responda todas as ${quiz.questions.length} questões`}
           </button>
           {!allAnswered && (
             <p className="text-sm text-muted-foreground mt-2">

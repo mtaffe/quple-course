@@ -1,11 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight, BookOpen, Code, Clock, Target } from 'lucide-react'
 import { ContentNavigation } from '@/components/navigation/ContentNavigation'
 import { ContentRenderer } from '@/components/learning/ContentRenderer'
 import { QuizSection } from '@/components/learning/QuizSection'
+import { useAuth } from '@/hooks/useAuth'
+import { trackReadingProgress, updateTimeSpent } from '@/lib/learning/progress'
 import type { Quiz } from '@/lib/learning/quizzes/types'
 
 interface LessonSection {
@@ -39,13 +41,60 @@ interface TopicPageClientProps {
 }
 
 export function TopicPageClient({ topic, slug }: TopicPageClientProps) {
+  const { user } = useAuth()
   const [currentLesson, setCurrentLesson] = useState(0)
   const [currentSection, setCurrentSection] = useState(0)
   const [showQuiz, setShowQuiz] = useState(false)
   const [quizCompleted, setQuizCompleted] = useState(false)
 
+  // Time tracking
+  const startTimeRef = useRef<number>(Date.now())
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+
   const lesson = topic.lessons[currentLesson]
   const section = lesson.sections[currentSection]
+
+  // Track reading progress and time spent
+  useEffect(() => {
+    if (!user) return
+
+    // Track that user accessed this lesson
+    trackReadingProgress(
+      user.id,
+      slug,
+      lesson.id,
+      undefined,
+      { status: 'in_progress' }
+    )
+
+    // Reset start time when lesson changes
+    startTimeRef.current = Date.now()
+
+    // Update time spent every 30 seconds
+    intervalRef.current = setInterval(() => {
+      const now = Date.now()
+      const secondsSpent = Math.floor((now - startTimeRef.current) / 1000)
+
+      if (secondsSpent > 0) {
+        updateTimeSpent(user.id, slug, lesson.id, secondsSpent)
+        startTimeRef.current = now // Reset for next interval
+      }
+    }, 30000) // 30 seconds
+
+    // Cleanup on unmount or lesson change
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+
+      // Save final time spent
+      const now = Date.now()
+      const secondsSpent = Math.floor((now - startTimeRef.current) / 1000)
+      if (secondsSpent > 0) {
+        updateTimeSpent(user.id, slug, lesson.id, secondsSpent)
+      }
+    }
+  }, [user, slug, lesson.id])
 
   const goToNextSection = () => {
     if (currentSection < lesson.sections.length - 1) {
@@ -246,10 +295,11 @@ export function TopicPageClient({ topic, slug }: TopicPageClientProps) {
               <div className="mt-6">
                 <QuizSection
                   quiz={lesson.quiz}
+                  topicSlug={slug}
+                  lessonId={lesson.id}
                   onComplete={(score, xpEarned) => {
                     setQuizCompleted(true)
                     console.log(`Quiz completed! Score: ${score}, XP: ${xpEarned}`)
-                    // TODO: Save to database (will implement in DIA 2)
                   }}
                 />
               </div>
