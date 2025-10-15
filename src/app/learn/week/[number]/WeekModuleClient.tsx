@@ -9,6 +9,7 @@ import { RelatedResources } from '@/components/weekly-modules/RelatedResources';
 import { BookOpen, Code, Rocket, CheckCircle2, Trophy, Clock } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { getAllTopicsMetadata } from '@/lib/learning';
+import { getResourcesForWeek } from '@/lib/learning/weekly-modules/resources-map';
 
 interface WeekModuleClientProps {
   module: WeeklyModule;
@@ -25,14 +26,8 @@ export function WeekModuleClient({ module }: WeekModuleClientProps) {
     );
   };
 
-  const relatedResourcesMap: Record<number, string[]> = {
-    1: ['html-fundamentals'],
-    2: ['css-basics', 'html-fundamentals'],
-    3: ['css-advanced', 'css-basics'],
-  };
-
   const relatedResources = useMemo(() => {
-    const resourceIds = relatedResourcesMap[module.weekNumber] || [];
+    const resourceIds = getResourcesForWeek(module.weekNumber);
     const allTopics = getAllTopicsMetadata();
     return resourceIds
       .map(id => allTopics.find(t => t.id === id))
