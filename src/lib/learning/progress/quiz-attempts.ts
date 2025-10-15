@@ -94,7 +94,7 @@ export async function saveQuizAttempt(
         percentage,
         passed,
         xp_earned: xpEarned,
-        answers: answers as any, // Supabase handles JSONB
+        answers: answers as unknown as Record<string, unknown>, // Supabase handles JSONB
         time_spent: timeSpent,
         completed_at: new Date().toISOString()
       })

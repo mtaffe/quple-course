@@ -6,7 +6,7 @@
 
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { X, Zap, Trophy } from 'lucide-react'
 import type { Badge } from '@/lib/learning/badges/learning-badges'
 
@@ -24,6 +24,13 @@ export function BadgeUnlockNotification({
   const [isVisible, setIsVisible] = useState(false)
   const [isLeaving, setIsLeaving] = useState(false)
 
+  const handleClose = useCallback(() => {
+    setIsLeaving(true)
+    setTimeout(() => {
+      onClose()
+    }, 300) // Match animation duration
+  }, [onClose])
+
   useEffect(() => {
     // Trigger entrance animation
     setTimeout(() => setIsVisible(true), 10)
@@ -34,14 +41,7 @@ export function BadgeUnlockNotification({
     }, autoCloseDelay)
 
     return () => clearTimeout(timer)
-  }, [autoCloseDelay])
-
-  const handleClose = () => {
-    setIsLeaving(true)
-    setTimeout(() => {
-      onClose()
-    }, 300) // Match animation duration
-  }
+  }, [autoCloseDelay, handleClose])
 
   const getRarityColor = () => {
     switch (badge.rarity) {
@@ -175,10 +175,10 @@ export function BadgeUnlockManager() {
       setQueue(prev => [...prev, { id: Math.random().toString(), badge }])
     }
 
-    window.addEventListener('badge-unlocked' as any, handleBadgeUnlock)
+    window.addEventListener('badge-unlocked' as never, handleBadgeUnlock as EventListener)
 
     return () => {
-      window.removeEventListener('badge-unlocked' as any, handleBadgeUnlock)
+      window.removeEventListener('badge-unlocked' as never, handleBadgeUnlock as EventListener)
     }
   }, [])
 
