@@ -50,6 +50,29 @@ WeeklyModule {
 
 ## Recent Changes (October 15, 2025)
 
+### Learning Paths Navigation System (Latest)
+- **Landing Page /learn**: Transformed into trilhas showcase with:
+  - Hero section com stats (127+ alunos, 450+ projetos, 64 aulas)
+  - Cards de trilhas (Fullstack disponível, Frontend em breve)
+  - Destaque do modelo híbrido único (self-paced + mentoria)
+  - Seção de diferenciais (turmas pequenas, híbrido, portfolio real)
+- **Trilha Fullstack /learn/fullstack**: Overview completo das 12 semanas com:
+  - Hero com progresso visual do aluno
+  - Explicação do modelo híbrido (3 pilares)
+  - Cronograma semanal interativo com status (locked, current, completed)
+  - Preview de objetivos de aprendizagem por semana
+- **Módulo Semanal /learn/week/[number]**: Página completa com:
+  - Navegação entre semanas (WeeklyModuleNav)
+  - Header rico com info do módulo
+  - Teoria da semana com code examples
+  - 5 desafios práticos listados
+  - Projeto semanal com critérios de conclusão
+  - Tópicos da aula ao vivo
+  - Recursos extras
+  - Sidebar: Checklist pré-aula interativo + Info + Progresso
+
+## Previous Changes
+
 ### Weekly Module System Implementation
 - **Type System**: Created comprehensive weekly module types (WeeklyModule, StudentWeekProgress, CohortSchedule)
 - **Week 1 Content**: Full HTML Essentials module with:
