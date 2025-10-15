@@ -2,7 +2,6 @@
 
 import { PreClassChecklist as ChecklistType } from '@/types/weekly-modules';
 import { CheckCircle2, Circle, Clock } from 'lucide-react';
-import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 interface PreClassChecklistProps {

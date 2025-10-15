@@ -1,5 +1,36 @@
 import { supabase } from './client';
-import { StudentWeekProgress, ModuleStatus } from '@/types/weekly-modules';
+import { StudentWeekProgress } from '@/types/weekly-modules';
+
+interface SupabaseWeekProgressRow {
+  student_id: string;
+  week_id: string;
+  status: string;
+  started_at?: string;
+  completed_at?: string;
+  theory_progress: {
+    sectionsCompleted: string[];
+    readingTime: number;
+  };
+  challenges_progress: Array<{
+    challengeId: string;
+    status: string;
+    attempts: number;
+    xpEarned: number;
+    completedAt?: string;
+  }>;
+  project_progress: {
+    status: string;
+    submittedAt?: string;
+    feedbackFromMentor?: string;
+    grade?: string;
+    repositoryUrl?: string;
+    liveUrl?: string;
+  };
+  pre_class_checklist_completed: boolean;
+  ready_for_live_class: boolean;
+  total_xp_earned: number;
+  total_time_spent: number;
+}
 
 export class WeeklyProgressService {
   static async getStudentProgress(studentId: string, weekId: string): Promise<StudentWeekProgress | null> {
@@ -234,16 +265,25 @@ export class WeeklyProgressService {
     if (error) throw error;
   }
 
-  private static mapToStudentWeekProgress(data: any): StudentWeekProgress {
+  private static mapToStudentWeekProgress(data: SupabaseWeekProgressRow): StudentWeekProgress {
     return {
       studentId: data.student_id,
       weekId: data.week_id,
-      status: data.status,
+      status: data.status as StudentWeekProgress['status'],
       startedAt: data.started_at ? new Date(data.started_at) : undefined,
       completedAt: data.completed_at ? new Date(data.completed_at) : undefined,
       theoryProgress: data.theory_progress || { sectionsCompleted: [], readingTime: 0 },
-      challengesProgress: data.challenges_progress || [],
-      projectProgress: data.project_progress || { status: 'not_started' },
+      challengesProgress: (data.challenges_progress || []).map(c => ({
+        ...c,
+        status: c.status as 'not_started' | 'in_progress' | 'completed',
+        completedAt: c.completedAt ? new Date(c.completedAt) : undefined
+      })),
+      projectProgress: {
+        ...data.project_progress,
+        status: (data.project_progress?.status || 'not_started') as 'not_started' | 'in_progress' | 'submitted' | 'approved',
+        submittedAt: data.project_progress?.submittedAt ? new Date(data.project_progress.submittedAt) : undefined,
+        grade: data.project_progress?.grade as 'excellent' | 'good' | 'needs_improvement' | undefined
+      },
       preClassChecklistCompleted: data.pre_class_checklist_completed || false,
       readyForLiveClass: data.ready_for_live_class || false,
       totalXPEarned: data.total_xp_earned || 0,
