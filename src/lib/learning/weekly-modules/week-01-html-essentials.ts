@@ -525,5 +525,6 @@ Acessibilidade não é "extra" - é ESSENCIAL. Vamos construir pensando em TODAS
   estimatedStudyHours: 6,
   difficulty: 'beginner',
   tags: ['HTML', 'Semântica', 'Acessibilidade', 'Portfolio', 'Fundamentos'],
+  previousWeekId: undefined,
   nextWeekId: 'week-02-css-basics'
 };

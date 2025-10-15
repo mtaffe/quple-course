@@ -129,6 +129,10 @@ export class WeeklyProgressService {
       const wasCompleted = existingChallenge.status === 'completed';
       const isNowCompleted = status === 'completed';
       
+      if (wasCompleted && isNowCompleted) {
+        return;
+      }
+      
       updatedChallenges = [...progress.challengesProgress];
       updatedChallenges[existingChallengeIndex] = {
         ...existingChallenge,

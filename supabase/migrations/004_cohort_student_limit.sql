@@ -5,12 +5,13 @@ DECLARE
     current_count INTEGER;
     max_allowed INTEGER;
 BEGIN
-    SELECT COUNT(*), c.max_students
-    INTO current_count, max_allowed
+    SELECT c.max_students INTO max_allowed
+    FROM cohorts c
+    WHERE c.id = NEW.cohort_id;
+    
+    SELECT COUNT(*) INTO current_count
     FROM cohort_students cs
-    JOIN cohorts c ON c.id = cs.cohort_id
-    WHERE cs.cohort_id = NEW.cohort_id
-    GROUP BY c.max_students;
+    WHERE cs.cohort_id = NEW.cohort_id;
     
     IF current_count >= max_allowed THEN
         RAISE EXCEPTION 'Cohort is full. Maximum % students allowed.', max_allowed;
@@ -32,18 +33,18 @@ DECLARE
     current_count INTEGER;
     max_allowed INTEGER;
 BEGIN
-    SELECT COUNT(*), c.max_students
-    INTO current_count, max_allowed
-    FROM cohort_students cs
-    JOIN cohorts c ON c.id = cs.cohort_id
-    WHERE cs.cohort_id = cohort_uuid
-    GROUP BY c.max_students;
+    SELECT max_students INTO max_allowed
+    FROM cohorts
+    WHERE id = cohort_uuid;
     
-    IF current_count IS NULL THEN
-        SELECT max_students INTO max_allowed FROM cohorts WHERE id = cohort_uuid;
-        RETURN COALESCE(max_allowed, 0);
+    IF max_allowed IS NULL THEN
+        RETURN 0;
     END IF;
     
-    RETURN max_allowed - current_count;
+    SELECT COUNT(*) INTO current_count
+    FROM cohort_students
+    WHERE cohort_id = cohort_uuid;
+    
+    RETURN GREATEST(0, max_allowed - COALESCE(current_count, 0));
 END;
 $$ LANGUAGE plpgsql;
