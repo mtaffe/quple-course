@@ -115,7 +115,7 @@ export function ChallengeEditor({
           Ver Solução
         </Button>
 
-        {status === 'success' && (
+        {validationResult?.success && !validationResult?.error && (
           <div className="flex items-center text-green-600 font-medium">
             <CheckCircle2 className="w-5 h-5 mr-2" />
             Correto! +{challenge.xpReward} XP
@@ -123,24 +123,55 @@ export function ChallengeEditor({
         )}
       </div>
 
-      {/* Output */}
-      {output && (
-        <div 
-          className={cn(
-            "border rounded-lg p-4 font-mono text-sm",
-            status === 'error' && "bg-red-50 border-red-200 text-red-900",
-            status === 'success' && "bg-green-50 border-green-200 text-green-900",
-            status === 'idle' && "bg-gray-50 border-gray-200 text-gray-900"
-          )}
-        >
-          <div className="flex items-start gap-2">
-            {status === 'error' && <XCircle className="w-5 h-5 text-red-600 mt-0.5" />}
-            {status === 'success' && <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5" />}
-            <div className="flex-1">
-              <div className="font-semibold mb-1">Output:</div>
-              <pre className="whitespace-pre-wrap">{output}</pre>
+      {/* Output & Validation Results */}
+      {validationResult && (
+        <div className="space-y-3">
+          {/* Output Console */}
+          {(validationResult.output || validationResult.error) && (
+            <div 
+              className={cn(
+                "border rounded-lg p-4 font-mono text-sm",
+                validationResult.error && "bg-red-50 border-red-200 text-red-900",
+                validationResult.success && "bg-green-50 border-green-200 text-green-900",
+                !validationResult.error && !validationResult.success && "bg-gray-50 border-gray-200 text-gray-900"
+              )}
+            >
+              <div className="flex items-start gap-2">
+                {validationResult.error && <XCircle className="w-5 h-5 text-red-600 mt-0.5" />}
+                {validationResult.success && <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5" />}
+                <div className="flex-1">
+                  <div className="font-semibold mb-1">Output:</div>
+                  <pre className="whitespace-pre-wrap">{validationResult.output}</pre>
+                  {validationResult.error && (
+                    <div className="mt-2 text-red-600">
+                      <strong>Erro:</strong> {validationResult.error}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Validation Criteria Results */}
+          {validationResult.criteriaResults.length > 0 && (
+            <div className="border rounded-lg p-4 bg-white dark:bg-gray-800">
+              <h5 className="font-semibold mb-3 text-sm">Resultados da Validação:</h5>
+              <ul className="space-y-2">
+                {validationResult.criteriaResults.map((result, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm">
+                    {result.passed ? (
+                      <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
+                    ) : (
+                      <XCircle className="w-4 h-4 text-red-600 mt-0.5" />
+                    )}
+                    <span className={result.passed ? 'text-green-700' : 'text-red-700'}>
+                      {result.criterion}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
 

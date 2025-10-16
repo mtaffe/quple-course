@@ -29,12 +29,12 @@ export class CodeValidator {
     const logs: string[] = []
     const errors: string[] = []
 
-    try {
-      // Backup console methods
-      const originalLog = console.log
-      const originalError = console.error
-      const originalWarn = console.warn
+    // Backup console methods (outside try to ensure restoration)
+    const originalLog = console.log
+    const originalError = console.error
+    const originalWarn = console.warn
 
+    try {
       // Override console
       console.log = (...args: any[]) => {
         logs.push(
@@ -80,11 +80,6 @@ export class CodeValidator {
 
       await Promise.race([executionPromise, timeoutPromise])
 
-      // Restore console
-      console.log = originalLog
-      console.error = originalError
-      console.warn = originalWarn
-
       return {
         output: logs.join('\n') || 'Código executado sem output',
         error: errors.length > 0 ? errors.join('\n') : undefined,
@@ -94,6 +89,11 @@ export class CodeValidator {
         output: logs.join('\n'),
         error: err.message || 'Erro desconhecido',
       }
+    } finally {
+      // ALWAYS restore console, even on error/timeout
+      console.log = originalLog
+      console.error = originalError
+      console.warn = originalWarn
     }
   }
 
@@ -192,6 +192,16 @@ export class CodeValidator {
   ): Promise<ValidationResult> {
     const { output, error } = await this.execute(code, options)
     const validation = this.validate(code, step, output)
+
+    // CRITICAL: If execution failed, force success to false
+    if (error) {
+      return {
+        ...validation,
+        success: false,
+        output,
+        error,
+      }
+    }
 
     return {
       ...validation,

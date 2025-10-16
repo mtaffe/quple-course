@@ -6,7 +6,8 @@ import { WeeklyModuleNav } from '@/components/weekly-modules/WeeklyModuleNav';
 import { WeeklyModuleHeader } from '@/components/weekly-modules/WeeklyModuleHeader';
 import { PreClassChecklist } from '@/components/weekly-modules/PreClassChecklist';
 import { RelatedResources } from '@/components/weekly-modules/RelatedResources';
-import { BookOpen, Code, Rocket, CheckCircle2, Trophy, Clock } from 'lucide-react';
+import { InteractiveChallenges } from '@/components/weekly-modules/InteractiveChallenges';
+import { BookOpen, Rocket, CheckCircle2, Trophy, Clock } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { getAllTopicsMetadata } from '@/lib/learning';
 import { getResourcesForWeek } from '@/lib/learning/weekly-modules/resources-map';
@@ -96,64 +97,8 @@ export function WeekModuleClient({ module }: WeekModuleClientProps) {
             </div>
           </section>
 
-          {/* Challenges */}
-          <section className="glass-card p-6 rounded-lg">
-            <div className="flex items-center gap-2 mb-6">
-              <Code className="w-5 h-5 text-primary" />
-              <h2 className="text-xl font-bold text-foreground">5 Desafios Práticos</h2>
-            </div>
-
-            <div className="space-y-4">
-              {module.challenges.map((challenge, index) => (
-                <div
-                  key={challenge.id}
-                  className="border border-border rounded-lg p-4 hover:border-primary/50 transition-colors"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-sm font-mono text-muted-foreground">
-                          #{index + 1}
-                        </span>
-                        <h3 className="font-semibold text-foreground">{challenge.title}</h3>
-                        <span
-                          className={`text-xs px-2 py-1 rounded-full ${
-                            challenge.difficulty === 'beginner'
-                              ? 'bg-green-500/20 text-green-400'
-                              : challenge.difficulty === 'intermediate'
-                                ? 'bg-yellow-500/20 text-yellow-400'
-                                : 'bg-red-500/20 text-red-400'
-                          }`}
-                        >
-                          {challenge.difficulty === 'beginner'
-                            ? 'Iniciante'
-                            : challenge.difficulty === 'intermediate'
-                              ? 'Intermediário'
-                              : 'Avançado'}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        {challenge.description}
-                      </p>
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {challenge.estimatedMinutes} min
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Trophy className="w-3 h-3" />
-                          +{challenge.totalXP} XP
-                        </span>
-                      </div>
-                    </div>
-                    <button className="btn-primary text-sm px-4 py-2 rounded-lg whitespace-nowrap">
-                      Começar
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          {/* Interactive Challenges */}
+          <InteractiveChallenges challenges={module.challenges} />
 
           {/* Weekly Project */}
           <section className="glass-card p-6 rounded-lg border-2 border-primary/30">
