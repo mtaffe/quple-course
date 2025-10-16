@@ -7,6 +7,7 @@ import { WeeklyModuleHeader } from '@/components/weekly-modules/WeeklyModuleHead
 import { PreClassChecklist } from '@/components/weekly-modules/PreClassChecklist';
 import { RelatedResources } from '@/components/weekly-modules/RelatedResources';
 import { InteractiveChallenges } from '@/components/weekly-modules/InteractiveChallenges';
+import { ProjectSubmissionForm } from '@/components/project/ProjectSubmissionForm';
 import { BookOpen, Rocket, CheckCircle2, Trophy, Clock } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import { getAllTopicsMetadata } from '@/lib/learning';
@@ -144,21 +145,24 @@ export function WeekModuleClient({ module }: WeekModuleClientProps) {
                 </ul>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-border">
-                <div className="flex items-center gap-4 text-sm">
-                  <span className="flex items-center gap-1 text-muted-foreground">
-                    <Clock className="w-4 h-4" />
-                    {module.weeklyProject.estimatedHours}h
-                  </span>
-                  <span className="flex items-center gap-1 text-primary font-semibold">
-                    <Trophy className="w-4 h-4" />
-                    +{module.weeklyProject.xpReward} XP
-                  </span>
-                </div>
-                <button className="btn-primary px-6 py-2 rounded-lg">
-                  Submeter Projeto
-                </button>
+              <div className="flex items-center gap-4 text-sm mb-6 pt-4 border-t border-border">
+                <span className="flex items-center gap-1 text-muted-foreground">
+                  <Clock className="w-4 h-4" />
+                  {module.weeklyProject.estimatedHours}h
+                </span>
+                <span className="flex items-center gap-1 text-primary font-semibold">
+                  <Trophy className="w-4 h-4" />
+                  +{module.weeklyProject.xpReward} XP
+                </span>
               </div>
+
+              {/* Formulário de Submissão */}
+              <ProjectSubmissionForm
+                weekId={module.id}
+                studentId={studentId}
+                projectTitle={module.weeklyProject.title}
+                projectXP={module.weeklyProject.xpReward}
+              />
             </div>
           </section>
 
