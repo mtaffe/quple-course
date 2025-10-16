@@ -8,9 +8,15 @@ import { cn } from '@/lib/utils'
 
 interface InteractiveChallengesProps {
   challenges: WeeklyChallenge[]
+  weekId: string
+  studentId?: string
 }
 
-export function InteractiveChallenges({ challenges }: InteractiveChallengesProps) {
+export function InteractiveChallenges({ 
+  challenges, 
+  weekId,
+  studentId 
+}: InteractiveChallengesProps) {
   const [expandedChallengeId, setExpandedChallengeId] = useState<string | null>(null)
   const [completedChallenges, setCompletedChallenges] = useState<Set<string>>(new Set())
 
@@ -18,8 +24,9 @@ export function InteractiveChallenges({ challenges }: InteractiveChallengesProps
     setExpandedChallengeId(prev => prev === challengeId ? null : challengeId)
   }
 
-  const handleChallengeSuccess = (challengeId: string) => {
+  const handleChallengeSuccess = (challengeId: string, xpEarned: number) => {
     setCompletedChallenges(prev => new Set(prev).add(challengeId))
+    console.log(`✅ Desafio ${challengeId} completado! +${xpEarned} XP`)
   }
 
   return (
@@ -106,7 +113,9 @@ export function InteractiveChallenges({ challenges }: InteractiveChallengesProps
                 <div className="border-t border-border p-4 bg-muted/10">
                   <ChallengeEditor
                     challenge={firstStep}
-                    onSuccess={() => handleChallengeSuccess(challenge.id)}
+                    weekId={weekId}
+                    studentId={studentId}
+                    onSuccess={(xpEarned) => handleChallengeSuccess(challenge.id, xpEarned)}
                   />
                 </div>
               )}

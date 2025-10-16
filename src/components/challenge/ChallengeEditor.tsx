@@ -1,27 +1,68 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CodeEditor } from './CodeEditor'
 import { Button } from '@/components/ui/Button'
 import { Play, CheckCircle2, XCircle, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { WeeklyChallengeStep } from '@/types/weekly-modules'
 import { CodeValidator, type ValidationResult } from '@/lib/validation/code-validator'
+import { ChallengeSubmissionService } from '@/lib/supabase/challenge-submission-service'
 
 interface ChallengeEditorProps {
   challenge: WeeklyChallengeStep
-  onSuccess?: () => void
+  weekId: string
+  studentId?: string
+  onSuccess?: (xpEarned: number) => void
   initialCode?: string
 }
 
 export function ChallengeEditor({ 
   challenge, 
+  weekId,
+  studentId,
   onSuccess,
   initialCode 
 }: ChallengeEditorProps) {
   const [code, setCode] = useState(initialCode || challenge.starterCode || '')
   const [validationResult, setValidationResult] = useState<ValidationResult | null>(null)
   const [isRunning, setIsRunning] = useState(false)
+  const [attemptCount, setAttemptCount] = useState(0)
+  const [isCompleted, setIsCompleted] = useState(false)
+
+  // Carregar última submissão bem-sucedida ao montar (apenas uma vez)
+  useEffect(() => {
+    if (!studentId) return;
+
+    let isMounted = true;
+
+    const loadData = async () => {
+      try {
+        const [lastSuccess, stats] = await Promise.all([
+          ChallengeSubmissionService.getLastSuccessfulSubmission(studentId, weekId, challenge.id),
+          ChallengeSubmissionService.getSubmissionStats(studentId, weekId, challenge.id),
+        ]);
+
+        if (!isMounted) return;
+
+        if (lastSuccess) {
+          setCode(lastSuccess.code);
+          setIsCompleted(true);
+        }
+
+        setAttemptCount(stats.totalAttempts);
+        setIsCompleted(stats.isPassed);
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+      }
+    };
+
+    loadData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [studentId, weekId, challenge.id])
 
   const runCode = async () => {
     setIsRunning(true)
@@ -31,8 +72,38 @@ export function ChallengeEditor({
       const result = await CodeValidator.executeAndValidate(code, challenge)
       setValidationResult(result)
 
-      if (result.success) {
-        onSuccess?.()
+      // Salvar submissão no Supabase (mesmo se falhou)
+      if (studentId) {
+        try {
+          await ChallengeSubmissionService.saveSubmission(
+            studentId,
+            weekId,
+            challenge.id,
+            code,
+            result.success,
+            result.success ? challenge.xpReward : 0
+          )
+
+          // Atualizar contadores
+          setAttemptCount(prev => prev + 1)
+          
+          if (result.success) {
+            setIsCompleted(true)
+            onSuccess?.(challenge.xpReward)
+          }
+        } catch (error) {
+          console.error('❌ Erro ao salvar submissão:', error)
+          // Mostrar erro ao usuário
+          setValidationResult({
+            ...result,
+            error: 'Erro ao salvar submissão. Tente novamente.',
+          })
+        }
+      }
+
+      // Callback de sucesso (mesmo sem studentId para modo desenvolvimento)
+      if (result.success && !studentId) {
+        onSuccess?.(challenge.xpReward)
       }
     } catch (error: any) {
       setValidationResult({
@@ -58,11 +129,26 @@ export function ChallengeEditor({
 
   return (
     <div className="space-y-4">
-      {/* Instrução */}
+      {/* Instrução com Stats */}
       <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-        <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-          {challenge.title}
-        </h4>
+        <div className="flex items-start justify-between mb-2">
+          <h4 className="font-semibold text-blue-900 dark:text-blue-100">
+            {challenge.title}
+          </h4>
+          <div className="flex items-center gap-2 text-xs">
+            {isCompleted && (
+              <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full flex items-center gap-1">
+                <CheckCircle2 className="w-3 h-3" />
+                Completado
+              </span>
+            )}
+            {attemptCount > 0 && (
+              <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                {attemptCount} {attemptCount === 1 ? 'tentativa' : 'tentativas'}
+              </span>
+            )}
+          </div>
+        </div>
         <p className="text-sm text-blue-700 dark:text-blue-300">
           {challenge.instruction}
         </p>

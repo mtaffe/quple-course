@@ -8,9 +8,10 @@ import { PreClassChecklist } from '@/components/weekly-modules/PreClassChecklist
 import { RelatedResources } from '@/components/weekly-modules/RelatedResources';
 import { InteractiveChallenges } from '@/components/weekly-modules/InteractiveChallenges';
 import { BookOpen, Rocket, CheckCircle2, Trophy, Clock } from 'lucide-react';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { getAllTopicsMetadata } from '@/lib/learning';
 import { getResourcesForWeek } from '@/lib/learning/weekly-modules/resources-map';
+import { supabase } from '@/lib/supabase/client';
 
 interface WeekModuleClientProps {
   module: WeeklyModule;
@@ -18,6 +19,18 @@ interface WeekModuleClientProps {
 
 export function WeekModuleClient({ module }: WeekModuleClientProps) {
   const [completedChecklistItems, setCompletedChecklistItems] = useState<string[]>([]);
+  const [studentId, setStudentId] = useState<string | undefined>(undefined);
+
+  // Buscar studentId do usuário autenticado
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setStudentId(user.id);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const handleChecklistToggle = (itemId: string) => {
     setCompletedChecklistItems(prev => 
@@ -98,7 +111,11 @@ export function WeekModuleClient({ module }: WeekModuleClientProps) {
           </section>
 
           {/* Interactive Challenges */}
-          <InteractiveChallenges challenges={module.challenges} />
+          <InteractiveChallenges 
+            challenges={module.challenges} 
+            weekId={module.id}
+            studentId={studentId}
+          />
 
           {/* Weekly Project */}
           <section className="glass-card p-6 rounded-lg border-2 border-primary/30">
