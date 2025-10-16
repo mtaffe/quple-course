@@ -13,7 +13,8 @@ import {
   Calendar,
   Settings,
   Menu,
-  X
+  X,
+  GraduationCap
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -31,6 +32,7 @@ const navigation = [
   { name: 'Progresso', href: '/progresso', icon: Trophy },
   { name: 'Minha Turma', href: '/turma', icon: Users },
   { name: 'Aulas', href: '/aulas', icon: Calendar },
+  { name: 'Mentor', href: '/mentor/dashboard', icon: GraduationCap },
   { name: 'Configurações', href: '/settings', icon: Settings },
 ]
 
