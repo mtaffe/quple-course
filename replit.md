@@ -57,6 +57,30 @@ WeeklyModule {
 
 ## Recent Changes (October 16, 2025)
 
+### FASE 2 - Interactive Challenge System ✅ (Latest)
+- **ChallengeEditor Component**: Monaco Editor integrado para edição de código JavaScript
+  - Syntax highlighting com tema VS Code
+  - Botões: Executar, Resetar, Ver Solução
+  - Estados visuais claros (idle, running, success, error)
+  - Seção de dicas expandible
+  - Critérios de validação visíveis
+- **CodeValidator Service**: Validação robusta client-side com 3 bugs críticos corrigidos:
+  - ✅ Bug 1: Console restoration movido para `finally` block (previne wrapper stacking)
+  - ✅ Bug 2: Execução com erro força `success=false` (elimina false positives)
+  - ✅ Bug 3: Painel renderiza com `output || error` (erros sempre visíveis)
+- **Funcionalidades**:
+  - Execução segura de código JavaScript com timeout (5s)
+  - Captura de console.log/error/warn com cleanup garantido
+  - Validação por critérios (regex patterns extensíveis)
+  - Feedback detalhado por critério individual
+  - Output formatado (strings, objects com JSON.stringify)
+- **InteractiveChallenges Integration**: Substituiu cards estáticos por editores interativos
+  - Sistema expand/collapse por desafio
+  - Tracking visual de desafios completados
+  - Integrado em `/learn/week/[number]`
+  - onSuccess callback para persistência futura
+- **Validação Aprovada**: Architect review confirmou production-readiness após 3 iterações de bugfix
+
 ### FASE 1 - Conteúdo Educacional Completo ✅
 - **Semana 5 - JavaScript Fundamentals**: 5 seções de teoria (variáveis, funções, condicionais, loops), 5 desafios progressivos, projeto calculadora interativa (200 XP)
 - **Semana 6 - DOM Manipulation**: 4 seções de teoria (DOM intro, querySelector, modificação, criação/remoção), 5 desafios, projeto dark mode toggle (250 XP)
