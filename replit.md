@@ -1,5 +1,7 @@
 # React Learning Playground
 
+> **📋 Status Completo**: Ver [PROJECT_STATUS.md](./PROJECT_STATUS.md) para estrutura detalhada, andamento e próximos passos
+
 ## Overview
 A Next.js learning platform designed for teenagers (15-18) and career changers to learn fullstack development. It offers a hybrid model combining high-quality self-paced content with personalized small-group mentoring (max 5 students per cohort). The platform uses a structured 12-week curriculum with weekly live classes and optional 1:1 sessions, aiming for students to build a complete professional portfolio by week 12.
 
