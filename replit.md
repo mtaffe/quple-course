@@ -48,6 +48,32 @@ The project utilizes a **Learn-Practice-Apply Model** within a 12-week structure
 - **Development Environment**: Configured for Replit with port binding to `0.0.0.0:5000`.
 - **Database Schema**: Designed for comprehensive tracking of student progress, challenge submissions, project submissions, cohort management, live classes, and 1:1 sessions.
 
+## Recent Changes (October 16, 2025)
+
+### FASE 2 - Interactive Systems + Mentor Dashboard ✅ (Latest)
+
+#### Challenge System ✅
+- **ChallengeEditor**: Monaco Editor para código JavaScript com execução, reset, ver solução
+- **CodeValidator**: Validação client-side com 3 bugs corrigidos (console restoration, false positives, error display)
+- **ChallengeSubmissionService**: Persistência Supabase otimizada (HEAD requests, Promise.all, XP apenas primeira aprovação)
+- **InteractiveChallenges**: Substituiu cards estáticos por editores interativos na página semanal
+
+#### Weekly Project System ✅
+- **ProjectSubmissionForm**: Campos GitHub/Live URL/Descrição com validação, preview, status visual
+- **ProjectSubmissionService**: CRUD completo (submitProject, getProjectSubmission, updateMentorFeedback)
+- **Bugfix Crítico**: Null handling para campos limpos (permite remoção de URLs)
+- **Fluxo**: Submissão → Review Mentor → Feedback → Resubmissão (se necessário) → Aprovação + XP
+
+#### Mentor Dashboard System ✅ (MVP Funcional)
+- **MentorAnalyticsService**: 5 métodos (pendingSubmissions, reviewedSubmissions, challengeAnalytics, studentsProgress, strugglingStudents)
+- **Páginas**:
+  - `/mentor/projects`: Lista pendentes/revisados com filtros
+  - `/mentor/projects/[id]`: Formulário de review (status, nota, XP, feedback)
+  - `/mentor/analytics`: Desafios difíceis, alunos com dificuldade, taxa de sucesso
+  - `/mentor/dashboard`: Stats, progresso individual, grid semanal visual
+- **Navegação**: Link "Mentor" no Sidebar
+- **⚠️ Pendências**: Auth/role check, cohort scoping, RLS policies (documentado com TODOs)
+
 ## External Dependencies
 - **Next.js**: Frontend framework.
 - **React**: UI library.
